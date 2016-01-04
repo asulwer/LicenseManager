@@ -13,7 +13,7 @@ namespace Utility
 		String^ sShortAssemblyName = assemblyName->Split(',')[0];
 		sShortAssemblyName = sShortAssemblyName->Remove(sShortAssemblyName->Length-3);
 
-		array<Assembly^>^ ayAssemblies = AppDomain::CurrentDomain->GetAssemblies();
+		cli::array<Assembly^>^ ayAssemblies = AppDomain::CurrentDomain->GetAssemblies();
 
 		for each(Assembly^ ayAssembly in ayAssemblies)
 		{

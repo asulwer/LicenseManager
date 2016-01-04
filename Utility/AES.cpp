@@ -22,16 +22,16 @@ namespace Utility
 		delete aes;
 	}
 	
-	String^ License::AES::Encrypt(array<Byte>^ b)
+	String^ License::AES::Encrypt(cli::array<Byte>^ b)
 	{
-		array<Byte>^ buffer = deflate->Compress(b);
+		cli::array<Byte>^ buffer = deflate->Compress(b);
 
-		array<Byte>^ ct;
+		cli::array<Byte>^ ct;
 		UInt32 cs = 0;
 
 		if(MaxCipherTextSize(buffer->Length, cs))
 		{
-			ct = gcnew array<Byte>(cs);
+			ct = gcnew cli::array<Byte>(cs);
 		}
 
 		pin_ptr<unsigned char> pn = &buffer[0];
@@ -46,16 +46,16 @@ namespace Utility
 		return retResult;
 	}
 
-	array<Byte>^ License::AES::Decrypt(String^ orig)
+	cli::array<Byte>^ License::AES::Decrypt(String^ orig)
 	{
-		array<Byte>^ buffer = Convert::FromBase64String(orig);
+		cli::array<Byte>^ buffer = Convert::FromBase64String(orig);
 		
-		array<Byte>^ rt;
+		cli::array<Byte>^ rt;
 		UInt32 rs = 0;
 
 		if(MaxPlainTextSize(buffer->Length, rs))
 		{
-			rt = gcnew array<Byte>(rs);
+			rt = gcnew cli::array<Byte>(rs);
 		}
 
 		if((buffer != nullptr && rt != nullptr) && (buffer->Length > 0 && rt->Length > 0))
@@ -65,7 +65,7 @@ namespace Utility
 
 			if(aes->Decrypt(cn,buffer->Length,pn,rs))
 			{
-#if (_MSC_VER != 1800) //this causes an error in VS2013 so its unecessary
+#if (_MSC_VER <= 1800) //this causes an error in VS2013 so its unecessary in greater versions
 				Array::Resize(rt,rt->Length - rt[rt->Length-1]);
 #endif
 				buffer = deflate->Decompress(rt);
@@ -83,7 +83,7 @@ namespace Utility
 		return buffer;
 	}
 
-	bool License::AES::GenerateRandom(array<Byte> ^buffer, int size)
+	bool License::AES::GenerateRandom(cli::array<Byte> ^buffer, int size)
 	{
 		pin_ptr<unsigned char> buf = &buffer[0];
 
@@ -95,12 +95,12 @@ namespace Utility
 		return aes->GenerateDefaults();
 	}
 	
-	bool License::AES::SetKeyWithIv(array<Byte> ^key, int ksize, array<Byte> ^iv)
+	bool License::AES::SetKeyWithIv(cli::array<Byte> ^key, int ksize, cli::array<Byte> ^iv)
 	{
 		return SetKeyWithIv(key,ksize,iv,(int)Parameters::BLOCKSIZE);
 	}
 
-	bool License::AES::SetKeyWithIv(array<Byte> ^key, int ksize, array<Byte> ^iv, int vsize)
+	bool License::AES::SetKeyWithIv(cli::array<Byte> ^key, int ksize, cli::array<Byte> ^iv, int vsize)
 	{
 		pin_ptr<unsigned char> Key = &key[0];
 		pin_ptr<unsigned char> IV = &iv[0];

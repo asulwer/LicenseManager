@@ -17,18 +17,18 @@ class WinAES
 {
 public:
     enum Parameters { KEYSIZE_128 = 16, KEYSIZE_192 = 24, KEYSIZE_256 = 32, BLOCKSIZE = 16 };
-	enum Flags { CREATE_CONTAINER = 1, DELETE_CONTAINER = 8, THROW_EXCEPTION = 16, DEFAULT_FLAGS = CREATE_CONTAINER | DELETE_CONTAINER };
+    enum Flags { CREATE_CONTAINER = 1, DELETE_CONTAINER = 8, THROW_EXCEPTION = 16, DEFAULT_FLAGS = CREATE_CONTAINER | DELETE_CONTAINER };
 public:
     explicit WinAES(const wchar_t* lpszContainer=NULL, int nFlags=DEFAULT_FLAGS);
     explicit WinAES(HCRYPTPROV hProvider);
 
     virtual ~WinAES();
 
-	// Generate a random block of unsigned chars using the underlying CSP.
+    // Generate a random block of unsigned chars using the underlying CSP.
     bool GenerateRandom(unsigned char* buffer, int size);
 
-	// hard coded password used to generate key and iv
-	bool GenerateDefaults();
+    // hard coded password used to generate key and iv
+    bool GenerateDefaults();
 
     // Sets the Key and IV. The key must be of size KEYSIZE_128, KEYSIZE_192, or KEYSIZE_256. The IV must be of size BLOCKSIZE.
     bool SetKeyWithIv(const unsigned char* key, int ksize, const unsigned char* iv, int vsize=BLOCKSIZE);
@@ -79,7 +79,7 @@ protected:
         BYTE cbKey[KEYSIZE_256];
 
         _AesKey()
-		{
+        {
             ZeroMemory( this, sizeof(_AesKey) );
             Header.bType = PLAINTEXTKEYBLOB;
             Header.bVersion = CUR_BLOB_VERSION;
@@ -103,9 +103,9 @@ private:
     enum { INVALID_INDEX = -1 };
     int m_nIndex;
 
-	RandomStringGenerator rsg;
-	unsigned char KEY[KEYSIZE_256];
-	unsigned char IV[BLOCKSIZE];
+    RandomStringGenerator rsg;
+    unsigned char KEY[KEYSIZE_256];
+    unsigned char IV[BLOCKSIZE];
 };
 
 typedef struct PROV_PARAMS_T

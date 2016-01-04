@@ -5,57 +5,57 @@ using std::ostringstream;
 
 WinAES::WinAES(const wchar_t* lpszContainer, int nFlags) : m_hProvider(NULL),m_hAesKey(NULL),m_bHaveIv(false),m_nFlags(nFlags),m_wszContainer(NULL),m_nIndex(INVALID_INDEX)
 {
-	std::string key = "PaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRd";
-	std::string iv = rsg.Generate(BLOCKSIZE);
-	std::copy(key.begin(), key.end(), KEY);
-	std::copy(iv.begin(), iv.end(), IV);
-	
-	if(lpszContainer == NULL)
-	{
+    std::string key = "PaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRd";
+    std::string iv = rsg.Generate(BLOCKSIZE);
+    std::copy(key.begin(), key.end(), KEY);
+    std::copy(iv.begin(), iv.end(), IV);
+    
+    if(lpszContainer == NULL)
+    {
         lpszContainer = L"Temporary - OK to Delete";
         m_nFlags |= DELETE_CONTAINER;
     }
 
     size_t len = wcslen(lpszContainer) + 1;
-	
+    
     if(len > 0)
-	{
+    {
         m_wszContainer = new wchar_t[len];
-		errno_t err = 0;
+        errno_t err = 0;
         err = wcscpy_s(m_wszContainer, len, lpszContainer);
-		
-		if(err != 0)
-			throw WinAESException("WinAES: Copy Error");
+        
+        if(err != 0)
+            throw WinAESException("WinAES: Copy Error");
     }
-	else
-	{
-		throw WinAESException("WinAES: Container size <= 0");
-	}
+    else
+    {
+        throw WinAESException("WinAES: Container size <= 0");
+    }
 
     if(!AcquireContext(m_wszContainer))
-		throw WinAESException("WinAES: AcquireContext failed");
+        throw WinAESException("WinAES: AcquireContext failed");
 }
 
 WinAES::WinAES(HCRYPTPROV hProvider) : m_hProvider(hProvider),m_hAesKey(NULL),m_bHaveIv(false),m_nFlags(DEFAULT_FLAGS),m_wszContainer(NULL),m_nIndex(INVALID_INDEX)
 {
-	std::string key = "PaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRd";
-	std::string iv = rsg.Generate(BLOCKSIZE);
-	std::copy(key.begin(), key.end(), KEY);
-	std::copy(iv.begin(), iv.end(), IV);
+    std::string key = "PaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRd";
+    std::string iv = rsg.Generate(BLOCKSIZE);
+    std::copy(key.begin(), key.end(), KEY);
+    std::copy(iv.begin(), iv.end(), IV);
 }
 
 WinAES::~WinAES()
 {
     // Destroy the key
     if(m_hAesKey != NULL)
-	{
+    {
         CryptDestroyKey(m_hAesKey);
         m_hAesKey = NULL;
     }
 
     // Destroy the provider
     if(m_hProvider != NULL)
-	{
+    {
         CryptReleaseContext(m_hProvider, 0);
         m_hProvider = NULL;
     }
@@ -76,7 +76,7 @@ WinAES::~WinAES()
 
     // Free
     if(m_wszContainer != NULL)
-	{
+    {
         delete[] m_wszContainer;
         m_wszContainer = NULL;
     }
@@ -84,20 +84,20 @@ WinAES::~WinAES()
 
 bool WinAES::GenerateRandom( unsigned char* buffer, int size )
 {
-	if(buffer == NULL)
-		throw WinAESException("GenerateRandom: buffer empty");
+    if(buffer == NULL)
+        throw WinAESException("GenerateRandom: buffer empty");
     
-	if(size < 0)
-		throw WinAESException("GenerateRandom: size < 0");
-		
+    if(size < 0)
+        throw WinAESException("GenerateRandom: size < 0");
+        
 #ifdef _DEBUG
     // Test the pointer (it is purported good). Not safe for Release builds
     if(IsBadWritePtr(buffer, size) == TRUE)
-		throw WinAESException("GenerateRandom: IsBadWritePtr = True");
+        throw WinAESException("GenerateRandom: IsBadWritePtr = True");
 #endif
 
-	if(m_hProvider == NULL)
-		throw WinAESException("GenerateRandom: m_hProvider = NULL");
+    if(m_hProvider == NULL)
+        throw WinAESException("GenerateRandom: m_hProvider = NULL");
 
     // Convert big BOOL to little bool
     return !!CryptGenRandom(m_hProvider, size, buffer);
@@ -109,17 +109,17 @@ bool WinAES::AcquireContext( const wchar_t* lpszContainer )
     // acquire in case the use wants to delete the imported key. The
     // class destructor will use the index to delete the proper container.
 
-	int iAesProviders = std::extent<decltype(AesProviders)>::value;
-	for(int i=0; i<iAesProviders; i++)
+    int iAesProviders = std::extent<decltype(AesProviders)>::value;
+    for(int i=0; i<iAesProviders; i++)
     {
         // Only create a new container if requested
         if((AesProviders[i].params.dwFlags & CRYPT_NEWKEYSET) && !(m_nFlags & CREATE_CONTAINER))
-		{
-			continue;
-		}
+        {
+            continue;
+        }
 
         if(CryptAcquireContext(&m_hProvider, lpszContainer, AesProviders[i].params.lpwsz, AesProviders[i].params.dwType, AesProviders[i].params.dwFlags))
-		{
+        {
             m_nIndex = i;
             break;
         }
@@ -127,7 +127,7 @@ bool WinAES::AcquireContext( const wchar_t* lpszContainer )
 
     // m_nIndex != INVALID_INDEX indicates success. No need for an extra variable to track success from CryptAcquireContext.
     if((m_nIndex == INVALID_INDEX) && (THROW_EXCEPTION & m_nFlags))
-	    throw WinAESException("AcquireContext: CryptAcquireContext failed");
+        throw WinAESException("AcquireContext: CryptAcquireContext failed");
     
     return m_nIndex != INVALID_INDEX;
 }
@@ -135,51 +135,51 @@ bool WinAES::AcquireContext( const wchar_t* lpszContainer )
 HCRYPTPROV WinAES::DuplicateContext()
 {
     if(m_hProvider == NULL)
-	{
-		return NULL;
-	}
+    {
+        return NULL;
+    }
 
     if(CryptContextAddRef(m_hProvider, NULL, 0))
-	{
-		return m_hProvider;
-	}
+    {
+        return m_hProvider;
+    }
 
     return NULL;
 }
 
 bool WinAES::GenerateDefaults()
 {
-	bool result = true;
+    bool result = true;
 
-	try
-	{
-		result = SetKey(KEY, sizeof(KEY));
+    try
+    {
+        result = SetKey(KEY, sizeof(KEY));
         if(!result)
-		    throw WinAESException("SetKeyWithIv: SetKey failed");
+            throw WinAESException("SetKeyWithIv: SetKey failed");
         
         result = SetIv(IV, sizeof(IV));
         if(!result)
-		    throw WinAESException("SetKeyWithIv: SetIv failed");
+            throw WinAESException("SetKeyWithIv: SetIv failed");
     }
-	catch(const WinAESException& /*e*/)
+    catch(const WinAESException& /*e*/)
     {
         if(THROW_EXCEPTION & m_nFlags)
-	        throw;
+            throw;
     
         result = false;
     }
 
-	return result;
+    return result;
 }
 
 bool WinAES::SetKeyWithIv(const unsigned char* key, int ksize, const unsigned char* iv, int vsize)
 {
 #ifdef _DEBUG
-	if(IsBadReadPtr(key, ksize) == TRUE)
-		throw WinAESException("SetKeyWithIv: IsBadWritePtr = True");
+    if(IsBadReadPtr(key, ksize) == TRUE)
+        throw WinAESException("SetKeyWithIv: IsBadWritePtr = True");
 
-	if(IsBadReadPtr(iv, vsize) == TRUE)
-		throw WinAESException("SetKeyWithIv: IsBadWritePtr = True");
+    if(IsBadReadPtr(iv, vsize) == TRUE)
+        throw WinAESException("SetKeyWithIv: IsBadWritePtr = True");
 #endif
 
     // Returned to caller (if non-throwing)
@@ -187,7 +187,7 @@ bool WinAES::SetKeyWithIv(const unsigned char* key, int ksize, const unsigned ch
 
     // re-keying?, we need to release the old key here...
     if(m_hAesKey != NULL)
-	{
+    {
         // Non-fatal
         CryptDestroyKey(m_hAesKey);
         m_hAesKey  = NULL;
@@ -197,32 +197,32 @@ bool WinAES::SetKeyWithIv(const unsigned char* key, int ksize, const unsigned ch
     try
     {
         if(m_hProvider == NULL)
-		    throw WinAESException( "SetKeyWithIv: Provider is not valid" );
+            throw WinAESException( "SetKeyWithIv: Provider is not valid" );
         
         if(key == NULL)
-		    throw WinAESException( "SetKeyWithIv: Key buffer is not valid" );
+            throw WinAESException( "SetKeyWithIv: Key buffer is not valid" );
         
         if(!(ksize == KEYSIZE_128 || ksize == KEYSIZE_192 || ksize == KEYSIZE_256))
-		    throw WinAESException( "SetKeyWithIv: Key size is not valid" );
+            throw WinAESException( "SetKeyWithIv: Key size is not valid" );
         
         if(iv == NULL)
-		    throw WinAESException( "SetKeyWithIv: IV buffer is not valid" );
+            throw WinAESException( "SetKeyWithIv: IV buffer is not valid" );
         
         if(vsize != BLOCKSIZE)
-		    throw WinAESException( "SetKeyWithIv: IV size is not valid" );
+            throw WinAESException( "SetKeyWithIv: IV size is not valid" );
         
         result = SetKey(key, ksize);
         if(!result)
-		    throw WinAESException("SetKeyWithIv: SetKey failed");
+            throw WinAESException("SetKeyWithIv: SetKey failed");
         
         result = SetIv(iv, vsize);
         if(!result)
-		    throw WinAESException("SetKeyWithIv: SetIv failed");
+            throw WinAESException("SetKeyWithIv: SetIv failed");
     }
     catch(const WinAESException& /*e*/)
     {
         if(THROW_EXCEPTION & m_nFlags)
-		{
+        {
             throw;
         }
 
@@ -237,7 +237,7 @@ bool WinAES::SetKey( const unsigned char* key, int ksize )
 {
 #ifdef _DEBUG
     if(IsBadReadPtr(key, ksize) == TRUE)
-		throw WinAESException("SetKey: IsBadWritePtr = True");
+        throw WinAESException("SetKey: IsBadWritePtr = True");
 #endif
 
     // Returned to caller (if non-throwing)
@@ -245,7 +245,7 @@ bool WinAES::SetKey( const unsigned char* key, int ksize )
 
     // Is someone is re-keying, we need to release the old key here...
     if(m_hAesKey != NULL)
-	{
+    {
         // Non-fatal
         CryptDestroyKey(m_hAesKey);
         m_hAesKey  = NULL;
@@ -255,13 +255,13 @@ bool WinAES::SetKey( const unsigned char* key, int ksize )
     try
     {
         if(m_hProvider == NULL)
-		    throw WinAESException( "SetKey: Provider is not valid" );
+            throw WinAESException( "SetKey: Provider is not valid" );
         
         if(key == NULL)
-		    throw WinAESException( "SetKey: Key buffer is NULL" );
+            throw WinAESException( "SetKey: Key buffer is NULL" );
         
         if(!(ksize == KEYSIZE_128 || ksize == KEYSIZE_192 || ksize == KEYSIZE_256))
-		    throw WinAESException( "SetKey: Key size is not valid" );
+            throw WinAESException( "SetKey: Key size is not valid" );
         
         AesKey aeskey;
 
@@ -281,14 +281,14 @@ bool WinAES::SetKey( const unsigned char* key, int ksize )
             break;
         default:
             throw WinAESException("SetKey: Key size is not valid");
-			break;
+            break;
         }
 
         errno_t err = 0;
         err = memcpy_s(aeskey.cbKey, aeskey.dwKeyLength, key, ksize);
         
-		if(err != 0)
-		    throw WinAESException( "SetKey: Unable to copy key" );
+        if(err != 0)
+            throw WinAESException( "SetKey: Unable to copy key" );
         
         // When the key is imported, the size of the AesKey structure should be exact.
         //  We declared aeskey.cbKey[ KEYSIZE_256 ] to allow a stack allocation.
@@ -298,19 +298,19 @@ bool WinAES::SetKey( const unsigned char* key, int ksize )
 
         // Import AES key
         if(!CryptImportKey(m_hProvider, (CONST BYTE*)&aeskey, structsize, NULL, 0, &m_hAesKey))
-		    throw WinAESException("SetKey: Import key failed");
+            throw WinAESException("SetKey: Import key failed");
         
         // Set Mode
         DWORD dwMode = CRYPT_MODE_CBC;
         if(!CryptSetKeyParam(m_hAesKey, KP_MODE, (BYTE*)&dwMode, 0))
-		    throw WinAESException("SetKey: Set CBC mode failed");
+            throw WinAESException("SetKey: Set CBC mode failed");
         
         result = true;
     }
     catch(const WinAESException& /*e*/)
     {
         if(THROW_EXCEPTION & m_nFlags)
-		{
+        {
             throw;
         }
         result = false;
@@ -324,7 +324,7 @@ bool WinAES::SetIv(const unsigned char* iv, int vsize )
 {
 #ifdef _DEBUG
     if(IsBadReadPtr(iv, vsize) == TRUE)
-		throw WinAESException("SetIv: IsBadWritePtr = True");
+        throw WinAESException("SetIv: IsBadWritePtr = True");
 #endif
 
     // Returned to caller (if non-//throwing)
@@ -333,36 +333,36 @@ bool WinAES::SetIv(const unsigned char* iv, int vsize )
     try
     {
         if(m_hAesKey == NULL)
-		    throw WinAESException("SetIv: key is not valid");
+            throw WinAESException("SetIv: key is not valid");
         
         if(iv == NULL)
-		    throw WinAESException("SetIv: IV buffer is NULL");
+            throw WinAESException("SetIv: IV buffer is NULL");
         
         if(vsize != BLOCKSIZE)
-		    throw WinAESException("SetIv: IV block size is not valid");
+            throw WinAESException("SetIv: IV block size is not valid");
         
         if(m_hAesKey == NULL)
-		    throw WinAESException("SetIv: Key is not valid");
+            throw WinAESException("SetIv: Key is not valid");
         
         if(!CryptSetKeyParam(m_hAesKey, KP_IV, (BYTE*)iv, 0))
-		    throw WinAESException("SetIv: Set IV failed");
+            throw WinAESException("SetIv: Set IV failed");
         
         // Set Mode
         DWORD dwMode = CRYPT_MODE_CBC;
         if(!CryptSetKeyParam(m_hAesKey, KP_MODE, (BYTE*)&dwMode, 0))
-		    throw WinAESException("SetIv: Set CBC mode failed");
+            throw WinAESException("SetIv: Set CBC mode failed");
         
-		m_bHaveIv = true;
+        m_bHaveIv = true;
         result = true;
     }
     catch(const WinAESException& /*e*/)
     {
         if(THROW_EXCEPTION & m_nFlags)
-		{
+        {
             throw;
         }
 
-		m_bHaveIv = false;
+        m_bHaveIv = false;
         result = false;
     }
 
@@ -381,12 +381,12 @@ bool WinAES::MaxCipherTextSize(unsigned int psize, unsigned int& csize )
 // Returns the maximum size of the plaintext, which includes removal of padding on the plaintext
 bool WinAES::MaxPlainTextSize( unsigned int csize, unsigned int& psize )
 {
-	if(csize % BLOCKSIZE != 0)
-		return false;
-	
-	psize = csize - BLOCKSIZE; //subtracting by BLOCKSIZE is so that we can adjust the cipher after we have removed the iv from the end of it
+    if(csize % BLOCKSIZE != 0)
+        return false;
     
-	return true;
+    psize = csize - BLOCKSIZE; //subtracting by BLOCKSIZE is so that we can adjust the cipher after we have removed the iv from the end of it
+    
+    return true;
 }
 
 // Encrpyt a buffer in-place. bsize is the size of the buffer, psize is the size of the plaintext. If successful, csize is the size of the ciphertext. On entry, bsize >= csize.
@@ -394,8 +394,8 @@ bool WinAES::Encrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
 {
 #ifdef _DEBUG
     // Test the pointer (it is purported good). Not safe for Release builds
-	if(IsBadReadPtr(buffer, (DWORD)bsize) == TRUE)
-		throw WinAESException("Encrypt: IsBadWritePtr = True");
+    if(IsBadReadPtr(buffer, (DWORD)bsize) == TRUE)
+        throw WinAESException("Encrypt: IsBadWritePtr = True");
 #endif
 
     // Returned to caller (if non-throwing)
@@ -405,14 +405,14 @@ bool WinAES::Encrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
     {
         // sanity check
         if(m_hAesKey == NULL)
-		{
+        {
             SetLastError((DWORD)NTE_BAD_KEY);
             throw WinAESException("Encrypt(1): Key is not valid");
         }
 
         // sanity check
         if(buffer == NULL)
-		{
+        {
             SetLastError(ERROR_INVALID_USER_BUFFER);
             throw WinAESException("Encrypt(1): Buffer is NULL");
         }
@@ -420,14 +420,14 @@ bool WinAES::Encrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
         // sanity check
         unsigned int s = 0;
         if(MaxCipherTextSize(psize, s) && bsize < s)
-		{
+        {
             SetLastError((DWORD)NTE_BUFFER_TOO_SMALL);
             throw WinAESException("Encrypt(1): Buffer is too small");
         }
 
         // sanity check
         if(m_bHaveIv == false)
-		{
+        {
             SetLastError((DWORD)NTE_INVALID_PARAMETER);
             throw WinAESException("Encrypt(1): IV has not been set");
         }
@@ -435,8 +435,8 @@ bool WinAES::Encrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
         // temporary for API
         DWORD d = (DWORD)psize;
         if(CryptEncrypt(m_hAesKey, NULL, TRUE, 0, buffer, &d, (DWORD)bsize) == FALSE)
-		{
-			// Build a useful message
+        {
+            // Build a useful message
             ostringstream emessage;
             emessage << "Encrypt(1): CryptEncrypt failed - " ;
             emessage << ErrorToDefine( GetLastError() );
@@ -447,12 +447,12 @@ bool WinAES::Encrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
         }
 
         csize = d;
-		result = true;
+        result = true;
     }
     catch(const WinAESException& /*e*/)
     {
         if(m_nFlags & THROW_EXCEPTION)
-		{
+        {
             throw;
         }
         result = false;
@@ -467,8 +467,8 @@ bool WinAES::Decrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
 {
 #ifdef _DEBUG
     // Test the pointer (it is purported good). Not safe for Release builds
-	if(IsBadReadPtr(buffer, (DWORD)bsize) == TRUE)
-		throw WinAESException("Decrypt: IsBadWritePtr = True");
+    if(IsBadReadPtr(buffer, (DWORD)bsize) == TRUE)
+        throw WinAESException("Decrypt: IsBadWritePtr = True");
 #endif
 
     // Returned to caller (if non-//throwing)
@@ -478,21 +478,21 @@ bool WinAES::Decrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
     {
         // sanity check
         if(m_hAesKey == NULL)
-		{
+        {
             SetLastError((DWORD)NTE_BAD_KEY);
             throw WinAESException("Decrypt(1): Key is not valid");
         }
 
         // sanity check
         if(buffer == NULL)
-		{
+        {
             SetLastError(ERROR_INVALID_USER_BUFFER);
             throw WinAESException("Decrypt(1): Buffer is NULL");
         }
 
         // sanity check
         if(!(csize % BLOCKSIZE == 0))
-		{
+        {
             SetLastError((DWORD)NTE_BAD_DATA);
             throw WinAESException("Decrypt(1): Data size is not a multple of block size");
         }
@@ -500,14 +500,14 @@ bool WinAES::Decrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
         // sanity check
         unsigned int s = 0;
         if(MaxPlainTextSize(csize, s) && !(bsize > s-BLOCKSIZE))
-		{
+        {
             SetLastError((DWORD)NTE_BUFFER_TOO_SMALL);
             throw WinAESException("Decrypt(1): Buffer is too small");
         }
 
         // sanity check
         if(m_bHaveIv == false)
-		{
+        {
             SetLastError((DWORD)NTE_INVALID_PARAMETER);
             throw WinAESException("Decrypt(1): IV has not been set");
         }
@@ -515,7 +515,7 @@ bool WinAES::Decrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
         // Temporary for API
         DWORD d = (DWORD)csize;
         if(CryptDecrypt(m_hAesKey, NULL, TRUE, 0, buffer, &d) == FALSE)
-		{
+        {
             // Build a useful message
             ostringstream emessage;
             emessage << "Decrypt(1): CryptDecrypt failed - " ;
@@ -527,12 +527,12 @@ bool WinAES::Decrypt( unsigned char* buffer, /*In*/unsigned int bsize, /*In*/uns
         }
 
         psize = d;
-		result = true;
+        result = true;
     }
     catch(const WinAESException& /*e*/)
     {
         if(m_nFlags & THROW_EXCEPTION)
-		{
+        {
             throw;
         }
         result = false;
@@ -547,11 +547,11 @@ bool WinAES::Encrypt( const unsigned char* plaintext, /*In*/unsigned int psize, 
 
 #ifdef _DEBUG
     // Test the pointer (it is purported good). Not safe for Release builds
-	if(IsBadReadPtr(plaintext, psize) == TRUE)
-		throw WinAESException("Encrypt: IsBadWritePtr = True");
+    if(IsBadReadPtr(plaintext, psize) == TRUE)
+        throw WinAESException("Encrypt: IsBadWritePtr = True");
 
-	if(IsBadReadPtr(ciphertext, csize) == TRUE)
-		throw WinAESException("Encrypt: IsBadWritePtr = True");
+    if(IsBadReadPtr(ciphertext, csize) == TRUE)
+        throw WinAESException("Encrypt: IsBadWritePtr = True");
 #endif
 
     // Returned to caller (if non-//throwing)
@@ -561,20 +561,20 @@ bool WinAES::Encrypt( const unsigned char* plaintext, /*In*/unsigned int psize, 
     {
         // sanity check
         if(!(plaintext != NULL || (plaintext == NULL && 0 == psize)))
-		{
+        {
             SetLastError( ERROR_INVALID_USER_BUFFER );
             throw WinAESException( "Encrypt: Plain text buffer is not valid" );
         }
 
         // sanity check
         if(ciphertext == NULL)
-		{
+        {
             SetLastError( ERROR_INVALID_USER_BUFFER );
             throw WinAESException( "Encrypt: Cipher text buffer is not valid" );
         }
 
         // Buffers cannot overlap
-        if( !(((unsigned int)ciphertext+csize < (unsigned int)plaintext) || ((unsigned int)plaintext+psize < (unsigned int)ciphertext) ) )
+        if( !((ciphertext+csize < plaintext) || (plaintext+psize < ciphertext) ) )
         {
             SetLastError( (DWORD)NTE_BUFFERS_OVERLAP );
             throw WinAESException( "Encrypt: Buffers overlap" );
@@ -582,12 +582,12 @@ bool WinAES::Encrypt( const unsigned char* plaintext, /*In*/unsigned int psize, 
 
         errno_t err = memcpy_s( ciphertext, csize, plaintext, psize );
         if(err != 0)
-		{
+        {
             throw WinAESException( "Encrypt: Unable to prepare plaintext buffer" );
         }
-				
+                
         if(!Encrypt(ciphertext, csize, psize, csize))
-		{
+        {
             // Build a useful message
             ostringstream emessage;
             emessage << "Encrypt: Encryption failed - " ;
@@ -598,33 +598,33 @@ bool WinAES::Encrypt( const unsigned char* plaintext, /*In*/unsigned int psize, 
             throw WinAESException(emessage.str().c_str());
         }
 
-		//cipher has been built now append iv
-		std::string ct("",csize);
-		
-		//copy ciphertext
-		for(unsigned int i=0; i<csize; i++)
-			ct[i] = ciphertext[i];
+        //cipher has been built now append iv
+        std::string ct("",csize);
+        
+        //copy ciphertext
+        for(unsigned int i=0; i<csize; i++)
+            ct[i] = ciphertext[i];
 
-		//make room at the end for the iv we are appending
-		unsigned int origSize = (int)ct.size();
-		ct.resize(ct.size()+BLOCKSIZE);
-		
-		//add iv to end of cipher
-		for(int i=0; i<BLOCKSIZE; i++)
-			ct[origSize+i] = IV[i];
-		
-		csize = (int)ct.size(); //just a formality and not necessary
+        //make room at the end for the iv we are appending
+        unsigned int origSize = (int)ct.size();
+        ct.resize(ct.size()+BLOCKSIZE);
+        
+        //add iv to end of cipher
+        for(int i=0; i<BLOCKSIZE; i++)
+            ct[origSize+i] = IV[i];
+        
+        csize = (int)ct.size(); //just a formality and not necessary
 
-		//reassign temp cipher to original
-		for(unsigned int i=0; i<ct.size(); i++)
-			ciphertext[i] = ct[i];
+        //reassign temp cipher to original
+        for(unsigned int i=0; i<ct.size(); i++)
+            ciphertext[i] = ct[i];
 
-		result = true;
+        result = true;
     }
     catch( const WinAESException& /*e*/ )
     {
         if( m_nFlags & THROW_EXCEPTION )
-		{
+        {
             throw;
         }
         result = false;
@@ -638,46 +638,46 @@ bool WinAES::Decrypt( const unsigned char* ciphertext, /*In*/unsigned int csize,
 {
 #ifdef _DEBUG
     // Test the pointer (it is purported good). Not safe for Release builds
-	if(IsBadReadPtr(ciphertext, csize) == TRUE)
-		throw WinAESException("Decrypt: IsBadWritePtr = True");
+    if(IsBadReadPtr(ciphertext, csize) == TRUE)
+        throw WinAESException("Decrypt: IsBadWritePtr = True");
 
-	if(IsBadReadPtr(plaintext, psize) == TRUE)
-		throw WinAESException("Decrypt: IsBadWritePtr = True");
+    if(IsBadReadPtr(plaintext, psize) == TRUE)
+        throw WinAESException("Decrypt: IsBadWritePtr = True");
 #endif
 
     // Returned to caller
     bool result = false;
 
-	//get/set iv from end of string
-	std::string iv("",BLOCKSIZE);
-	int origSize = csize-BLOCKSIZE;
+    //get/set iv from end of string
+    std::string iv("",BLOCKSIZE);
+    int origSize = csize-BLOCKSIZE;
 
-	//get iv
-	for(int i=0; i<BLOCKSIZE; i++)
-		iv[i] = ciphertext[origSize+i];
+    //get iv
+    for(int i=0; i<BLOCKSIZE; i++)
+        iv[i] = ciphertext[origSize+i];
 
-	//copy iv to member IV
-	std::copy(iv.begin(),iv.end(), IV);
+    //copy iv to member IV
+    std::copy(iv.begin(),iv.end(), IV);
 
-	//set iv from end of ciphertext
-	SetIv(IV, BLOCKSIZE);
+    //set iv from end of ciphertext
+    SetIv(IV, BLOCKSIZE);
 
-	//get just the ciphertext minus the iv
-	unsigned char* temp = new unsigned char[origSize];
-	for(int i=0; i<origSize; i++)
-		temp[i] = ciphertext[i];
+    //get just the ciphertext minus the iv
+    unsigned char* temp = new unsigned char[origSize];
+    for(int i=0; i<origSize; i++)
+        temp[i] = ciphertext[i];
 
     try
     {
         // sanity check
         if(temp == NULL || plaintext == NULL)
-		{
+        {
             SetLastError( ERROR_INVALID_USER_BUFFER );
             throw WinAESException( "Decrypt: Buffer is NULL" );
         }
 
         // Buffers cannot overlap
-        if( !(((unsigned int)temp+origSize < (unsigned int)plaintext) || ((unsigned int)plaintext+psize < (unsigned int)temp) ) )
+        if( !((temp+origSize < plaintext) || (plaintext+psize < temp) ) )
         {
             SetLastError( (DWORD)NTE_BUFFERS_OVERLAP );
             throw WinAESException( "Decrypt: Buffers overlap" );
@@ -685,12 +685,12 @@ bool WinAES::Decrypt( const unsigned char* ciphertext, /*In*/unsigned int csize,
 
         errno_t err = memcpy_s( plaintext, psize, temp, origSize );
         if(err != 0)
-		{
+        {
             throw WinAESException( "Decrypt: Unable to prepare decryption buffer" );
         }
 
         if(!Decrypt( plaintext, origSize, origSize, psize ))
-		{
+        {
             // Build a useful message
             ostringstream emessage;
             emessage << "Decrypt: Decryption failed - " ;
@@ -700,13 +700,13 @@ bool WinAES::Decrypt( const unsigned char* ciphertext, /*In*/unsigned int csize,
             psize = 0;
             throw WinAESException( emessage.str().c_str() );
         }
-		result = true;
+        result = true;
     }
 
     catch( const WinAESException& /*e*/ )
     {
         if( m_nFlags & THROW_EXCEPTION )
-		{
+        {
             throw;
         }
         result = false;
@@ -798,7 +798,7 @@ const char* WinAES::ErrorToDefine( DWORD dwError )
     case NTE_INTERNAL_ERROR:
         return "NTE_INTERNAL_ERROR";
     default: 
-		return "Unknown";
+        return "Unknown";
     }
 
     return "Unknown";

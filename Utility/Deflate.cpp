@@ -6,9 +6,9 @@ namespace Utility
 {
 	using namespace System::IO::Compression; //Deflate
 
-	array<Byte>^ License::Deflate::Compress(array<Byte>^ b)
+	cli::array<Byte>^ License::Deflate::Compress(cli::array<Byte>^ b)
 	{
-		array<Byte>^ buffer;
+		cli::array<Byte>^ buffer;
 
 		MemoryStream^ ms = gcnew MemoryStream();
 		try
@@ -28,21 +28,20 @@ namespace Utility
 		finally
 		{
 			ms->Flush();
-			ms->Close();
 		}
 
 		return buffer;
 	}
 		
-	array<Byte>^ License::Deflate::Decompress(array<Byte>^ b)
+	cli::array<Byte>^ License::Deflate::Decompress(cli::array<Byte>^ b)
 	{
-		array<Byte>^ buffer;
+		cli::array<Byte>^ buffer;
 
 		DeflateStream^ ds = gcnew DeflateStream(gcnew MemoryStream(b), CompressionMode::Decompress);
 		try
 		{
 			const int size = 4096;
-			array<Byte>^ bt = gcnew array<Byte>(size);
+			cli::array<Byte>^ bt = gcnew cli::array<Byte>(size);
 
 			MemoryStream^ memory = gcnew MemoryStream();
 			try
@@ -65,7 +64,6 @@ namespace Utility
 		finally
 		{
 			ds->Flush();
-			ds->Close();
 		}
 		return buffer;
 	}

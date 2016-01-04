@@ -28,7 +28,7 @@ namespace LicenseScheme
             {
                 da = Assembly.LoadFrom(Directory.GetCurrentDirectory() + @"\Utility_x86.dll"); //looking for x32 version                    
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 da = Assembly.LoadFrom(Directory.GetCurrentDirectory() + @"\Utility_x64.dll"); //looking for x64 version
             }

@@ -61,7 +61,7 @@ namespace Utility
 	{
 		License^ temp = gcnew License();
 		AES^ crypto = gcnew AES();
-		array<Byte>^ buffer = nullptr;
+		cli::array<Byte>^ buffer = nullptr;
 
 		try
 		{

@@ -132,8 +132,8 @@ namespace Utility
 			Deflate() {};
 			~Deflate() {};
 
-			array<Byte>^ Compress(array<Byte>^ b);
-			array<Byte>^ Decompress(array<Byte>^ b);
+			cli::array<Byte>^ Compress(cli::array<Byte>^ b);
+			cli::array<Byte>^ Decompress(cli::array<Byte>^ b);
 		};
 
 		ref class AES
@@ -143,15 +143,15 @@ namespace Utility
 			~AES();
 			!AES();
 
-			String^ Encrypt(array<Byte>^ b);
-			array<Byte>^ Decrypt(String^ orig);
+			String^ Encrypt(cli::array<Byte>^ b);
+			cli::array<Byte>^ Decrypt(String^ orig);
 		private:
 			enum class Parameters { KEYSIZE_128 = 16, KEYSIZE_192 = 24, KEYSIZE_256 = 32, BLOCKSIZE = 16 };
 			enum class Flags { CREATE_CONTAINER = 1, DELETE_CONTAINER = 8, THROW_EXCEPTION = 16, DEFAULT_FLAGS = CREATE_CONTAINER | DELETE_CONTAINER };
-			bool GenerateRandom(array<Byte> ^buffer, int size);
+			bool GenerateRandom(cli::array<Byte> ^buffer, int size);
 			bool GenerateDefaults();
-			bool SetKeyWithIv(array<Byte> ^key, int ksize, array<Byte> ^iv);
-			bool SetKeyWithIv(array<Byte> ^key, int ksize, array<Byte> ^iv, int vsize);
+			bool SetKeyWithIv(cli::array<Byte> ^key, int ksize, cli::array<Byte> ^iv);
+			bool SetKeyWithIv(cli::array<Byte> ^key, int ksize, cli::array<Byte> ^iv, int vsize);
 			bool MaxCipherTextSize(UInt32 psize, UInt32% csize);
 			bool MaxPlainTextSize(UInt32 csize, UInt32% psize);		
 			
