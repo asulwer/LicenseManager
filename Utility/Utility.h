@@ -48,8 +48,9 @@ namespace Utility
 	{
 	public:
 		License();
-		//License(String^ customer, String^ product, String^ version, array<IData^>^ data);
-	
+		~License();
+		!License();
+
 		virtual String^ Save() override;
 		virtual void Open(String^ lic) override;
 
@@ -110,7 +111,7 @@ namespace Utility
 		}
 
 	protected:
-		License(SerializationInfo^ info, StreamingContext context);
+		License(SerializationInfo^ info, StreamingContext ctxt);
 		virtual void GetObjectData(SerializationInfo^ info, StreamingContext ctxt) = ISerializable::GetObjectData;
 
 	private:
@@ -125,7 +126,6 @@ namespace Utility
 		public:
 			virtual Type^ BindToType(String^ assemblyName, String^ typeName) override;
 		};
-
 		ref class Deflate
 		{
 		public:
@@ -135,7 +135,6 @@ namespace Utility
 			cli::array<Byte>^ Compress(cli::array<Byte>^ b);
 			cli::array<Byte>^ Decompress(cli::array<Byte>^ b);
 		};
-
 		ref class AES
 		{
 		public:
@@ -156,7 +155,10 @@ namespace Utility
 			bool MaxPlainTextSize(UInt32 csize, UInt32% psize);		
 			
 			WinAES* aes;
-			Deflate^ deflate;
 		};
+
+		//comes after ref classes
+		AES^ aes;
+		Deflate^ deflate;
 	};
 }

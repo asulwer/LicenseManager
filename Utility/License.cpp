@@ -6,42 +6,47 @@ namespace Utility
 {
 	License::License()
 	{
-		Customer = "";
-		Product = "";
-		Version = "";
-		//D = gcnew array<IData^>(0);
-		Dict = gcnew Dictionary<String^,String^>();
+		this->Customer = String::Empty;
+		this->Product = String::Empty;
+		this->Version = String::Empty;
+		//this->D = gcnew array<IData^>(0);
+		this->Dict = gcnew Dictionary<String^,String^>();
+		this->aes = gcnew AES();
+		this->deflate = gcnew Deflate();
+	}
+	License::~License()
+	{
+		this->!License();
+	}
+	License::!License()
+	{
+		delete aes;
+		delete deflate;
 	}
 
-	/*License::License(String^ customer, String^ product, String^ version, array<IData^>^ data)
+	License::License(SerializationInfo^ info, StreamingContext ctxt)
 	{
-		Customer = customer;
-		Product = product;
-		Version = version;
-		D = data;
-	}*/
-
-	License::License(SerializationInfo^ info, StreamingContext context)
-	{
-		Customer = dynamic_cast<String^>(info->GetValue("Customer", String::typeid));
-		Product = dynamic_cast<String^>(info->GetValue("Product", String::typeid));
-		Version = dynamic_cast<String^>(info->GetValue("Version", String::typeid));
-		//D = dynamic_cast<array<IData^>^>(info->GetValue("D",array<IData^>::typeid));
-		Dict = dynamic_cast<Dictionary<String^,String^>^>(info->GetValue("Dict",Dictionary<String^,String^>::typeid));
-	}
-
+		//called when we Deserialize the data in Open
+		this->Customer = dynamic_cast<String^>(info->GetValue("Customer", String::typeid));
+		this->Product = dynamic_cast<String^>(info->GetValue("Product", String::typeid));
+		this->Version = dynamic_cast<String^>(info->GetValue("Version", String::typeid));
+		//this->D = dynamic_cast<array<IData^>^>(info->GetValue("D",array<IData^>::typeid));
+		this->Dict = dynamic_cast<Dictionary<String^,String^>^>(info->GetValue("Dict",Dictionary<String^,String^>::typeid));
+	}	
 	void License::GetObjectData(SerializationInfo^ info, StreamingContext ctxt)
 	{
-		info->AddValue("Customer", Customer);
-		info->AddValue("Product", Product);
-		info->AddValue("Version", Version);
-		//info->AddValue("D", D);
-		info->AddValue("Dict",Dict);
+		//called when we Serialize the data in Save
+		info->AddValue("Customer", this->Customer);
+		info->AddValue("Product", this->Product);
+		info->AddValue("Version", this->Version);
+		//info->AddValue("D", this->D);
+		info->AddValue("Dict", this->Dict);
 	}
 
 	String^ License::Save()
 	{
-		AES^ crypto = gcnew AES();
+		cli::array<Byte>^ buffer = nullptr;
+
 		MemoryStream^ ms = gcnew MemoryStream();
 		try
 		{
@@ -54,24 +59,26 @@ namespace Utility
 			ms->Flush();
 			ms->Close();
 		}
-		return crypto->Encrypt(ms->ToArray());
+		
+		buffer = deflate->Compress(ms->ToArray());
+		return aes->Encrypt(buffer);
 	}
-
 	void License::Open(String^ lic)
 	{
 		License^ temp = gcnew License();
-		AES^ crypto = gcnew AES();
 		cli::array<Byte>^ buffer = nullptr;
 
 		try
 		{
-			buffer = crypto->Decrypt(lic);
+			buffer = aes->Decrypt(lic);
+			buffer = deflate->Decompress(buffer);
 		}
 		catch(...)
 		{
 			throw;
 		}
-			
+		
+		//deserialize the decrypted/decompressed object
 		if(buffer != nullptr)
 		{
 			MemoryStream^ ms = gcnew MemoryStream(buffer);

@@ -54,9 +54,9 @@ namespace Utility
     {
         protected ILicense()
         {
-            Customer = "";
-            Product = "";
-            Version = "";
+            Customer = string.Empty;
+            Product = string.Empty;
+            Version = string.Empty;
             //D = new IData[0];
             Dict = new Dictionary<string, string>();
         }
@@ -75,9 +75,9 @@ namespace Utility
     {
         protected LicenseContract()
         {
-            Customer = "";
-            Product = "";
-            Version = "";
+            Customer = string.Empty;
+            Product = string.Empty;
+            Version = string.Empty;
             //D = new IData[0];
             Dict = new Dictionary<string, string>();
         }

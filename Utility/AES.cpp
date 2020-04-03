@@ -7,13 +7,11 @@ namespace Utility
 	License::AES::AES()
 	{
 		aes = new WinAES();
-		deflate = gcnew Deflate();
 		aes->GenerateDefaults();
 	}
 
 	License::AES::~AES()
 	{
-		delete deflate;
 		this->!AES();
 	}
 
@@ -24,21 +22,19 @@ namespace Utility
 	
 	String^ License::AES::Encrypt(cli::array<Byte>^ b)
 	{
-		cli::array<Byte>^ buffer = deflate->Compress(b);
-
 		cli::array<Byte>^ ct;
 		UInt32 cs = 0;
 
-		if(MaxCipherTextSize(buffer->Length, cs))
+		if(MaxCipherTextSize(b->Length, cs))
 		{
 			ct = gcnew cli::array<Byte>(cs);
 		}
 
-		pin_ptr<unsigned char> pn = &buffer[0];
+		pin_ptr<unsigned char> pn = &b[0];
 		pin_ptr<unsigned char> cn = &ct[0];
 
 		String^ retResult = nullptr;
-		if(aes->Encrypt(pn, buffer->Length,cn,cs))
+		if(aes->Encrypt(pn, b->Length,cn,cs))
 		{
 			retResult = Convert::ToBase64String(ct);
 		}
@@ -58,22 +54,12 @@ namespace Utility
 			rt = gcnew cli::array<Byte>(rs);
 		}
 
-		if((buffer != nullptr && rt != nullptr) && (buffer->Length > 0 && rt->Length > 0))
-		{
-			pin_ptr<unsigned char> cn = &buffer[0];
-			pin_ptr<unsigned char> pn = &rt[0];
+		pin_ptr<unsigned char> cn = &buffer[0];
+		pin_ptr<unsigned char> pn = &rt[0];
 
-			if(aes->Decrypt(cn,buffer->Length,pn,rs))
-			{
-#if (_MSC_VER <= 1800) //this causes an error in VS2013 so its unecessary in greater versions
-				Array::Resize(rt,rt->Length - rt[rt->Length-1]);
-#endif
-				buffer = deflate->Decompress(rt);
-			}
-			else
-			{
-				buffer = nullptr;
-			}
+		if(((buffer != nullptr && rt != nullptr) && (buffer->Length > 0 && rt->Length > 0)) && aes->Decrypt(cn,buffer->Length,pn,rs))
+		{
+			buffer = rt;
 		}
 		else
 		{
