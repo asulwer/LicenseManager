@@ -82,7 +82,7 @@ WinAES::~WinAES()
     }
 }
 
-bool WinAES::GenerateRandom( unsigned char* buffer, int size )
+bool WinAES::GenerateRandom(unsigned char* buffer, int size)
 {
     if(buffer == NULL)
         throw WinAESException("GenerateRandom: buffer empty");
@@ -103,7 +103,7 @@ bool WinAES::GenerateRandom( unsigned char* buffer, int size )
     return !!CryptGenRandom(m_hProvider, size, buffer);
 }
 
-bool WinAES::AcquireContext( const wchar_t* lpszContainer )
+bool WinAES::AcquireContext(const wchar_t* lpszContainer)
 {
     // We need to record the index of the provider which we were able to 
     // acquire in case the use wants to delete the imported key. The
@@ -233,7 +233,7 @@ bool WinAES::SetKeyWithIv(const unsigned char* key, int ksize, const unsigned ch
 }
 
 // Sets the Key. The key must be of size KEYSIZE_128, KEYSIZE_192 or KEYSIZE_256.
-bool WinAES::SetKey( const unsigned char* key, int ksize )
+bool WinAES::SetKey(const unsigned char* key, int ksize)
 {
 #ifdef _DEBUG
     if(IsBadReadPtr(key, ksize) == TRUE)

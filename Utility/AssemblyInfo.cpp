@@ -14,9 +14,9 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyTitleAttribute("Utility")];
 [assembly:AssemblyDescriptionAttribute("")];
 [assembly:AssemblyConfigurationAttribute("")];
-[assembly:AssemblyCompanyAttribute("QT9 Software")];
+[assembly:AssemblyCompanyAttribute("Aaron Sulwer")];
 [assembly:AssemblyProductAttribute("Utility")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c) QT9 Software 2014")];
+[assembly:AssemblyCopyrightAttribute("Copyright (c) Aaron Sulwer 2014")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 
@@ -31,6 +31,6 @@ using namespace System::Security::Permissions;
 // You can specify all the value or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly:AssemblyVersionAttribute("1.0.0.0")];
-[assembly:ComVisible(false)];
+[assembly:AssemblyVersionAttribute("1.0.*")];
+[assembly:ComVisible(true)];
 [assembly:CLSCompliantAttribute(true)];
