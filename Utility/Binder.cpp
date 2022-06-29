@@ -1,12 +1,11 @@
 #include "stdafx.h"
-#include "WinAES.h"
-#include "Utility.h"
+#include "Binder.h"
 
 namespace Utility
 {
 	using namespace System::Reflection; //Assembly
 
-	Type^ License::Binder::BindToType(String^ assemblyName, String^ typeName)
+	Type^ Binder::BindToType(String^ assemblyName, String^ typeName)
 	{
 		Type^ tyType = nullptr;
 				

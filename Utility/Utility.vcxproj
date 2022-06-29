@@ -116,6 +116,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -148,10 +149,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="AES.h" />
+    <ClInclude Include="Binder.h" />
+    <ClInclude Include="Data.h" />
+    <ClInclude Include="Deflate.h" />
     <ClInclude Include="RSG.h" />
     <ClInclude Include="Stdafx.h" />
-    <ClInclude Include="Utility.h" />
+    <ClInclude Include="License.h" />
     <ClInclude Include="WinAES.h" />
   </ItemGroup>
   <ItemGroup>

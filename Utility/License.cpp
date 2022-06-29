@@ -1,6 +1,5 @@
 #include "stdafx.h"
-#include "WinAES.h"
-#include "Utility.h"
+#include "License.h"
 
 namespace Utility
 {
@@ -9,8 +8,8 @@ namespace Utility
 		this->Customer = String::Empty;
 		this->Product = String::Empty;
 		this->Version = String::Empty;
-		//this->D = gcnew array<IData^>(0);
-		this->Dict = gcnew Dictionary<String^,String^>();
+		this->D = gcnew array<IData^>(0);		
+		
 		this->aes = gcnew AES();
 		this->deflate = gcnew Deflate();
 	}
@@ -20,8 +19,8 @@ namespace Utility
 	}
 	License::!License()
 	{
-		delete aes;
-		delete deflate;
+		//delete aes; //not necessary to delete as this is a managed resource
+		//delete deflate;
 	}
 
 	License::License(SerializationInfo^ info, StreamingContext ctxt)
@@ -30,8 +29,7 @@ namespace Utility
 		this->Customer = dynamic_cast<String^>(info->GetValue("Customer", String::typeid));
 		this->Product = dynamic_cast<String^>(info->GetValue("Product", String::typeid));
 		this->Version = dynamic_cast<String^>(info->GetValue("Version", String::typeid));
-		//this->D = dynamic_cast<array<IData^>^>(info->GetValue("D",array<IData^>::typeid));
-		this->Dict = dynamic_cast<Dictionary<String^,String^>^>(info->GetValue("Dict",Dictionary<String^,String^>::typeid));
+		this->D = dynamic_cast<array<IData^>^>(info->GetValue("D",array<IData^>::typeid));
 	}	
 	void License::GetObjectData(SerializationInfo^ info, StreamingContext ctxt)
 	{
@@ -39,8 +37,7 @@ namespace Utility
 		info->AddValue("Customer", this->Customer);
 		info->AddValue("Product", this->Product);
 		info->AddValue("Version", this->Version);
-		//info->AddValue("D", this->D);
-		info->AddValue("Dict", this->Dict);
+		info->AddValue("D", this->D);
 	}
 
 	String^ License::Save()
@@ -99,7 +96,6 @@ namespace Utility
 		this->Customer = temp->Customer;
 		this->Product = temp->Product;
 		this->Version = temp->Version;
-		//this->D = temp->D;
-		this->Dict = temp->Dict;
+		this->D = temp->D;
 	}
 }

@@ -11,19 +11,28 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utility.h">
+    <ClInclude Include="License.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WinAES.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RSG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Deflate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AES.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Binder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

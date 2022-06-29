@@ -1,12 +1,9 @@
 #include "stdafx.h"
-#include "WinAES.h"
-#include "Utility.h"
+#include "Deflate.h"
 
 namespace Utility
 {
-	using namespace System::IO::Compression; //Deflate
-
-	cli::array<Byte>^ License::Deflate::Compress(cli::array<Byte>^ b)
+	cli::array<Byte>^ Deflate::Compress(cli::array<Byte>^ b)
 	{
 		cli::array<Byte>^ buffer;
 
@@ -33,7 +30,7 @@ namespace Utility
 		return buffer;
 	}
 		
-	cli::array<Byte>^ License::Deflate::Decompress(cli::array<Byte>^ b)
+	cli::array<Byte>^ Deflate::Decompress(cli::array<Byte>^ b)
 	{
 		cli::array<Byte>^ buffer;
 

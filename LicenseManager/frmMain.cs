@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 using System.Data; //DataTable
 using System.Reflection; //Assembly
 using System.IO; //Directory
-using System.Collections.Generic; //Dictionary
 using Utility; //ILicense & IData
 
 namespace LicenseScheme
@@ -47,26 +45,17 @@ namespace LicenseScheme
                 ld.Version = tbVersion.Text;
                 
                 DataTable dt = (DataTable)dgvOptions.DataSource;
-                //ld.D = new IData[dt.Rows.Count];
-                ld.Dict = new Dictionary<string, string>();
+                ld.D = new IData[dt.Rows.Count];
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    //Type dataType = da.GetType("Utility.Data"); //get Data type from loaded assembly
-                    //IData data = (IData)Activator.CreateInstance(dataType); //instantiate interface
+                    Type dataType = da.GetType("Utility.Data"); //get Data type from loaded assembly
+                    IData data = (IData)Activator.CreateInstance(dataType); //instantiate interface
 
-                    //data.Key = dt.Rows[i]["Key"].ToString();
-                    //data.Value = dt.Rows[i]["Value"].ToString();
+                    data.Key = dt.Rows[i]["Key"].ToString();
+                    data.Value = dt.Rows[i]["Value"].ToString();
 
-                    //ld.D[i] = data;
-                    try
-                    {
-                        ld.Dict.Add(dt.Rows[i]["Key"].ToString(), dt.Rows[i]["Value"].ToString());
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Key Column MUST be unique", "Error", MessageBoxButtons.OK);
-                    }                    
+                    ld.D[i] = data;
                 }
 
                 tbLicense.Text = ld.Save();
@@ -98,13 +87,8 @@ namespace LicenseScheme
                 dt.Columns.Add("Key");
                 dt.Columns.Add("Value");
 
-                //foreach (IData l in ld.D)
-                //    dt.Rows.Add(l.Key, l.Value);
-
-                foreach (KeyValuePair<String,String> item in ld.Dict)
-                {
-                    dt.Rows.Add(item.Key, item.Value);
-                }
+                foreach (IData l in ld.D)
+                    dt.Rows.Add(l.Key, l.Value);
 
                 dgvOptions.DataSource = dt;
             }

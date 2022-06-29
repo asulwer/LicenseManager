@@ -1,26 +1,25 @@
 #include "stdafx.h"
-#include "WinAES.h"
-#include "Utility.h"
+#include "AES.h"
 
 namespace Utility
 {
-	License::AES::AES()
-	{
+	AES::AES()
+	{		
 		aes = new WinAES();
 		aes->GenerateDefaults();
 	}
 
-	License::AES::~AES()
+	AES::~AES()
 	{
 		this->!AES();
 	}
 
-	License::AES::!AES()
+	AES::!AES()
 	{
 		delete aes;
 	}
 	
-	String^ License::AES::Encrypt(cli::array<Byte>^ b)
+	String^ AES::Encrypt(cli::array<Byte>^ b)
 	{
 		cli::array<Byte>^ ct;
 		UInt32 cs = 0;
@@ -42,7 +41,7 @@ namespace Utility
 		return retResult;
 	}
 
-	cli::array<Byte>^ License::AES::Decrypt(String^ orig)
+	cli::array<Byte>^ AES::Decrypt(String^ orig)
 	{
 		cli::array<Byte>^ buffer = Convert::FromBase64String(orig);
 		
@@ -69,24 +68,24 @@ namespace Utility
 		return buffer;
 	}
 
-	bool License::AES::GenerateRandom(cli::array<Byte> ^buffer, int size)
+	bool AES::GenerateRandom(cli::array<Byte> ^buffer, int size)
 	{
 		pin_ptr<unsigned char> buf = &buffer[0];
 
 		return aes->GenerateRandom(buf,size);
 	}
 	
-	bool License::AES::GenerateDefaults()
+	bool AES::GenerateDefaults()
 	{
 		return aes->GenerateDefaults();
 	}
 	
-	bool License::AES::SetKeyWithIv(cli::array<Byte> ^key, int ksize, cli::array<Byte> ^iv)
+	bool AES::SetKeyWithIv(cli::array<Byte> ^key, int ksize, cli::array<Byte> ^iv)
 	{
 		return SetKeyWithIv(key,ksize,iv,(int)Parameters::BLOCKSIZE);
 	}
 
-	bool License::AES::SetKeyWithIv(cli::array<Byte> ^key, int ksize, cli::array<Byte> ^iv, int vsize)
+	bool AES::SetKeyWithIv(cli::array<Byte> ^key, int ksize, cli::array<Byte> ^iv, int vsize)
 	{
 		pin_ptr<unsigned char> Key = &key[0];
 		pin_ptr<unsigned char> IV = &iv[0];
@@ -94,7 +93,7 @@ namespace Utility
 		return aes->SetKeyWithIv(Key,ksize,IV,vsize);
 	}
 	
-	bool License::AES::MaxCipherTextSize(UInt32 psize, UInt32% csize)
+	bool AES::MaxCipherTextSize(UInt32 psize, UInt32% csize)
 	{
 		UInt32 cs = 0;
 		bool result = aes->MaxCipherTextSize(psize, cs);
@@ -102,7 +101,7 @@ namespace Utility
 		return result;
 	}
 
-	bool License::AES::MaxPlainTextSize(UInt32 csize, UInt32% psize)
+	bool AES::MaxPlainTextSize(UInt32 csize, UInt32% psize)
 	{
 		UInt32 ps = 0;
 		bool result = aes->MaxPlainTextSize(csize, ps);

@@ -1,10 +1,9 @@
 #include "stdafx.h"
-#include "WinAES.h"
-#include "Utility.h"
+#include "Data.h"
 
 namespace Utility
 {
-	/*Data::Data()
+	Data::Data()
 	{
 		Key = nullptr;
 		Value = nullptr;
@@ -14,5 +13,5 @@ namespace Utility
 	{
 		Key = k;
 		Value = v;
-	}*/
+	}
 }

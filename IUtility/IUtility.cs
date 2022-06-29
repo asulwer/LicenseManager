@@ -1,52 +1,48 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics.Contracts;
 
 namespace Utility
 {
-    //[Serializable]
-    //[ContractClass(typeof(DataContract))]
-    //public abstract class IData
-    //{
-    //    protected IData()
-    //    {
-    //        Key = "";
-    //        Value = "";
-    //    }
-    //    public abstract String Key { get; set; }
-    //    public abstract String Value { get; set; }
-    //}
+    [Serializable]
+    [ContractClass(typeof(DataContract))]
+    public abstract class IData
+    {
+        protected IData()
+        {
+            Key = "";
+            Value = "";
+        }
+        public abstract String Key { get; set; }
+        public abstract String Value { get; set; }
+    }
 
-    //[ContractClassFor(typeof(IData))]
-    //abstract class DataContract : IData
-    //{
-    //    protected DataContract()
-    //    {
-    //        Key = "";
-    //        Value = "";
-    //    }
-    //    public override String Key
-    //    {
-    //        get
-    //        {
-    //            Contract.Requires(Key != null);
-    //            Contract.Ensures(Contract.Result<String>() != null);
-    //            return default(string);
-    //        }
-    //    }
-    //    public override String Value
-    //    {
-    //        get
-    //        {
-    //            Contract.Requires(Value != null);
-    //            Contract.Ensures(Contract.Result<String>() != null);
-    //            return default(string);
-    //        }
-    //    }
-    //}
+    [ContractClassFor(typeof(IData))]
+    abstract class DataContract : IData
+    {
+        protected DataContract()
+        {
+            Key = "";
+            Value = "";
+        }
+        public override String Key
+        {
+            get
+            {
+                Contract.Requires(Key != null);
+                Contract.Ensures(Contract.Result<String>() != null);
+                return default(string);
+            }
+        }
+        public override String Value
+        {
+            get
+            {
+                Contract.Requires(Value != null);
+                Contract.Ensures(Contract.Result<String>() != null);
+                return default(string);
+            }
+        }
+    }
 
     [Serializable]
     [ContractClass(typeof(LicenseContract))]
@@ -57,8 +53,7 @@ namespace Utility
             Customer = string.Empty;
             Product = string.Empty;
             Version = string.Empty;
-            //D = new IData[0];
-            Dict = new Dictionary<string, string>();
+            D = new IData[0];
         }
         public abstract void Open(String lic);
         public abstract String Save();
@@ -66,8 +61,7 @@ namespace Utility
         public abstract String Customer { get; set; }
         public abstract String Product { get; set; }
         public abstract String Version { get; set; }
-        //public abstract IData[] D { get; set; }
-        public abstract Dictionary<String, String> Dict { get; set; }
+        public abstract IData[] D { get; set; }
     }
 
     [ContractClassFor(typeof(ILicense))]
@@ -78,8 +72,7 @@ namespace Utility
             Customer = string.Empty;
             Product = string.Empty;
             Version = string.Empty;
-            //D = new IData[0];
-            Dict = new Dictionary<string, string>();
+            D = new IData[0];
         }
         public override void Open(String lic)
         {
@@ -119,22 +112,13 @@ namespace Utility
                 return default(string);
             }
         }
-        //public override IData[] D
-        //{
-        //    get
-        //    {
-        //        Contract.Requires(D != null);
-        //        Contract.Requires(D.Length >= 0);
-        //        return default(IData[]);
-        //    }
-        //}
-        public override Dictionary<string, string> Dict
+        public override IData[] D
         {
             get
             {
-                Contract.Requires(Dict != null);
-                Contract.Requires(Dict.Count >= 0);
-                return default(Dictionary<String, String>);
+                Contract.Requires(D != null);
+                Contract.Requires(D.Length >= 0);
+                return default(IData[]);
             }
         }
     }

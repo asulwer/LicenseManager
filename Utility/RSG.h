@@ -5,17 +5,15 @@
 #include <algorithm>
 #include <string>
 
-using namespace std;
-
 class RandomStringGenerator
 {
 public:
 	RandomStringGenerator();
 	~RandomStringGenerator() {};
 
-	string Generate(string pattern);
-	string Generate(int min, int max);
-	string Generate(int fixed);	
+	std::string Generate(std::string pattern);
+	std::string Generate(int min, int max);
+	std::string Generate(int fixed);
 	
 	int MaxUpper;
 	int MaxLower;
@@ -23,19 +21,19 @@ public:
     int MaxSpecial;
 	
 private:
-	string GenerateString(int length);
-	string PatternDrivenAlgo(string Pattern);
-	string SimpleGenerateAlgo(int length);
-	string GenerateAlgoWithLimits(int length);
-	void AddExistingString(string s);
-	string GetRandomCharFromArray(vector<string> arr, vector<string> items);
-	bool find(string val, string list);
+	std::string GenerateString(int length);
+	std::string PatternDrivenAlgo(std::string Pattern);
+	std::string SimpleGenerateAlgo(int length);
+	std::string GenerateAlgoWithLimits(int length);
+	void AddExistingString(std::string s);
+	std::string GetRandomCharFromArray(std::vector<std::string> arr, std::vector<std::string> items);
+	bool find(std::string val, std::string list);
 	
-	string m_pattern;
-	vector<string> m_upper;
-	vector<string> m_lower;
-	vector<string> m_numeric;
-	vector<string> m_special;
-	vector<string> m_general;
-	vector<string> ExistingStrings;
+	std::string m_pattern;
+	std::vector<std::string> m_upper;
+	std::vector<std::string> m_lower;
+	std::vector<std::string> m_numeric;
+	std::vector<std::string> m_special;
+	std::vector<std::string> m_general;
+	std::vector<std::string> ExistingStrings;
 };

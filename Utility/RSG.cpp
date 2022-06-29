@@ -12,19 +12,19 @@ RandomStringGenerator::RandomStringGenerator()
 
 	m_pattern = "";
 
-	string upper[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+	std::string upper[] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
 	m_upper.assign(upper, end(upper));
 	
-	string lower[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
-	vector<string> vlower;
+	std::string lower[] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+	std::vector<std::string> vlower;
 	m_lower.assign(lower, end(lower));
 	
-	string numeric[] = {"0","1","2","3","4","5","6","7","8","9"};
-	vector<string> vnumeric;
+	std::string numeric[] = {"0","1","2","3","4","5","6","7","8","9"};
+	std::vector<std::string> vnumeric;
 	m_numeric.assign(numeric, end(numeric));
 	
-	string special[] = {",",".",";",":","?","!","/","@","#","$","%","^","&","(",")","=","+","*","-","_","{","}","[","]","<",">","|","~"};
-	vector<string> vspecial;
+	std::string special[] = {",",".",";",":","?","!","/","@","#","$","%","^","&","(",")","=","+","*","-","_","{","}","[","]","<",">","|","~"};
+	std::vector<std::string> vspecial;
 	m_special.assign(special,end(special));
     
 	m_general.insert(m_general.end(),m_upper.begin(), m_upper.end());
@@ -33,16 +33,16 @@ RandomStringGenerator::RandomStringGenerator()
 	m_general.insert(m_general.end(),m_special.begin(), m_special.end());
 }
 
-string RandomStringGenerator::Generate(string pattern)
+std::string RandomStringGenerator::Generate(std::string pattern)
 {
 	m_pattern = pattern;
-	string res = GenerateString((int)m_pattern.size());
+	std::string res = GenerateString((int)m_pattern.size());
 	m_pattern = "";
 	
 	return res;
 }
 
-string RandomStringGenerator::Generate(int min, int max)
+std::string RandomStringGenerator::Generate(int min, int max)
 {
 	if(max<min)
 		return "";
@@ -50,14 +50,14 @@ string RandomStringGenerator::Generate(int min, int max)
 		return GenerateString(min + (rand() % (max - min)));
 }
 
-string RandomStringGenerator::Generate(int fixed)
+std::string RandomStringGenerator::Generate(int fixed)
 {
 	return GenerateString(fixed);
 }
 
-string RandomStringGenerator::GenerateString(int length)
+std::string RandomStringGenerator::GenerateString(int length)
 {
-	string result = "";
+	std::string result = "";
 
     if (m_pattern.size() > 0)
         result = PatternDrivenAlgo(m_pattern);
@@ -68,7 +68,7 @@ string RandomStringGenerator::GenerateString(int length)
     
 	for(unsigned int i=0; i<ExistingStrings.size(); i++)
 	{
-		if(ExistingStrings.at(i).find(result) != string::npos)
+		if(ExistingStrings.at(i).find(result) != std::string::npos)
 			return GenerateString(length);
 	}
 		
@@ -76,14 +76,14 @@ string RandomStringGenerator::GenerateString(int length)
     return result;
 }
 
-string RandomStringGenerator::PatternDrivenAlgo(string Pattern)
+std::string RandomStringGenerator::PatternDrivenAlgo(std::string Pattern)
 {
-	string result = "";
+	std::string result = "";
 
-	vector<string> Characters;
+	std::vector<std::string> Characters;
 	for(unsigned int i=0; i<Pattern.size(); i++)
 	{
-		string newChar = " ";
+		std::string newChar = " ";
 		switch(Pattern[i])
 		{
 		case 'L':
@@ -113,13 +113,13 @@ string RandomStringGenerator::PatternDrivenAlgo(string Pattern)
 	return result;
 }
 
-string RandomStringGenerator::SimpleGenerateAlgo(int length)
+std::string RandomStringGenerator::SimpleGenerateAlgo(int length)
 {
-	string result = "";
+	std::string result = "";
 
 	for (int i = 0; i < length; i++)
     {
-        string newChar = m_general[rand() % m_general.size()];
+		std::string newChar = m_general[rand() % m_general.size()];
         
 		if (find(newChar, result))
         {
@@ -134,10 +134,10 @@ string RandomStringGenerator::SimpleGenerateAlgo(int length)
 	return result;
 }
 
-string RandomStringGenerator::GenerateAlgoWithLimits(int length)
+std::string RandomStringGenerator::GenerateAlgoWithLimits(int length)
 {
-	string result = "";
-	vector<string> c;
+	std::string result = "";
+	std::vector<std::string> c;
 
 	c.resize(MaxUpper);
 	int iCount = (int)c.size()-1;
@@ -162,23 +162,23 @@ string RandomStringGenerator::GenerateAlgoWithLimits(int length)
 	for (int i = 0; i < length; i++)
     {
         int position = rand() % c.size();
-        string CurrentChar = c[position];
+		std::string CurrentChar = c[position];
         result += CurrentChar;
 	}
 
 	return result;
 }
 
-void RandomStringGenerator::AddExistingString(string s)
+void RandomStringGenerator::AddExistingString(std::string s)
 {
 	//resize array and add append to end
 	ExistingStrings.resize(ExistingStrings.size()+1);
 	ExistingStrings[ExistingStrings.size()-1] = s;
 }
 
-std::string RandomStringGenerator::GetRandomCharFromArray(vector<string> arr, vector<string> items)
+std::string RandomStringGenerator::GetRandomCharFromArray(std::vector<std::string> arr, std::vector<std::string> items)
 {
-	string val;
+	std::string val;
 	bool bFlag = false;
 	do
 	{
@@ -186,7 +186,7 @@ std::string RandomStringGenerator::GetRandomCharFromArray(vector<string> arr, ve
 		
 		for(unsigned int i=0; i<items.size(); i++)
 		{
-			if(items.at(i).find(val) != string::npos)
+			if(items.at(i).find(val) != std::string::npos)
 				bFlag = true;
 			else
 				bFlag = false;
@@ -197,13 +197,13 @@ std::string RandomStringGenerator::GetRandomCharFromArray(vector<string> arr, ve
 	return val;
 }
 
-bool RandomStringGenerator::find(string val, string list)
+bool RandomStringGenerator::find(std::string val, std::string list)
 {
 	bool bFlag = false;
 	
 	for(unsigned int i=0; i<list.size(); i++)
 	{
-		if(list.find(val) != string::npos)
+		if(list.find(val) != std::string::npos)
 			bFlag = true;
 	}
 
