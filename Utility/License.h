@@ -1,18 +1,18 @@
 #pragma once
 
+#include "Data.h"
 #include "Binder.h"
 #include "Deflate.h"
-#include "AES.h"
+#include "Encryption.h"
 
 namespace Utility
 {
 	using namespace System;
 	using namespace System::Text;
 	using namespace System::Runtime::Serialization::Formatters::Binary; //BinaryFormatter
-	using namespace System::Runtime::InteropServices; //Marshal
-
+	
 	[Serializable]
-	ref class License : ISerializable, ILicense
+	ref class License : ILicense
 	{
 	public:
 		License();
@@ -67,17 +67,15 @@ namespace Utility
 			}
 		}
 		
-	protected:
-		License(SerializationInfo^ info, StreamingContext ctxt);
-		virtual void GetObjectData(SerializationInfo^ info, StreamingContext ctxt) = ISerializable::GetObjectData;
-
 	private:
 		String^ m_Customer;
 		String^ m_Product;
 		String^ m_Version;
 		array<IData^>^ m_D;
-				
+		
+		[NonSerialized]
 		Deflate^ deflate;
-		AES^ aes;		
+		[NonSerialized]
+		Encryption^ encryption;		
 	};
 }

@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{78E8E6A3-E73C-4958-997A-64355C12D736}</ProjectGuid>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>Utility</RootNamespace>
     <SccProjectName>SAK</SccProjectName>
@@ -104,6 +104,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -117,6 +118,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -140,7 +142,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -149,22 +151,84 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AES.h" />
+    <ClInclude Include="Camellia.h" />
+    <ClInclude Include="Cast256.h" />
+    <ClInclude Include="Clefia.h" />
+    <ClInclude Include="Clefia_data.h" />
+    <ClInclude Include="CommonDef.h" />
+    <ClInclude Include="CSPRNG.h" />
+    <ClInclude Include="CSPRNG_data.h" />
+    <ClInclude Include="Encryption.h" />
+    <ClInclude Include="Anubis.h" />
+    <ClInclude Include="Anubis_data.h" />
     <ClInclude Include="Binder.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="Deflate.h" />
+    <ClInclude Include="Frog.h" />
+    <ClInclude Include="Frog_data.h" />
+    <ClInclude Include="Grostl512.h" />
+    <ClInclude Include="Grostl512_data.h" />
+    <ClInclude Include="Hierocrypt3.h" />
+    <ClInclude Include="Hierocrypt3_data.h" />
+    <ClInclude Include="Idea_nxt128.h" />
+    <ClInclude Include="Idea_nxt128_data.h" />
+    <ClInclude Include="Idea_nxt_common.h" />
+    <ClInclude Include="Keccak512.h" />
+    <ClInclude Include="Keccak512_data.h" />
+    <ClInclude Include="Mars.h" />
+    <ClInclude Include="Multi.h" />
+    <ClInclude Include="MultiBase.h" />
+    <ClInclude Include="MultiBase_data.h" />
+    <ClInclude Include="Multi_data.h" />
+    <ClInclude Include="Rc6.h" />
+    <ClInclude Include="Rijndael.h" />
+    <ClInclude Include="Rijndael_data.h" />
     <ClInclude Include="RSG.h" />
+    <ClInclude Include="Saferp.h" />
+    <ClInclude Include="Saferp_data.h" />
+    <ClInclude Include="Sc2000.h" />
+    <ClInclude Include="Serpent.h" />
+    <ClInclude Include="Sha512.h" />
+    <ClInclude Include="Sha512_data.h" />
+    <ClInclude Include="Skein512.h" />
+    <ClInclude Include="Skein512_data.h" />
+    <ClInclude Include="Speed.h" />
+    <ClInclude Include="Speed_data.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="License.h" />
-    <ClInclude Include="WinAES.h" />
+    <ClInclude Include="Twofish.h" />
+    <ClInclude Include="Twofish_data.h" />
+    <ClInclude Include="Unicorn-A.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AES.cpp" />
+    <ClCompile Include="Camellia.cpp" />
+    <ClCompile Include="Cast256.cpp" />
+    <ClCompile Include="Clefia.cpp" />
+    <ClCompile Include="CSPRNG.cpp" />
+    <ClCompile Include="Encryption.cpp" />
+    <ClCompile Include="Anubis.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Binder.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Deflate.cpp" />
+    <ClCompile Include="Frog.cpp" />
+    <ClCompile Include="Grostl512.cpp" />
+    <ClCompile Include="Hierocrypt3.cpp" />
+    <ClCompile Include="Idea_nxt128.cpp" />
+    <ClCompile Include="Idea_nxt_common.cpp" />
+    <ClCompile Include="Keccak512.cpp" />
+    <ClCompile Include="Mars.cpp" />
+    <ClCompile Include="Multi.cpp" />
+    <ClCompile Include="MultiBase.cpp" />
+    <ClCompile Include="Rc6.cpp" />
+    <ClCompile Include="Rijndael.cpp" />
     <ClCompile Include="RSG.cpp" />
+    <ClCompile Include="Saferp.cpp" />
+    <ClCompile Include="Sc2000.cpp" />
+    <ClCompile Include="Serpent.cpp" />
+    <ClCompile Include="Sha512.cpp" />
+    <ClCompile Include="Skein512.cpp" />
+    <ClCompile Include="Speed.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -172,7 +236,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="License.cpp" />
-    <ClCompile Include="WinAES.cpp" />
+    <ClCompile Include="Twofish.cpp" />
+    <ClCompile Include="Unicorn-A.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IUtility\IUtility.csproj">

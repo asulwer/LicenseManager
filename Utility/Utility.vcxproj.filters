@@ -17,9 +17,6 @@
     <ClInclude Include="Stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WinAES.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RSG.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -29,10 +26,133 @@
     <ClInclude Include="Deflate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AES.h">
+    <ClInclude Include="Encryption.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Binder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Anubis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Anubis_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camellia.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cast256.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Clefia.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Clefia_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Frog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Frog_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hierocrypt3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hierocrypt3_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Idea_nxt_common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Idea_nxt128.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Idea_nxt128_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mars.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rc6.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rijndael.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rijndael_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sc2000.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Serpent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Speed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Speed_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Twofish.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Twofish_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Unicorn-A.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiBase_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sha512.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sha512_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSPRNG.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSPRNG_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Multi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Multi_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grostl512.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grostl512_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Keccak512.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Keccak512_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skein512.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skein512_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Saferp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Saferp_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -49,7 +169,7 @@
     <ClCompile Include="Deflate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AES.cpp">
+    <ClCompile Include="Encryption.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data.cpp">
@@ -58,10 +178,79 @@
     <ClCompile Include="Binder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WinAES.cpp">
+    <ClCompile Include="RSG.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RSG.cpp">
+    <ClCompile Include="Anubis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camellia.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cast256.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Clefia.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Frog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hierocrypt3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Idea_nxt_common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Idea_nxt128.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mars.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rc6.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rijndael.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sc2000.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Serpent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Speed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Twofish.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Unicorn-A.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sha512.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSPRNG.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Multi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grostl512.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Keccak512.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skein512.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Saferp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

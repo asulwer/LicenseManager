@@ -8,9 +8,9 @@ namespace Utility
 		this->Customer = String::Empty;
 		this->Product = String::Empty;
 		this->Version = String::Empty;
-		this->D = gcnew array<IData^>(0);		
+		this->D = gcnew array<Data^>(0);		
 		
-		this->aes = gcnew AES();
+		this->encryption = gcnew Encryption();
 		this->deflate = gcnew Deflate();
 	}
 	License::~License()
@@ -21,23 +21,6 @@ namespace Utility
 	{
 		//delete aes; //not necessary to delete as this is a managed resource
 		//delete deflate;
-	}
-
-	License::License(SerializationInfo^ info, StreamingContext ctxt)
-	{
-		//called when we Deserialize the data in Open
-		this->Customer = dynamic_cast<String^>(info->GetValue("Customer", String::typeid));
-		this->Product = dynamic_cast<String^>(info->GetValue("Product", String::typeid));
-		this->Version = dynamic_cast<String^>(info->GetValue("Version", String::typeid));
-		this->D = dynamic_cast<array<IData^>^>(info->GetValue("D",array<IData^>::typeid));
-	}	
-	void License::GetObjectData(SerializationInfo^ info, StreamingContext ctxt)
-	{
-		//called when we Serialize the data in Save
-		info->AddValue("Customer", this->Customer);
-		info->AddValue("Product", this->Product);
-		info->AddValue("Version", this->Version);
-		info->AddValue("D", this->D);
 	}
 
 	String^ License::Save()
@@ -57,8 +40,10 @@ namespace Utility
 			ms->Close();
 		}
 		
-		buffer = deflate->Compress(ms->ToArray());
-		return aes->Encrypt(buffer);
+		buffer = ms->ToArray(); //redundant
+		buffer = encryption->Encrypt(buffer); //encrypt
+		buffer = deflate->Compress(buffer); //compress
+		return Convert::ToBase64String(buffer); //convert to base64
 	}
 	void License::Open(String^ lic)
 	{
@@ -67,8 +52,9 @@ namespace Utility
 
 		try
 		{
-			buffer = aes->Decrypt(lic);
-			buffer = deflate->Decompress(buffer);
+			buffer = Convert::FromBase64String(lic); //convert from base64
+			buffer = deflate->Decompress(buffer); //decompress
+			buffer = encryption->Decrypt(buffer); //decrypt
 		}
 		catch(...)
 		{
@@ -76,7 +62,7 @@ namespace Utility
 		}
 		
 		//deserialize the decrypted/decompressed object
-		if(buffer != nullptr)
+		if(buffer != nullptr && buffer->Length > 0)
 		{
 			MemoryStream^ ms = gcnew MemoryStream(buffer);
 			try
@@ -85,6 +71,10 @@ namespace Utility
 				bf->Binder = gcnew Binder;
 
 				temp = (License^)bf->Deserialize(ms);
+			}
+			catch (...)
+			{
+				throw;
 			}
 			finally
 			{
