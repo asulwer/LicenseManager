@@ -50,7 +50,7 @@ OBFUNC_RETV Scramble_seed(SCRAMBLE_DATA *pSd,const DWORD len,const BYTE *passw,D
 	// CSPRNG <- Skein512(passw + nonce)
 	CSPRNG_set_seed(&pSd->cd,SKEIN512_HASH,passw,nonce);
 
-	//pSd->len = len;
+	//pSd->len = len; //put back in IF we are doing a divisable block of 16 bytes at a time (ex, 16, 32, 48, etc)
 	pSd->len = len - (len % 16); //remove the ending partial block IF it exists
 	
 	// 50% scramble : (len/2)*2*sizeof(DWORD)
