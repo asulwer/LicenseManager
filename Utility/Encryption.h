@@ -2,6 +2,7 @@
 
 #include "MultiBase.h"
 #include "Multi.h"
+#include "Scramble.h"
 
 namespace Utility
 {
@@ -18,5 +19,6 @@ namespace Utility
 		cli::array<Byte>^ Decrypt(cli::array<Byte>^ orig);
 	private:
 		MULTI_DATA* md = nullptr;
+		SCRAMBLE_DATA* sd = nullptr;
 	};
 }

@@ -187,6 +187,8 @@
     <ClInclude Include="Saferp.h" />
     <ClInclude Include="Saferp_data.h" />
     <ClInclude Include="Sc2000.h" />
+    <ClInclude Include="Scramble.h" />
+    <ClInclude Include="Scramble_data.h" />
     <ClInclude Include="Serpent.h" />
     <ClInclude Include="Sha512.h" />
     <ClInclude Include="Sha512_data.h" />
@@ -225,6 +227,7 @@
     <ClCompile Include="RSG.cpp" />
     <ClCompile Include="Saferp.cpp" />
     <ClCompile Include="Sc2000.cpp" />
+    <ClCompile Include="Scramble.cpp" />
     <ClCompile Include="Serpent.cpp" />
     <ClCompile Include="Sha512.cpp" />
     <ClCompile Include="Skein512.cpp" />
