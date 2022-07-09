@@ -31,14 +31,14 @@
 // ** 256bit key
 
 typedef struct  
-{   BYTE  k_xbu[16];
-    BYTE  k_spu[256];
-    BYTE  k_bpu[16];
+{   unsigned char  k_xbu[16];
+    unsigned char  k_spu[256];
+    unsigned char  k_bpu[16];
 } k_str;
 
 typedef struct
 {   k_str   f_key[8];
-    BYTE  i_key[8][256];
+    unsigned char  i_key[8][256];
 } key_str;
 
 typedef struct {

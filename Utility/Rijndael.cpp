@@ -30,7 +30,7 @@
 #define KEYLENGTH(keybits) ((keybits)/8)
 #define NROUNDS(keybits)   ((keybits)/32+6)
 
-const DWORD Te0[256] =
+const unsigned long Te0[256] =
 {
   0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
   0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
@@ -98,7 +98,7 @@ const DWORD Te0[256] =
   0x7bb0b0cbU, 0xa85454fcU, 0x6dbbbbd6U, 0x2c16163aU,
 };
 
-const DWORD Te1[256] =
+const unsigned long Te1[256] =
 {
   0xa5c66363U, 0x84f87c7cU, 0x99ee7777U, 0x8df67b7bU,
   0x0dfff2f2U, 0xbdd66b6bU, 0xb1de6f6fU, 0x5491c5c5U,
@@ -166,7 +166,7 @@ const DWORD Te1[256] =
   0xcb7bb0b0U, 0xfca85454U, 0xd66dbbbbU, 0x3a2c1616U,
 };
 
-const DWORD Te2[256] =
+const unsigned long Te2[256] =
 {
   0x63a5c663U, 0x7c84f87cU, 0x7799ee77U, 0x7b8df67bU,
   0xf20dfff2U, 0x6bbdd66bU, 0x6fb1de6fU, 0xc55491c5U,
@@ -234,7 +234,7 @@ const DWORD Te2[256] =
   0xb0cb7bb0U, 0x54fca854U, 0xbbd66dbbU, 0x163a2c16U,
 };
 
-const DWORD Te3[256] =
+const unsigned long Te3[256] =
 {
   0x6363a5c6U, 0x7c7c84f8U, 0x777799eeU, 0x7b7b8df6U,
   0xf2f20dffU, 0x6b6bbdd6U, 0x6f6fb1deU, 0xc5c55491U,
@@ -302,7 +302,7 @@ const DWORD Te3[256] =
   0xb0b0cb7bU, 0x5454fca8U, 0xbbbbd66dU, 0x16163a2cU,
 };
 
-const DWORD Te4[256] =
+const unsigned long Te4[256] =
 {
   0x63636363U, 0x7c7c7c7cU, 0x77777777U, 0x7b7b7b7bU,
   0xf2f2f2f2U, 0x6b6b6b6bU, 0x6f6f6f6fU, 0xc5c5c5c5U,
@@ -370,7 +370,7 @@ const DWORD Te4[256] =
   0xb0b0b0b0U, 0x54545454U, 0xbbbbbbbbU, 0x16161616U,
 };
 
-const DWORD Td0[256] =
+const unsigned long Td0[256] =
 {
   0x51f4a750U, 0x7e416553U, 0x1a17a4c3U, 0x3a275e96U,
   0x3bab6bcbU, 0x1f9d45f1U, 0xacfa58abU, 0x4be30393U,
@@ -438,7 +438,7 @@ const DWORD Td0[256] =
   0x7bcb8461U, 0xd532b670U, 0x486c5c74U, 0xd0b85742U,
 };
 
-const DWORD Td1[256] =
+const unsigned long Td1[256] =
 {
   0x5051f4a7U, 0x537e4165U, 0xc31a17a4U, 0x963a275eU,
   0xcb3bab6bU, 0xf11f9d45U, 0xabacfa58U, 0x934be303U,
@@ -506,7 +506,7 @@ const DWORD Td1[256] =
   0x617bcb84U, 0x70d532b6U, 0x74486c5cU, 0x42d0b857U,
 };
 
-const DWORD Td2[256] =
+const unsigned long Td2[256] =
 {
   0xa75051f4U, 0x65537e41U, 0xa4c31a17U, 0x5e963a27U,
   0x6bcb3babU, 0x45f11f9dU, 0x58abacfaU, 0x03934be3U,
@@ -574,7 +574,7 @@ const DWORD Td2[256] =
   0x84617bcbU, 0xb670d532U, 0x5c74486cU, 0x5742d0b8U,
 };
 
-const DWORD Td3[256] =
+const unsigned long Td3[256] =
 {
   0xf4a75051U, 0x4165537eU, 0x17a4c31aU, 0x275e963aU,
   0xab6bcb3bU, 0x9d45f11fU, 0xfa58abacU, 0xe303934bU,
@@ -642,7 +642,7 @@ const DWORD Td3[256] =
   0xcb84617bU, 0x32b670d5U, 0x6c5c7448U, 0xb85742d0U,
 };
 
-const DWORD Td4[256] =
+const unsigned long Td4[256] =
 {
   0x52525252U, 0x09090909U, 0x6a6a6a6aU, 0xd5d5d5d5U,
   0x30303030U, 0x36363636U, 0xa5a5a5a5U, 0x38383838U,
@@ -710,7 +710,7 @@ const DWORD Td4[256] =
   0x55555555U, 0x21212121U, 0x0c0c0c0cU, 0x7d7d7d7dU,
 };
 
-const DWORD rcon[] =
+const unsigned long rcon[] =
 {
   0x01000000, 0x02000000, 0x04000000, 0x08000000,
   0x10000000, 0x20000000, 0x40000000, 0x80000000,
@@ -718,25 +718,25 @@ const DWORD rcon[] =
   /* for 128-bit blocks, Rijndael never uses more than 10 rcon values */
 };
 
-#define GETDWORD(plaintext) (((DWORD)(plaintext)[0] << 24) ^ \
-                    ((DWORD)(plaintext)[1] << 16) ^ \
-                    ((DWORD)(plaintext)[2] <<  8) ^ \
-                    ((DWORD)(plaintext)[3]))
+#define GETDWORD(plaintext) (((unsigned long)(plaintext)[0] << 24) ^ \
+                    ((unsigned long)(plaintext)[1] << 16) ^ \
+                    ((unsigned long)(plaintext)[2] <<  8) ^ \
+                    ((unsigned long)(plaintext)[3]))
 
-#define PUTDWORD(ciphertext, st) { (ciphertext)[0] = (BYTE)((st) >> 24); \
-                         (ciphertext)[1] = (BYTE)((st) >> 16); \
-                         (ciphertext)[2] = (BYTE)((st) >>  8); \
-                         (ciphertext)[3] = (BYTE)(st); }
+#define PUTDWORD(ciphertext, st) { (ciphertext)[0] = (unsigned char)((st) >> 24); \
+                         (ciphertext)[1] = (unsigned char)((st) >> 16); \
+                         (ciphertext)[2] = (unsigned char)((st) >>  8); \
+                         (ciphertext)[3] = (unsigned char)(st); }
 
 /**
  * Expand the cipher key into the encryption key schedule.
  *
  * @return the number of rounds for the given cipher key size.
  */
-int Rijndael_set_key_encrypt(DWORD *rk,const BYTE *key,const int keybits)
+int Rijndael_set_key_encrypt(unsigned long *rk,const unsigned char *key,const int keybits)
 {
   int i = 0;
-  DWORD temp;
+  unsigned long temp;
 
   rk[0] = GETDWORD(key     );
   rk[1] = GETDWORD(key +  4);
@@ -822,10 +822,10 @@ int Rijndael_set_key_encrypt(DWORD *rk,const BYTE *key,const int keybits)
  *
  * @return the number of rounds for the given cipher key size.
  */
-int Rijndael_set_key_decrypt(DWORD *rk,const BYTE *key,const int keybits)
+int Rijndael_set_key_decrypt(unsigned long *rk,const unsigned char *key,const int keybits)
 {
   int nrounds, i, j;
-  DWORD temp;
+  unsigned long temp;
 
   /* expand the cipher key: */
   nrounds = Rijndael_set_key_encrypt(rk, key, keybits);
@@ -865,9 +865,9 @@ int Rijndael_set_key_decrypt(DWORD *rk,const BYTE *key,const int keybits)
   return nrounds;
 }
 
-void Rijndael_encrypt(const DWORD *rk,const int nrounds,const BYTE *plaintext,BYTE *ciphertext)
+void Rijndael_encrypt(const unsigned long *rk,const int nrounds,const unsigned char *plaintext,unsigned char *ciphertext)
 {
-  DWORD s0, s1, s2, s3, t0, t1, t2, t3;
+  unsigned long s0, s1, s2, s3, t0, t1, t2, t3;
   #ifndef FULL_UNROLL
     int r;
   #endif /* ?FULL_UNROLL */
@@ -1046,9 +1046,9 @@ void Rijndael_encrypt(const DWORD *rk,const int nrounds,const BYTE *plaintext,BY
   PUTDWORD(ciphertext + 12, s3);
 }
 
-void Rijndael_decrypt(const DWORD *rk,const int nrounds,const BYTE *ciphertext,BYTE *plaintext)
+void Rijndael_decrypt(const unsigned long *rk,const int nrounds,const unsigned char *ciphertext,unsigned char *plaintext)
 {
-  DWORD s0, s1, s2, s3, t0, t1, t2, t3;
+  unsigned long s0, s1, s2, s3, t0, t1, t2, t3;
   #ifndef FULL_UNROLL
     int r;
   #endif /* ?FULL_UNROLL */

@@ -26,7 +26,7 @@
 #include "Clefia_data.h"
 
 /* S0 (8-bit S-box based on four 4-bit S-boxes) */
-const BYTE clefia_s0[256] = {
+const unsigned char clefia_s0[256] = {
   0x57U, 0x49U, 0xd1U, 0xc6U, 0x2fU, 0x33U, 0x74U, 0xfbU,
   0x95U, 0x6dU, 0x82U, 0xeaU, 0x0eU, 0xb0U, 0xa8U, 0x1cU,
   0x28U, 0xd0U, 0x4bU, 0x92U, 0x5cU, 0xeeU, 0x85U, 0xb1U,
@@ -62,7 +62,7 @@ const BYTE clefia_s0[256] = {
 };
 
 /* S1 (8-bit S-box based on inverse function) */
-const BYTE clefia_s1[256] = {
+const unsigned char clefia_s1[256] = {
   0x6cU, 0xdaU, 0xc3U, 0xe9U, 0x4eU, 0x9dU, 0x0aU, 0x3dU,
   0xb8U, 0x36U, 0xb4U, 0x38U, 0x13U, 0x34U, 0x0cU, 0xd9U,
   0xbfU, 0x74U, 0x94U, 0x8fU, 0xb7U, 0x9cU, 0xe5U, 0xdcU,
@@ -97,21 +97,21 @@ const BYTE clefia_s1[256] = {
   0x6bU, 0x03U, 0xe1U, 0x2eU, 0x7dU, 0x14U, 0x95U, 0x1dU
 };
 
-void ByteCpy(BYTE *dst, const BYTE *src, int bytelen)
+void ByteCpy(unsigned char *dst, const unsigned char *src, int bytelen)
 {
   while(bytelen-- > 0){
     *dst++ = *src++;
   }
 }
 
-void ByteXor(BYTE *dst, const BYTE *a, const BYTE *b, int bytelen)
+void ByteXor(unsigned char *dst, const unsigned char *a, const unsigned char *b, int bytelen)
 {
   while(bytelen-- > 0){
     *dst++ = *a++ ^ *b++;
   }
 }
 
-BYTE ClefiaMul2(BYTE x)
+unsigned char ClefiaMul2(unsigned char x)
 {
   /* multiplication over GF(2^8) (p(x) = '11d') */
   if(x & 0x80U){
@@ -125,9 +125,9 @@ BYTE ClefiaMul2(BYTE x)
 #define ClefiaMul8(_x) (ClefiaMul2(ClefiaMul4((_x))))
 #define ClefiaMulA(_x) (ClefiaMul2((_x)) ^ ClefiaMul8((_x)))
 
-void ClefiaF0Xor(BYTE *dst, const BYTE *src, const BYTE *rk)
+void ClefiaF0Xor(unsigned char *dst, const unsigned char *src, const unsigned char *rk)
 {
-  BYTE x[4], y[4], z[4];
+  unsigned char x[4], y[4], z[4];
 
   /* F0 */
   /* Key addition */
@@ -148,9 +148,9 @@ void ClefiaF0Xor(BYTE *dst, const BYTE *src, const BYTE *rk)
   ByteXor(dst + 4, src + 4, y, 4);
 }
 
-void ClefiaF1Xor(BYTE *dst, const BYTE *src, const BYTE *rk)
+void ClefiaF1Xor(unsigned char *dst, const unsigned char *src, const unsigned char *rk)
 {
-  BYTE x[4], y[4], z[4];
+  unsigned char x[4], y[4], z[4];
 
   /* F1 */
   /* Key addition */
@@ -171,9 +171,9 @@ void ClefiaF1Xor(BYTE *dst, const BYTE *src, const BYTE *rk)
   ByteXor(dst + 4, src + 4, y, 4);
 }
 
-void ClefiaGfn4(BYTE *y, const BYTE *x, const BYTE *rk, int r)
+void ClefiaGfn4(unsigned char *y, const unsigned char *x, const unsigned char *rk, int r)
 {
-  BYTE fin[16], fout[16];
+  unsigned char fin[16], fout[16];
 
   ByteCpy(fin, x, 16);
   while(r-- > 0){
@@ -188,9 +188,9 @@ void ClefiaGfn4(BYTE *y, const BYTE *x, const BYTE *rk, int r)
   ByteCpy(y, fout, 16);
 }
 
-void ClefiaGfn8(BYTE *y, const BYTE *x, const BYTE *rk, int r)
+void ClefiaGfn8(unsigned char *y, const unsigned char *x, const unsigned char *rk, int r)
 {
-  BYTE fin[32], fout[32];
+  unsigned char fin[32], fout[32];
 
   ByteCpy(fin, x, 32);
   while(r-- > 0){
@@ -207,9 +207,9 @@ void ClefiaGfn8(BYTE *y, const BYTE *x, const BYTE *rk, int r)
   ByteCpy(y, fout, 32);
 }
 
-void ClefiaGfn4Inv(BYTE *y, const BYTE *x, const BYTE *rk, int r)
+void ClefiaGfn4Inv(unsigned char *y, const unsigned char *x, const unsigned char *rk, int r)
 {
-  BYTE fin[16], fout[16];
+  unsigned char fin[16], fout[16];
 
   rk += (r - 1) * 8;
   ByteCpy(fin, x, 16);
@@ -225,9 +225,9 @@ void ClefiaGfn4Inv(BYTE *y, const BYTE *x, const BYTE *rk, int r)
   ByteCpy(y, fout, 16);
 }
 
-void ClefiaDoubleSwap(BYTE *lk)
+void ClefiaDoubleSwap(unsigned char *lk)
 {
-  BYTE t[16];
+  unsigned char t[16];
 
   t[0]  = (lk[0] << 7) | (lk[1]  >> 1);
   t[1]  = (lk[1] << 7) | (lk[2]  >> 1);
@@ -250,10 +250,10 @@ void ClefiaDoubleSwap(BYTE *lk)
   ByteCpy(lk, t, 16);
 }
 
-void ClefiaConSet(BYTE *con, const BYTE *iv, int lk)
+void ClefiaConSet(unsigned char *con, const unsigned char *iv, int lk)
 {
-  BYTE t[2];
-  BYTE tmp;
+  unsigned char t[2];
+  unsigned char tmp;
 
   ByteCpy(t, iv, 2);
   while(lk-- > 0){
@@ -278,11 +278,11 @@ void ClefiaConSet(BYTE *con, const BYTE *iv, int lk)
   }    
 }
 
-void ClefiaKeySet128(BYTE *rk, const BYTE *skey)
+void ClefiaKeySet128(unsigned char *rk, const unsigned char *skey)
 {
-  const BYTE iv[2] = {0x42U, 0x8aU}; /* cubic root of 2 */
-  BYTE lk[16];
-  BYTE con128[4 * 60];
+  const unsigned char iv[2] = {0x42U, 0x8aU}; /* cubic root of 2 */
+  unsigned char lk[16];
+  unsigned char con128[4 * 60];
   int i;
 
   /* generating CONi^(128) (0 <= i < 60, lk = 30) */
@@ -303,12 +303,12 @@ void ClefiaKeySet128(BYTE *rk, const BYTE *skey)
   ByteCpy(rk, skey + 8, 8); /* final whitening key (WK2, WK3) */
 }
 
-void ClefiaKeySet192(BYTE *rk, const BYTE *skey)
+void ClefiaKeySet192(unsigned char *rk, const unsigned char *skey)
 {
-  const BYTE iv[2] = {0x71U, 0x37U}; /* cubic root of 3 */
-  BYTE skey256[32];
-  BYTE lk[32];
-  BYTE con192[4 * 84];
+  const unsigned char iv[2] = {0x71U, 0x37U}; /* cubic root of 3 */
+  unsigned char skey256[32];
+  unsigned char lk[32];
+  unsigned char con192[4 * 84];
   int i;
 
   ByteCpy(skey256, skey, 24);
@@ -342,11 +342,11 @@ void ClefiaKeySet192(BYTE *rk, const BYTE *skey)
   ByteXor(rk, skey256 + 8, skey256 + 24, 8); /* final whitening key (WK2, WK3) */
 }
 
-void ClefiaKeySet256(BYTE *rk, const BYTE *skey)
+void ClefiaKeySet256(unsigned char *rk, const unsigned char *skey)
 {
-  const BYTE iv[2] = {0xb5, 0xc0U}; /* cubic root of 5 */
-  BYTE lk[32];
-  BYTE con256[4 * 92];
+  const unsigned char iv[2] = {0xb5, 0xc0U}; /* cubic root of 5 */
+  unsigned char lk[32];
+  unsigned char con256[4 * 92];
   int i;
 
   /* generating CONi^(256) (0 <= i < 92, lk = 46) */
@@ -375,8 +375,8 @@ void ClefiaKeySet256(BYTE *rk, const BYTE *skey)
   ByteXor(rk, skey + 8, skey + 24, 8); /* final whitening key (WK2, WK3) */
 }
 
-void Clefia_set_key(CLEFIA_DATA *pCd,const BYTE *skey,const int key_bitlen)
-{/*const BYTE *rk*/
+void Clefia_set_key(CLEFIA_DATA *pCd,const unsigned char *skey,const int key_bitlen)
+{/*const unsigned char *rk*/
   if(key_bitlen==128){
     ClefiaKeySet128(pCd->rk, skey);
 	pCd->r=18;
@@ -389,9 +389,9 @@ void Clefia_set_key(CLEFIA_DATA *pCd,const BYTE *skey,const int key_bitlen)
   }
 }
 
-void Clefia_encrypt(const CLEFIA_DATA *pCd,const BYTE *pt,BYTE *ct)
+void Clefia_encrypt(const CLEFIA_DATA *pCd,const unsigned char *pt,unsigned char *ct)
 {
-  BYTE rin[16], rout[16];
+  unsigned char rin[16], rout[16];
 
   ByteCpy(rin,  pt,  16);
 
@@ -405,9 +405,9 @@ void Clefia_encrypt(const CLEFIA_DATA *pCd,const BYTE *pt,BYTE *ct)
   ByteXor(ct + 12, ct + 12, pCd->rk + 8 + pCd->r * 8 + 4, 4);
 }
 
-void Clefia_decrypt(const CLEFIA_DATA *pCd,const BYTE *ct,BYTE *pt)
+void Clefia_decrypt(const CLEFIA_DATA *pCd,const unsigned char *ct,unsigned char *pt)
 {
-  BYTE rin[16], rout[16];
+  unsigned char rin[16], rout[16];
 
   ByteCpy(rin, ct, 16);
 

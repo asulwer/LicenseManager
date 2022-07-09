@@ -32,9 +32,9 @@
 
 #include "Saferp_data.h"
 
-extern	void Saferp_set_key(SAFERP_DATA *pSpd,const DWORD *in_key, const DWORD key_len);
-extern	void Saferp_encrypt(const SAFERP_DATA *pSpd,const DWORD *in_blk, DWORD *out_blk);
-extern	void Saferp_decrypt(const SAFERP_DATA *pSpd,const DWORD *in_blk, DWORD *out_blk);
+extern	void Saferp_set_key(SAFERP_DATA *pSpd,const unsigned long *in_key, const unsigned long key_len);
+extern	void Saferp_encrypt(const SAFERP_DATA *pSpd,const unsigned long *in_blk, unsigned long *out_blk);
+extern	void Saferp_decrypt(const SAFERP_DATA *pSpd,const unsigned long *in_blk, unsigned long *out_blk);
 
 #endif
 

@@ -28,15 +28,15 @@
 typedef enum { SUCCESS = 0, FAIL = 1, BAD_HASHLEN = 2 } HashReturn;
 typedef enum { P512 = 0, Q512 = 1, P1024 = 2, Q1024 = 3 } Variant;
 
-#define mul1(b) ((BYTE)(b))
-#define mul2(b) ((BYTE)((b)>>7?((b)<<1)^0x1b:((b)<<1)))
+#define mul1(b) ((unsigned char)(b))
+#define mul2(b) ((unsigned char)((b)>>7?((b)<<1)^0x1b:((b)<<1)))
 #define mul3(b) (mul2(b)^mul1(b))
 #define mul4(b) mul2(mul2(b))
 #define mul5(b) (mul4(b)^mul1(b))
 #define mul6(b) (mul4(b)^mul2(b))
 #define mul7(b) (mul4(b)^mul2(b)^mul1(b))
 
-const BYTE S[256] = {
+const unsigned char S[256] = {
   0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
   0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
   0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
@@ -78,7 +78,7 @@ int Shift[2][2][ROWS] = {
 };
 
 /* AddRoundConstant xors a round-dependent constant to the state */
-void AddRoundConstant(BYTE x[ROWS][COLS1024], int columns, BYTE round, Variant v)
+void AddRoundConstant(unsigned char x[ROWS][COLS1024], int columns, unsigned char round, Variant v)
 {
   int i,j;
   switch (v&1) {
@@ -95,7 +95,7 @@ void AddRoundConstant(BYTE x[ROWS][COLS1024], int columns, BYTE round, Variant v
 }
 
 /* SubBytes replaces each byte by a value from the S-box */
-void SubBytes(BYTE x[ROWS][COLS1024], int columns)
+void SubBytes(unsigned char x[ROWS][COLS1024], int columns)
 {
   int i, j;
 
@@ -106,11 +106,11 @@ void SubBytes(BYTE x[ROWS][COLS1024], int columns)
 
 /* ShiftBytes cyclically shifts each row to the left by a number of
    positions */
-void ShiftBytes(BYTE x[ROWS][COLS1024], int columns, Variant v)
+void ShiftBytes(unsigned char x[ROWS][COLS1024], int columns, Variant v)
 {
   int *R = Shift[v/2][v&1];
   int i, j;
-  BYTE temp[COLS1024];
+  unsigned char temp[COLS1024];
 
   for (i = 0; i < ROWS; i++) {
     for (j = 0; j < columns; j++) {
@@ -123,10 +123,10 @@ void ShiftBytes(BYTE x[ROWS][COLS1024], int columns, Variant v)
 }
 
 /* MixBytes reversibly mixes the bytes within a column */
-void MixBytes(BYTE x[ROWS][COLS1024], int columns)
+void MixBytes(unsigned char x[ROWS][COLS1024], int columns)
 {
   int i, j;
-  BYTE temp[ROWS];
+  unsigned char temp[ROWS];
 
   for (i = 0; i < columns; i++) {
     for (j = 0; j < ROWS; j++) {
@@ -147,9 +147,9 @@ void MixBytes(BYTE x[ROWS][COLS1024], int columns)
 }
 
 /* apply P-permutation to x */
-void P(GROSTL512_DATA *grostl, BYTE x[ROWS][COLS1024])
+void P(GROSTL512_DATA *grostl, unsigned char x[ROWS][COLS1024])
 {
-  BYTE i;
+  unsigned char i;
   Variant v = grostl->columns==8?P512:P1024;
   for (i = 0; i < grostl->rounds; i++) {
     AddRoundConstant(x, grostl->columns, i, v);
@@ -160,9 +160,9 @@ void P(GROSTL512_DATA *grostl, BYTE x[ROWS][COLS1024])
 }
 
 /* apply Q-permutation to x */
-void Q(GROSTL512_DATA *grostl, BYTE x[ROWS][COLS1024])
+void Q(GROSTL512_DATA *grostl, unsigned char x[ROWS][COLS1024])
 {
-  BYTE i;
+  unsigned char i;
   Variant v = grostl->columns==8?Q512:Q1024;
   for (i = 0; i < grostl->rounds; i++) {
     AddRoundConstant(x, grostl->columns, i, v);
@@ -173,13 +173,13 @@ void Q(GROSTL512_DATA *grostl, BYTE x[ROWS][COLS1024])
 }
 
 /* digest (up to) msglen bytes */
-void Transform(GROSTL512_DATA *grostl,const BYTE *input,DWORD msglen)
+void Transform(GROSTL512_DATA *grostl,const unsigned char *input,unsigned long msglen)
 { 
   int i, j;
-  BYTE temp1[ROWS][COLS1024], temp2[ROWS][COLS1024];
+  unsigned char temp1[ROWS][COLS1024], temp2[ROWS][COLS1024];
 
   /* digest one message block at the time */
-  for (; msglen >= ((DWORD) grostl->statesize); 
+  for (; msglen >= ((unsigned long) grostl->statesize); 
        msglen -= grostl->statesize, input += grostl->statesize) {
     /* store message block (m) in temp2, and xor of chaining (h) and
        message block in temp1 */
@@ -209,7 +209,7 @@ void Transform(GROSTL512_DATA *grostl,const BYTE *input,DWORD msglen)
 void OutputTransformation(GROSTL512_DATA *grostl)
 {
   int i, j;
-  BYTE temp[ROWS][COLS1024];
+  unsigned char temp[ROWS][COLS1024];
 
   /* store chaining ("h") in temp */
   for (i = 0; i < ROWS; i++) {
@@ -247,7 +247,7 @@ void Grostl512_init(GROSTL512_DATA *grostl)
   /* store hashbitlen and set initial value */
   grostl->hashbitlen = 512;
   for (i = ROWS-sizeof(int); i < ROWS; i++) {
-    grostl->chaining[i][grostl->columns-1] = (BYTE)(512>>(8*(7-i)));
+    grostl->chaining[i][grostl->columns-1] = (unsigned char)(512>>(8*(7-i)));
   }
 
   /* initialise other variables */
@@ -256,17 +256,17 @@ void Grostl512_init(GROSTL512_DATA *grostl)
   grostl->bits_in_last_byte = 0;
 }
 
-void Grostl512_data(GROSTL512_DATA *grostl,const BYTE *buffer,DWORD len)
+void Grostl512_data(GROSTL512_DATA *grostl,const unsigned char *buffer,unsigned long len)
 {
   int index = 0;
-  DWORD msglen = len/8; /* no. of (full) bytes supplied */
-  DWORD rem = len%8;    /* no. of additional bits */
+  unsigned long msglen = len/8; /* no. of (full) bytes supplied */
+  unsigned long rem = len%8;    /* no. of additional bits */
 
   /* if the buffer contains data that still needs to be digested */
   if (grostl->buf_ptr) {
     /* copy data into buffer until buffer is full, or there is no more
        data */
-    for (index = 0; grostl->buf_ptr < grostl->statesize && ((DWORD) index) < msglen; 
+    for (index = 0; grostl->buf_ptr < grostl->statesize && ((unsigned long) index) < msglen; 
 	 index++, grostl->buf_ptr++) {
       grostl->buffer[grostl->buf_ptr] = buffer[index];
     }
@@ -291,7 +291,7 @@ void Grostl512_data(GROSTL512_DATA *grostl,const BYTE *buffer,DWORD len)
   index += ((msglen-index)/grostl->statesize)*grostl->statesize;
 
   /* copy remaining data to buffer */
-  for (; ((DWORD) index) < msglen; index++, grostl->buf_ptr++) {
+  for (; ((unsigned long) index) < msglen; index++, grostl->buf_ptr++) {
     grostl->buffer[grostl->buf_ptr] = buffer[index];
   }
       
@@ -302,7 +302,7 @@ void Grostl512_data(GROSTL512_DATA *grostl,const BYTE *buffer,DWORD len)
 }
 
 #define BILB grostl->bits_in_last_byte
-void Grostl512_finalize(GROSTL512_DATA *grostl,BYTE *hash)
+void Grostl512_finalize(GROSTL512_DATA *grostl,unsigned char *hash)
 {
   int i, j, hashbytelen = grostl->hashbitlen/8;
 
@@ -329,7 +329,7 @@ void Grostl512_finalize(GROSTL512_DATA *grostl,BYTE *hash)
   grostl->block_counter++;
   grostl->buf_ptr = grostl->statesize;
   while (grostl->buf_ptr > grostl->statesize-LENGTHFIELDLEN) {
-    grostl->buffer[--grostl->buf_ptr] = (BYTE)grostl->block_counter;
+    grostl->buffer[--grostl->buf_ptr] = (unsigned char)grostl->block_counter;
     grostl->block_counter >>= 8;
   }
 

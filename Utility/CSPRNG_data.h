@@ -43,9 +43,9 @@ typedef enum {
 
 typedef struct {
 	MULTI_STATIC_DATA	msd;
-	BYTE				ctrBuf[DATA_BLOCK_SIZE];
-	BYTE				randBuf[DATA_BLOCK_SIZE];
-	DWORD				availCount;
+	unsigned char				ctrBuf[DATA_BLOCK_SIZE];
+	unsigned char				randBuf[DATA_BLOCK_SIZE];
+	unsigned long				availCount;
 } CSPRNG_DATA;
 
 #endif

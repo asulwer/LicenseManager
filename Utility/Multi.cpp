@@ -28,23 +28,23 @@
 
 #include "Multi_data.h"
 
-void BlockXor(BYTE *data,const BYTE *value)
+void BlockXor(unsigned char *data,const unsigned char *value)
 {
 	#if	DATA_BLOCK_SIZE==16
-	*((DWORD *) (data+ 0))	^=*((DWORD *) (value+ 0));
-	*((DWORD *) (data+ 4))	^=*((DWORD *) (value+ 4));
-	*((DWORD *) (data+ 8))	^=*((DWORD *) (value+ 8));
-	*((DWORD *) (data+12))	^=*((DWORD *) (value+12));
+	*((unsigned long *) (data+ 0))	^=*((unsigned long *) (value+ 0));
+	*((unsigned long *) (data+ 4))	^=*((unsigned long *) (value+ 4));
+	*((unsigned long *) (data+ 8))	^=*((unsigned long *) (value+ 8));
+	*((unsigned long *) (data+12))	^=*((unsigned long *) (value+12));
 	#else
 	#error
 	#endif
 }
 
-void Multi_setkey(MULTI_DATA *pMd,const BYTE *iv,const BYTE *passw1,const BYTE *passw2,DWORD nonce)
+void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *passw1,const unsigned char *passw2,unsigned long nonce)
 {
-	BYTE passw[MAX_ALG][MAX_PASSW_SIZE];
-	BYTE usedMap[MAX_ALG];
-	DWORD index;
+	unsigned char passw[MAX_ALG][MAX_PASSW_SIZE];
+	unsigned char usedMap[MAX_ALG];
+	unsigned long index;
 
 	memset(pMd,0,sizeof(MULTI_DATA));
 
@@ -57,7 +57,7 @@ void Multi_setkey(MULTI_DATA *pMd,const BYTE *iv,const BYTE *passw1,const BYTE *
 	// passw[] <- KDF4 : random ( hash( passw1 + nonce) )
 	for(index=0;index<MAX_HASH;index++)
 	{
-		DWORD pIndex;
+		unsigned long pIndex;
 		CSPRNG_DATA* tmpCSPRNG = new CSPRNG_DATA(); //changed to a pointer
 
 		switch(index)
@@ -70,7 +70,7 @@ void Multi_setkey(MULTI_DATA *pMd,const BYTE *iv,const BYTE *passw1,const BYTE *
 		
 		for(pIndex=0;pIndex<(MAX_ALG/MAX_HASH);pIndex++)
 		{
-			DWORD sIndex;
+			unsigned long sIndex;
 
 			for(sIndex=0;sIndex<MAX_PASSW_SIZE;sIndex++)
 			{ 
@@ -102,16 +102,16 @@ void Multi_setkey(MULTI_DATA *pMd,const BYTE *iv,const BYTE *passw1,const BYTE *
 
 #define	REFRESH_COUNTDOWN	100
 
-OBFUNC_RETV Multi_CBC_encrypt(MULTI_DATA *pMd,const DWORD len,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
+OBFUNC_RETV Multi_CBC_encrypt(MULTI_DATA *pMd,const unsigned long len,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
 {
-	DWORD	tLen=len;
-	BYTE	lastPerc=0;
-	WORD	refCount = REFRESH_COUNTDOWN;
+	unsigned long	tLen=len;
+	unsigned char	lastPerc=0;
+	unsigned short	refCount = REFRESH_COUNTDOWN;
 
 	while(tLen>=DATA_BLOCK_SIZE)
 	{
-		BYTE	tmpIN[DATA_BLOCK_SIZE];
-		BYTE	curAlg = CSPRNG_get_byte(&pMd->cd) % MAX_ALG;
+		unsigned char	tmpIN[DATA_BLOCK_SIZE];
+		unsigned char	curAlg = CSPRNG_get_byte(&pMd->cd) % MAX_ALG;
 		
 		// OUT = encrypt( IN ^ IV_or_previous_out_block )
 		memcpy(tmpIN,buf,DATA_BLOCK_SIZE);
@@ -129,7 +129,7 @@ OBFUNC_RETV Multi_CBC_encrypt(MULTI_DATA *pMd,const DWORD len,BYTE *buf,perc_cal
 
 			if(pFunc)
 			{
-				BYTE	tmp=(BYTE) ((((float) (len-tLen))/((float) len))*((float) 100));
+				unsigned char	tmp=(unsigned char) ((((float) (len-tLen))/((float) len))*((float) 100));
 				if(tmp>lastPerc)
 				{
 					lastPerc=tmp;
@@ -148,16 +148,16 @@ OBFUNC_RETV Multi_CBC_encrypt(MULTI_DATA *pMd,const DWORD len,BYTE *buf,perc_cal
 	return(OBFUNC_OK);
 }
 
-OBFUNC_RETV Multi_CBC_decrypt(MULTI_DATA *pMd,const DWORD len,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
+OBFUNC_RETV Multi_CBC_decrypt(MULTI_DATA *pMd,const unsigned long len,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
 {
-	DWORD	tLen=len;
-	BYTE	lastPerc=0;
-	WORD	refCount=REFRESH_COUNTDOWN;
+	unsigned long	tLen=len;
+	unsigned char	lastPerc=0;
+	unsigned short	refCount=REFRESH_COUNTDOWN;
 
 	while(tLen>=DATA_BLOCK_SIZE)
 	{
-		BYTE	tmpOUT[DATA_BLOCK_SIZE];
-		BYTE	curAlg = CSPRNG_get_byte(&pMd->cd) % MAX_ALG;
+		unsigned char	tmpOUT[DATA_BLOCK_SIZE];
+		unsigned char	curAlg = CSPRNG_get_byte(&pMd->cd) % MAX_ALG;
 
 		// OUT = decrypt( IN ) ^ IV_or_previous_in_block )
 		Multi_ECB_single_decrypt(&pMd->msd,(ENUM_ALG) curAlg,buf,tmpOUT);
@@ -175,7 +175,7 @@ OBFUNC_RETV Multi_CBC_decrypt(MULTI_DATA *pMd,const DWORD len,BYTE *buf,perc_cal
 
 			if(pFunc)
 			{
-				BYTE	tmp=(BYTE) ((((float) (len-tLen))/((float) len))*((float) 100));
+				unsigned char	tmp=(unsigned char) ((((float) (len-tLen))/((float) len))*((float) 100));
 				if(tmp>lastPerc)
 				{
 					lastPerc=tmp;

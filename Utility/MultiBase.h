@@ -36,8 +36,8 @@
 
 #include "MultiBase_data.h"
 
-extern	void Multi_single_setkey(MULTI_STATIC_DATA *pMsd,const ENUM_ALG curAlg,const BYTE *passw);
-extern	void Multi_ECB_single_encrypt(const MULTI_STATIC_DATA *pMsd,const ENUM_ALG curAlg,const BYTE *inBuf,BYTE *outBuf);
-extern	void Multi_ECB_single_decrypt(const MULTI_STATIC_DATA *pMsd,const ENUM_ALG curAlg,const BYTE *inBuf,BYTE *outBuf);
+extern	void Multi_single_setkey(MULTI_STATIC_DATA *pMsd,const ENUM_ALG curAlg,const unsigned char *passw);
+extern	void Multi_ECB_single_encrypt(const MULTI_STATIC_DATA *pMsd,const ENUM_ALG curAlg,const unsigned char *inBuf,unsigned char *outBuf);
+extern	void Multi_ECB_single_decrypt(const MULTI_STATIC_DATA *pMsd,const ENUM_ALG curAlg,const unsigned char *inBuf,unsigned char *outBuf);
 
 #endif

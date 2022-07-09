@@ -30,7 +30,7 @@
 #define IK4 ROUND*16+16
 #define EK0 IK0+16
 
-const DWORD S[256] =
+const unsigned long S[256] =
 {
   0x95ae2518, 0x6fff22fc, 0xeda1a290, 0x9b6d8479,
   0x15fe8611, 0x5528dc2a, 0x6c5f5b4d, 0x4c438f7f,
@@ -98,9 +98,9 @@ const DWORD S[256] =
   0x74deda82, 0xf5251e76, 0x63c4ec8a, 0x5c357c22
 };
 
-void F(DWORD ida, DWORD idb, DWORD *k, DWORD *oda, DWORD *odb)
+void F(unsigned long ida, unsigned long idb, unsigned long *k, unsigned long *oda, unsigned long *odb)
 {
-  DWORD   wx0,wx1,wk0,wk1,tmp;
+  unsigned long   wx0,wx1,wk0,wk1,tmp;
 
   wx0 = ida + k[0];
   wx1 = idb + k[2];
@@ -135,9 +135,9 @@ void F(DWORD ida, DWORD idb, DWORD *k, DWORD *oda, DWORD *odb)
   return;
 }
 
-void Unicorn_encrypt(const BYTE *eKey,const BYTE *src,BYTE *dst)
+void Unicorn_encrypt(const unsigned char *eKey,const unsigned char *src,unsigned char *dst)
 {
-  DWORD   wx[4],tmp[2];
+  unsigned long   wx[4],tmp[2];
   int i;
 
   for (i = 0 ; i < 4 ; i++)
@@ -149,12 +149,12 @@ void Unicorn_encrypt(const BYTE *eKey,const BYTE *src,BYTE *dst)
     }
   for (i = 0 ; i < 4 ; i++)
     {
-      wx[i] += *((DWORD *)(eKey+(IK0+i*4)));
+      wx[i] += *((unsigned long *)(eKey+(IK0+i*4)));
     }
 
   for (i = 0 ; i < ROUND ; i++)
     {
-      F(wx[2], wx[3], (DWORD *)&eKey[EK0+(i *16)], &tmp[0], &tmp[1]);
+      F(wx[2], wx[3], (unsigned long *)&eKey[EK0+(i *16)], &tmp[0], &tmp[1]);
       tmp[0] ^= wx[0];
       tmp[1] ^= wx[1];
       wx[0] = wx[2];
@@ -163,32 +163,32 @@ void Unicorn_encrypt(const BYTE *eKey,const BYTE *src,BYTE *dst)
       wx[3] = tmp[1];
     }
 
-  wx[0] -= *((DWORD *)(eKey+(IK4+8)));
-  wx[1] -= *((DWORD *)(eKey+(IK4+12)));
-  wx[2] -= *((DWORD *)(eKey+(IK4)));
-  wx[3] -= *((DWORD *)(eKey+(IK4+4)));
+  wx[0] -= *((unsigned long *)(eKey+(IK4+8)));
+  wx[1] -= *((unsigned long *)(eKey+(IK4+12)));
+  wx[2] -= *((unsigned long *)(eKey+(IK4)));
+  wx[3] -= *((unsigned long *)(eKey+(IK4+4)));
 
-  dst[0] = (BYTE) (wx[2] >> 24) ;
-  dst[1] = (BYTE)(wx[2] >> 16);
-  dst[2] = (BYTE) (wx[2] >> 8) ;
-  dst[3] = (BYTE) (wx[2]) ;
-  dst[4] = (BYTE)(wx[3] >> 24);
-  dst[5] = (BYTE)(wx[3] >> 16);
-  dst[6] = (BYTE) (wx[3] >> 8) ;
-  dst[7] = (BYTE) (wx[3]);
-  dst[8] = (BYTE)(wx[0] >> 24);
-  dst[9] = (BYTE)(wx[0] >> 16);
-  dst[10] = (BYTE)(wx[0] >> 8);
-  dst[11] = (BYTE) (wx[0]);
-  dst[12] = (BYTE)(wx[1] >> 24);
-  dst[13] = (BYTE)(wx[1] >> 16);
-  dst[14] = (BYTE)(wx[1] >> 8);
-  dst[15] = (BYTE) (wx[1]);
+  dst[0] = (unsigned char) (wx[2] >> 24) ;
+  dst[1] = (unsigned char)(wx[2] >> 16);
+  dst[2] = (unsigned char) (wx[2] >> 8) ;
+  dst[3] = (unsigned char) (wx[2]) ;
+  dst[4] = (unsigned char)(wx[3] >> 24);
+  dst[5] = (unsigned char)(wx[3] >> 16);
+  dst[6] = (unsigned char) (wx[3] >> 8) ;
+  dst[7] = (unsigned char) (wx[3]);
+  dst[8] = (unsigned char)(wx[0] >> 24);
+  dst[9] = (unsigned char)(wx[0] >> 16);
+  dst[10] = (unsigned char)(wx[0] >> 8);
+  dst[11] = (unsigned char) (wx[0]);
+  dst[12] = (unsigned char)(wx[1] >> 24);
+  dst[13] = (unsigned char)(wx[1] >> 16);
+  dst[14] = (unsigned char)(wx[1] >> 8);
+  dst[15] = (unsigned char) (wx[1]);
 }
 
-void Unicorn_decrypt(const BYTE *eKey,const BYTE *src,BYTE *dst)
+void Unicorn_decrypt(const unsigned char *eKey,const unsigned char *src,unsigned char *dst)
 {
-  DWORD   wx[4], tmp[2];
+  unsigned long   wx[4], tmp[2];
   int   i;
 
   for (i = 0 ; i < 4 ; i++)
@@ -201,12 +201,12 @@ void Unicorn_decrypt(const BYTE *eKey,const BYTE *src,BYTE *dst)
 
   for (i = 0 ; i < 4 ; i++)
     {
-      wx[i] += *((DWORD *)(eKey+(IK4+i*4)));
+      wx[i] += *((unsigned long *)(eKey+(IK4+i*4)));
     }
 
   for (i = ROUND-1 ; i >= 0 ; i--)
     {
-      F(wx[2], wx[3], (DWORD *) &eKey[EK0+(i *16)], &tmp[0],&tmp [1]);
+      F(wx[2], wx[3], (unsigned long *) &eKey[EK0+(i *16)], &tmp[0],&tmp [1]);
       tmp [0] ^= wx[0];
       tmp[1] ^= wx[1];
 
@@ -216,32 +216,32 @@ void Unicorn_decrypt(const BYTE *eKey,const BYTE *src,BYTE *dst)
       wx[3] = tmp[1];
     }
 
-  wx[0] -= *((DWORD *)(eKey+(IK0+8)));
-  wx[1] -= *((DWORD *)(eKey+(IK0+12)));
-  wx[2] -= *((DWORD *)(eKey+(IK0)));
-  wx[3] -= *((DWORD *)(eKey+(IK0+4)));
+  wx[0] -= *((unsigned long *)(eKey+(IK0+8)));
+  wx[1] -= *((unsigned long *)(eKey+(IK0+12)));
+  wx[2] -= *((unsigned long *)(eKey+(IK0)));
+  wx[3] -= *((unsigned long *)(eKey+(IK0+4)));
 
-  dst[0] = (BYTE)(wx[2] >> 24);
-  dst[1] = (BYTE)(wx[2] >> 16);
-  dst[2] = (BYTE)(wx[2] >> 8);
-  dst[3] = (BYTE) (wx[2]) ;
-  dst[4] = (BYTE)(wx[3] >> 24);
-  dst[5] = (BYTE)(wx[3] >> 16);
-  dst[6] = (BYTE)(wx[3] >> 8);
-  dst[7] = (BYTE) (wx[3]) ;
-  dst[8] = (BYTE) (wx [0] >> 24) ;
-  dst[9] = (BYTE)(wx[0] >> 16);
-  dst[10] = (BYTE)(wx[0] >> 8);
-  dst[11] = (BYTE) (wx[0]) ;
-  dst[12] = (BYTE)(wx[1] >> 24);
-  dst[13] = (BYTE)(wx[1] >> 16);
-  dst[14] = (BYTE) (wx[1] >> 8) ;
-  dst[15] = (BYTE) (wx[1]) ;
+  dst[0] = (unsigned char)(wx[2] >> 24);
+  dst[1] = (unsigned char)(wx[2] >> 16);
+  dst[2] = (unsigned char)(wx[2] >> 8);
+  dst[3] = (unsigned char) (wx[2]) ;
+  dst[4] = (unsigned char)(wx[3] >> 24);
+  dst[5] = (unsigned char)(wx[3] >> 16);
+  dst[6] = (unsigned char)(wx[3] >> 8);
+  dst[7] = (unsigned char) (wx[3]) ;
+  dst[8] = (unsigned char) (wx [0] >> 24) ;
+  dst[9] = (unsigned char)(wx[0] >> 16);
+  dst[10] = (unsigned char)(wx[0] >> 8);
+  dst[11] = (unsigned char) (wx[0]) ;
+  dst[12] = (unsigned char)(wx[1] >> 24);
+  dst[13] = (unsigned char)(wx[1] >> 16);
+  dst[14] = (unsigned char) (wx[1] >> 8) ;
+  dst[15] = (unsigned char) (wx[1]) ;
 }
 
-void Unicorn_set_key(BYTE *eKey,const BYTE *secret)
+void Unicorn_set_key(unsigned char *eKey,const unsigned char *secret)
 {
-  DWORD   wk[LINE], ek[ROUND*4+8];
+  unsigned long   wk[LINE], ek[ROUND*4+8];
   int   i,j, n = ROUND+2;
   int   cnt = 0;
 

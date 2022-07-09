@@ -32,9 +32,9 @@
 
 #include "Rijndael_data.h"
 
-extern	int Rijndael_set_key_encrypt(DWORD *rk,const BYTE *key,const int keybits);
-extern	int Rijndael_set_key_decrypt(DWORD *rk,const BYTE *key,const int keybits);
-extern	void Rijndael_encrypt(const DWORD *rk,const int nrounds,const BYTE *plaintext,BYTE *ciphertext);
-extern	void Rijndael_decrypt(const DWORD *rk,const int nrounds,const BYTE *ciphertext,BYTE *plaintext);
+extern	int Rijndael_set_key_encrypt(unsigned long *rk,const unsigned char *key,const int keybits);
+extern	int Rijndael_set_key_decrypt(unsigned long *rk,const unsigned char *key,const int keybits);
+extern	void Rijndael_encrypt(const unsigned long *rk,const int nrounds,const unsigned char *plaintext,unsigned char *ciphertext);
+extern	void Rijndael_decrypt(const unsigned long *rk,const int nrounds,const unsigned char *ciphertext,unsigned char *plaintext);
 
 #endif

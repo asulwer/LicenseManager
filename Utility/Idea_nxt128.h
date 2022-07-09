@@ -32,8 +32,8 @@
 
 #include "Idea_nxt128_data.h"
 
-extern	void Ideanxt128_set_key(nxt128_ctx *ctx,const BYTE *key,const WORD key_len);
-extern	void Ideanxt128_encrypt(const nxt128_ctx *ctx,const BYTE *in,BYTE *out);
-extern	void Ideanxt128_decrypt(const nxt128_ctx *ctx,const BYTE *in,BYTE *out);
+extern	void Ideanxt128_set_key(nxt128_ctx *ctx,const unsigned char *key,const unsigned short key_len);
+extern	void Ideanxt128_encrypt(const nxt128_ctx *ctx,const unsigned char *in,unsigned char *out);
+extern	void Ideanxt128_decrypt(const nxt128_ctx *ctx,const unsigned char *in,unsigned char *out);
 
 #endif

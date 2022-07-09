@@ -34,7 +34,7 @@ namespace Utility
 
 		Scramble_seed(sd, orig->Length, pw1, 0); //should do a 16 byte block at a time
 		Seg_scramble(sd, pt, NULL, NULL, NULL, NULL);
-		BYTE* iv = new BYTE[256]{ '\0' }; //initialize to nothing
+		unsigned char* iv = new unsigned char[256]{ '\0' }; //initialize to nothing
 		Multi_setkey(md, iv, pw1, pw2, 0);
 		Multi_CBC_encrypt(md, orig->Length, pt, NULL, NULL, NULL, NULL);
 		
@@ -54,7 +54,7 @@ namespace Utility
 
 		pin_ptr<unsigned char> ct = &orig[0]; //cyphertext
 
-		BYTE* iv = new BYTE[256]{ '\0' }; //initialize to nothing
+		unsigned char* iv = new unsigned char[256]{ '\0' }; //initialize to nothing
 		Multi_setkey(md, iv, pw1, pw2, 0);		
 		Multi_CBC_decrypt(md, orig->Length, ct, NULL, NULL, NULL, NULL);
 		Scramble_seed(sd, orig->Length, pw1, 0); //should do a 16 byte block at a time

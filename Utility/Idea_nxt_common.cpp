@@ -25,22 +25,22 @@
 
 #include "Idea_nxt_common.h"
 
-const BYTE pad[32] = {
+const unsigned char pad[32] = {
     0xb7, 0xe1, 0x51, 0x62, 0x8a, 0xed, 0x2a, 0x6a, 0xbf, 0x71, 0x58, 0x80,
     0x9c, 0xf4, 0xf3, 0xc7, 0x62, 0xe7, 0x16, 0x0f, 0x38, 0xb4, 0xda, 0x56,
     0xa7, 0x84, 0xd9, 0x04, 0x51, 0x90, 0xcf, 0xef
 };
 
-void nxt_p(const BYTE *key, BYTE l, BYTE *pkey, WORD ek)
+void nxt_p(const unsigned char *key, unsigned char l, unsigned char *pkey, unsigned short ek)
 {
     memcpy(pkey, key, l);
     memcpy(pkey + l, pad, (ek >> 3) - l);
 }
 
-void nxt_m(const BYTE *pkey, BYTE *mkey, WORD ek)
+void nxt_m(const unsigned char *pkey, unsigned char *mkey, unsigned short ek)
 {
-    const BYTE mkey_m2 = 0x6a;
-    const BYTE mkey_m1 = 0x76;
+    const unsigned char mkey_m2 = 0x6a;
+    const unsigned char mkey_m1 = 0x76;
     int bound;
     int i;
 

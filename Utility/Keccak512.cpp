@@ -49,17 +49,17 @@ typedef enum { SUCCESS = 0, FAIL = 1, BAD_HASHLEN = 2 } HashReturn;
     typedef UINT64 tKeccakLane;
     #define cKeccakNumberOfRounds   24
 #elif   (cKeccakB   == 800)
-    typedef DWORD        UINT32;
+    typedef unsigned long        UINT32;
     // WARNING: on 8-bit and 16-bit platforms, this should be replaced by:
     //typedef unsigned long       UINT32;
     typedef UINT32 tKeccakLane;
     #define cKeccakNumberOfRounds   22
 #elif   (cKeccakB   == 400)
-    typedef WORD      UINT16;
+    typedef unsigned short      UINT16;
     typedef UINT16 tKeccakLane;
     #define cKeccakNumberOfRounds   20
 #elif   (cKeccakB   == 200)
-    typedef BYTE       UINT8;
+    typedef unsigned char       UINT8;
     typedef UINT8 tKeccakLane;
     #define cKeccakNumberOfRounds   18
 #else
@@ -72,13 +72,13 @@ typedef enum { SUCCESS = 0, FAIL = 1, BAD_HASHLEN = 2 } HashReturn;
 
 void KeccakF( tKeccakLane * state, const tKeccakLane *in, int laneCount );
 
-int crypto_hash(BYTE *out, const BYTE *in, QWORD inlen )
+int crypto_hash(unsigned char *out, const unsigned char *in, QWORD inlen )
 {
     tKeccakLane		state[5 * 5];
 	#if (crypto_hash_BYTES >= cKeccakR_SizeInBytes)
     #define temp out
 	#else
-    BYTE 	temp[cKeccakR_SizeInBytes];
+    unsigned char 	temp[cKeccakR_SizeInBytes];
 	#endif
 
     memset( state, 0, sizeof(state) );
@@ -109,7 +109,7 @@ int crypto_hash(BYTE *out, const BYTE *in, QWORD inlen )
 		t = state[i];
 		for ( j = 0; j < sizeof(tKeccakLane); ++j )
 		{
-			*(out++) = (BYTE)t;
+			*(out++) = (unsigned char)t;
 			t >>= 8;
 		}
 	}
@@ -156,24 +156,24 @@ const tKeccakLane KeccakF_RoundConstants[cKeccakNumberOfRounds] =
 	#endif
 };
 
-const WORD KeccakF_RotationConstants[25] = 
+const unsigned short KeccakF_RotationConstants[25] = 
 {
 	 1,  3,  6, 10, 15, 21, 28, 36, 45, 55,  2, 14, 27, 41, 56,  8, 25, 43, 62, 18, 39, 61, 20, 44
 };
 
-const WORD KeccakF_PiLane[25] = 
+const unsigned short KeccakF_PiLane[25] = 
 {
     10,  7, 11, 17, 18,  3,  5, 16,  8, 21, 24,  4, 15, 23, 19, 13, 12,  2, 20, 14, 22,  9,  6,  1 
 };
 
-const WORD KeccakF_Mod5[10] = 
+const unsigned short KeccakF_Mod5[10] = 
 {
     0, 1, 2, 3, 4, 0, 1, 2, 3, 4
 };
 
 void KeccakF( tKeccakLane * state, const tKeccakLane *in, int laneCount )
 {
-	WORD x, y;
+	unsigned short x, y;
     tKeccakLane temp;
     tKeccakLane BC[5];
 
@@ -248,7 +248,7 @@ void Keccak512_init(KECCAK512_DATA *keccak)
 	memset( keccak->state, 0, sizeof(keccak->state) );
 }
 
-void Keccak512_data(KECCAK512_DATA *keccak, const BYTE *buffer, DWORD len)
+void Keccak512_data(KECCAK512_DATA *keccak, const unsigned char *buffer, unsigned long len)
 {
 	if ( (keccak->bitsInQueue < 0) || ((keccak->bitsInQueue % 8) != 0) )
 	{
@@ -286,9 +286,9 @@ void Keccak512_data(KECCAK512_DATA *keccak, const BYTE *buffer, DWORD len)
 	}
 }
 
-void Keccak512_finalize(KECCAK512_DATA *keccak, BYTE *hash)
+void Keccak512_finalize(KECCAK512_DATA *keccak, unsigned char *hash)
 {
-	WORD	i;
+	unsigned short	i;
 	int		hashbytelen=64;
 
 	if ( keccak->bitsInQueue < 0 )

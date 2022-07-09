@@ -32,10 +32,10 @@
 typedef unsigned __int64	QWORD;
 
 typedef struct {
-	DWORD	inputLen;
+	unsigned long	inputLen;
 	QWORD	A,B,C,D,E,F,G,H;
 	QWORD	totalLen;
-	BYTE	input[128];
+	unsigned char	input[128];
 } SHA512_DATA;
 
 #endif

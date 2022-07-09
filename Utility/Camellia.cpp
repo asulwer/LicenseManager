@@ -23,7 +23,7 @@
 
 #include "stdafx.h"
 
-const BYTE SIGMA[48] = {
+const unsigned char SIGMA[48] = {
 0xa0,0x9e,0x66,0x7f,0x3b,0xcc,0x90,0x8b,
 0xb6,0x7a,0xe8,0x58,0x4c,0xaa,0x73,0xb2,
 0xc6,0xef,0x37,0x2f,0xe9,0x4f,0x82,0xbe,
@@ -43,7 +43,7 @@ const int KIDX2[34] = {
 0,0,12,12,8,8,4,4,8,8,12,12,0,0,4,4,0,0,8,8,12,12,
 0,0,4,4,8,8,4,4,0,0,12,12 };
 
-const BYTE SBOX[256] = {
+const unsigned char SBOX[256] = {
 112,130, 44,236,179, 39,192,229,228,133, 87, 53,234, 12,174, 65,
  35,239,107,147, 69, 25,165, 33,237, 14, 79, 78, 29,101,146,189,
 134,184,175,143,124,235, 31,206, 62, 48,220, 95, 94,197, 11, 26,
@@ -62,31 +62,31 @@ const BYTE SBOX[256] = {
  64, 40,211,123,187,201, 67,193, 21,227,173,244,119,199,128,158};
 
 #define SBOX1(n) SBOX[(n)]
-#define SBOX2(n) (BYTE)((SBOX[(n)]>>7^SBOX[(n)]<<1)&0xff)
-#define SBOX3(n) (BYTE)((SBOX[(n)]>>1^SBOX[(n)]<<7)&0xff)
+#define SBOX2(n) (unsigned char)((SBOX[(n)]>>7^SBOX[(n)]<<1)&0xff)
+#define SBOX3(n) (unsigned char)((SBOX[(n)]>>1^SBOX[(n)]<<7)&0xff)
 #define SBOX4(n) SBOX[((n)<<1^(n)>>7)&0xff]
 
-void ByteWord( const BYTE *x, DWORD *y )
+void ByteWord( const unsigned char *x, unsigned long *y )
 {
 	int i;
 	for( i=0; i<4; i++ ){
-		y[i] = ((DWORD)x[(i<<2)+0]<<24) + ((DWORD)x[(i<<2)+1]<<16)
-		     + ((DWORD)x[(i<<2)+2]<<8 ) + ((DWORD)x[(i<<2)+3]<<0 );
+		y[i] = ((unsigned long)x[(i<<2)+0]<<24) + ((unsigned long)x[(i<<2)+1]<<16)
+		     + ((unsigned long)x[(i<<2)+2]<<8 ) + ((unsigned long)x[(i<<2)+3]<<0 );
 	}
 }
 
-void WordByte( const DWORD *x, BYTE *y )
+void WordByte( const unsigned long *x, unsigned char *y )
 {
 	int i;
 	for( i=0; i<4; i++ ){
-		y[(i<<2)+0] = (BYTE)(x[i]>>24&0xff);
-		y[(i<<2)+1] = (BYTE)(x[i]>>16&0xff);
-		y[(i<<2)+2] = (BYTE)(x[i]>> 8&0xff);
-		y[(i<<2)+3] = (BYTE)(x[i]>> 0&0xff);
+		y[(i<<2)+0] = (unsigned char)(x[i]>>24&0xff);
+		y[(i<<2)+1] = (unsigned char)(x[i]>>16&0xff);
+		y[(i<<2)+2] = (unsigned char)(x[i]>> 8&0xff);
+		y[(i<<2)+3] = (unsigned char)(x[i]>> 0&0xff);
 	}
 }
 
-void RotBlock( const DWORD *x, const int n, DWORD *y )
+void RotBlock( const unsigned long *x, const int n, unsigned long *y )
 {
 	int r;
 	if( r = (n & 31) ){
@@ -99,9 +99,9 @@ void RotBlock( const DWORD *x, const int n, DWORD *y )
 	}
 }
 
-void SwapHalf( BYTE *x )
+void SwapHalf( unsigned char *x )
 {
-	BYTE t;
+	unsigned char t;
 	int  i;
 	for( i=0; i<8; i++ ){
 		t = x[i];
@@ -110,15 +110,15 @@ void SwapHalf( BYTE *x )
 	}
 }
 
-void XorBlock( const BYTE *x, const BYTE *y, BYTE *z )
+void XorBlock( const unsigned char *x, const unsigned char *y, unsigned char *z )
 {
 	int i;
 	for( i=0; i<16; i++ ) z[i] = x[i] ^ y[i];
 }
 
-void Camellia_Feistel( const BYTE *x, const BYTE *k, BYTE *y )
+void Camellia_Feistel( const unsigned char *x, const unsigned char *k, unsigned char *y )
 {
-	BYTE t[8];
+	unsigned char t[8];
 
 	t[0] = SBOX1(x[0]^k[0]);
 	t[1] = SBOX2(x[1]^k[1]);
@@ -139,9 +139,9 @@ void Camellia_Feistel( const BYTE *x, const BYTE *k, BYTE *y )
 	y[7] ^= t[0]^t[3]^t[4]^t[5]^t[6];
 }
 
-void Camellia_FLlayer( BYTE *x, const BYTE *kl, const BYTE *kr )
+void Camellia_FLlayer( unsigned char *x, const unsigned char *kl, const unsigned char *kr )
 {
-	DWORD t[4],u[4],v[4];
+	unsigned long t[4],u[4],v[4];
 
 	ByteWord( x, t );
 	ByteWord( kl, u );
@@ -155,10 +155,10 @@ void Camellia_FLlayer( BYTE *x, const BYTE *kl, const BYTE *kr )
 	WordByte( t, x );
 }
 
-void Camellia_set_key( BYTE *e, const int n, const BYTE *k )
+void Camellia_set_key( unsigned char *e, const int n, const unsigned char *k )
 {
-	BYTE t[64];
-	DWORD u[20];
+	unsigned char t[64];
+	unsigned long u[20];
 	int  i;
 
 	if( n == 128 ){
@@ -210,7 +210,7 @@ void Camellia_set_key( BYTE *e, const int n, const BYTE *k )
 	}
 }
 
-void Camellia_encrypt( const BYTE *e, const int n, const BYTE *p, BYTE *c )
+void Camellia_encrypt( const unsigned char *e, const int n, const unsigned char *p, unsigned char *c )
 {
 	int i;
 
@@ -252,7 +252,7 @@ void Camellia_encrypt( const BYTE *e, const int n, const BYTE *p, BYTE *c )
 	}
 }
 
-void Camellia_decrypt( const BYTE *e, const int n, const BYTE *c, BYTE *p )
+void Camellia_decrypt( const unsigned char *e, const int n, const unsigned char *c, unsigned char *p )
 {
 	int i;
 

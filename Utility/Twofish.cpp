@@ -32,7 +32,7 @@
 
 #define bswap(x)    (rotl(x, 8) & 0x00ff00ff | rotr(x, 8) & 0xff00ff00)
 
-#define byte(x,n)   ((BYTE)((x) >> (8 * n)))
+#define byte(x,n)   ((unsigned char)((x) >> (8 * n)))
 
 #ifdef  BLOCK_SWAP
 #define BYTE_SWAP
@@ -48,75 +48,75 @@
 #ifdef  WORD_SWAP
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[0])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[0])
 
 #define put_block(x)                            \
-    out_blk[3] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[0] = io_swap(((DWORD *)(x))[3])
+    out_blk[3] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[0] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[0]);     \
     break;                                      \
     case 3:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[0]);     \
     break;                                      \
     case 4:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[7]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[6] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[0]);     \
     }
 
 #else
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[3])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[3])
 
 #define put_block(x)                            \
-    out_blk[0] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[3] = io_swap(((DWORD *)(x))[3])
+    out_blk[0] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[3] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 4:                                     \
-    ((DWORD *)(x))[6] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[7]);     \
     case 3:                                     \
-    ((DWORD *)(x))[4] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[5]);     \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[3]);     \
     }
 
 #endif
@@ -126,39 +126,39 @@
 
 #define G_M 0x0169
 
-const BYTE  tab_5b[4] = { 0, G_M >> 2, G_M >> 1, (G_M >> 1) ^ (G_M >> 2) };
-const BYTE  tab_ef[4] = { 0, (G_M >> 1) ^ (G_M >> 2), G_M >> 1, G_M >> 2 };
+const unsigned char  tab_5b[4] = { 0, G_M >> 2, G_M >> 1, (G_M >> 1) ^ (G_M >> 2) };
+const unsigned char  tab_ef[4] = { 0, (G_M >> 1) ^ (G_M >> 2), G_M >> 1, G_M >> 2 };
 
 #define ffm_01(x)    (x)
 #define ffm_5b(x)   ((x) ^ ((x) >> 2) ^ tab_5b[(x) & 3])
 #define ffm_ef(x)   ((x) ^ ((x) >> 1) ^ ((x) >> 2) ^ tab_ef[(x) & 3])
 
-const BYTE ror4[16] = { 0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15 };
-const BYTE ashx[16] = { 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12, 5, 14, 7 };
+const unsigned char ror4[16] = { 0, 8, 1, 9, 2, 10, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15 };
+const unsigned char ashx[16] = { 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12, 5, 14, 7 };
 
-const BYTE qt0[2][16] = 
+const unsigned char qt0[2][16] = 
 {   { 8, 1, 7, 13, 6, 15, 3, 2, 0, 11, 5, 9, 14, 12, 10, 4 },
     { 2, 8, 11, 13, 15, 7, 6, 14, 3, 1, 9, 4, 0, 10, 12, 5 }
 };
 
-const BYTE qt1[2][16] =
+const unsigned char qt1[2][16] =
 {   { 14, 12, 11, 8, 1, 2, 3, 5, 15, 4, 10, 6, 7, 0, 9, 13 }, 
     { 1, 14, 2, 11, 4, 12, 3, 7, 6, 13, 10, 5, 15, 9, 0, 8 }
 };
 
-const BYTE qt2[2][16] = 
+const unsigned char qt2[2][16] = 
 {   { 11, 10, 5, 14, 6, 13, 9, 0, 12, 8, 15, 3, 2, 4, 7, 1 },
     { 4, 12, 7, 5, 1, 6, 9, 10, 0, 14, 13, 8, 2, 11, 3, 15 }
 };
 
-const BYTE qt3[2][16] = 
+const unsigned char qt3[2][16] = 
 {   { 13, 7, 15, 4, 1, 2, 6, 14, 9, 11, 3, 0, 8, 5, 12, 10 },
     { 11, 9, 5, 1, 12, 3, 13, 14, 6, 4, 7, 15, 2, 0, 8, 10 }
 };
 
-BYTE qp(const DWORD n, const BYTE x)
+unsigned char qp(const unsigned long n, const unsigned char x)
 {
-	BYTE  a0, a1, a2, a3, a4, b0, b1, b2, b3, b4;
+	unsigned char  a0, a1, a2, a3, a4, b0, b1, b2, b3, b4;
 
     a0 = x >> 4; b0 = x & 15;
     a1 = a0 ^ b0; b1 = ror4[b0] ^ ashx[a0];
@@ -174,12 +174,12 @@ BYTE qp(const DWORD n, const BYTE x)
 
 void gen_qtab(TWOFISH_DATA *pTfd)
 {
-	DWORD  i;
+	unsigned long  i;
 
     for(i = 0; i < 256; ++i)
     {       
-        q(0,i) = qp(0, (BYTE)i);
-        q(1,i) = qp(1, (BYTE)i);
+        q(0,i) = qp(0, (unsigned char)i);
+        q(1,i) = qp(1, (unsigned char)i);
     }
 }
 
@@ -193,7 +193,7 @@ void gen_qtab(TWOFISH_DATA *pTfd)
 
 void gen_mtab(TWOFISH_DATA *pTfd)
 {
-	DWORD  i, f01, f5b, fef;
+	unsigned long  i, f01, f5b, fef;
     
     for(i = 0; i < 256; ++i)
     {
@@ -235,22 +235,22 @@ void gen_mtab(TWOFISH_DATA *pTfd)
 #define fm_33   ffm_5b
 #define q_3(x)  q(0,x)
 
-#define f_0(n,x)    ((DWORD)fm_0##n(x))
-#define f_1(n,x)    ((DWORD)fm_1##n(x) << 8)
-#define f_2(n,x)    ((DWORD)fm_2##n(x) << 16)
-#define f_3(n,x)    ((DWORD)fm_3##n(x) << 24)
+#define f_0(n,x)    ((unsigned long)fm_0##n(x))
+#define f_1(n,x)    ((unsigned long)fm_1##n(x) << 8)
+#define f_2(n,x)    ((unsigned long)fm_2##n(x) << 16)
+#define f_3(n,x)    ((unsigned long)fm_3##n(x) << 24)
 
 #define mds(n,x)    f_0(n,q_##n(x)) ^ f_1(n,q_##n(x)) ^ f_2(n,q_##n(x)) ^ f_3(n,q_##n(x))
 
 #endif
 
-DWORD h_fun(TWOFISH_DATA *pTfd,const DWORD x, const DWORD *key)
+unsigned long h_fun(TWOFISH_DATA *pTfd,const unsigned long x, const unsigned long *key)
 {
-	DWORD  b0, b1, b2, b3;
+	unsigned long  b0, b1, b2, b3;
 
 #ifndef M_TABLE
-    DWORD  m5b_b0, m5b_b1, m5b_b2, m5b_b3;
-    DWORD  mef_b0, mef_b1, mef_b2, mef_b3;
+    unsigned long  m5b_b0, m5b_b1, m5b_b2, m5b_b3;
+    unsigned long  mef_b0, mef_b1, mef_b2, mef_b3;
 #endif
 
     b0 = byte(x, 0); b1 = byte(x, 1); b2 = byte(x, 2); b3 = byte(x, 3);
@@ -304,16 +304,16 @@ DWORD h_fun(TWOFISH_DATA *pTfd,const DWORD x, const DWORD *key)
 #define q42(x)  q(1,q(0,q(0, q(0, x) ^ byte(key[3],2)) ^ byte(key[2],2)) ^ byte(key[1],2)) ^ byte(key[0],2)
 #define q43(x)  q(1,q(1,q(0, q(1, x) ^ byte(key[3],3)) ^ byte(key[2],3)) ^ byte(key[1],3)) ^ byte(key[0],3)
 
-void gen_mk_tab(TWOFISH_DATA *pTfd,DWORD *key)
+void gen_mk_tab(TWOFISH_DATA *pTfd,unsigned long *key)
 {
-	DWORD  i;
-    BYTE  by;
+	unsigned long  i;
+    unsigned char  by;
 
     switch(pTfd->k_len)
     {
     case 2: for(i = 0; i < 256; ++i)
             {
-                by = (BYTE)i;
+                by = (unsigned char)i;
 #ifdef ONE_STEP
                 pTfd->mk_tab[0][i] = mds(0, q20(by)); pTfd->mk_tab[1][i] = mds(1, q21(by));
                 pTfd->mk_tab[2][i] = mds(2, q22(by)); pTfd->mk_tab[3][i] = mds(3, q23(by));
@@ -326,7 +326,7 @@ void gen_mk_tab(TWOFISH_DATA *pTfd,DWORD *key)
     
     case 3: for(i = 0; i < 256; ++i)
             {
-                by = (BYTE)i;
+                by = (unsigned char)i;
 #ifdef ONE_STEP
                 pTfd->mk_tab[0][i] = mds(0, q30(by)); pTfd->mk_tab[1][i] = mds(1, q31(by));
                 pTfd->mk_tab[2][i] = mds(2, q32(by)); pTfd->mk_tab[3][i] = mds(3, q33(by));
@@ -339,7 +339,7 @@ void gen_mk_tab(TWOFISH_DATA *pTfd,DWORD *key)
     
     case 4: for(i = 0; i < 256; ++i)
             {
-                by = (BYTE)i;
+                by = (unsigned char)i;
 #ifdef ONE_STEP
                 pTfd->mk_tab[0][i] = mds(0, q40(by)); pTfd->mk_tab[1][i] = mds(1, q41(by));
                 pTfd->mk_tab[2][i] = mds(2, q42(by)); pTfd->mk_tab[3][i] = mds(3, q43(by));
@@ -399,9 +399,9 @@ to implement.
 
 #define G_MOD   0x0000014d
 
-DWORD mds_rem(DWORD p0, DWORD p1)
+unsigned long mds_rem(unsigned long p0, unsigned long p1)
 {
-	DWORD  i, t, u;
+	unsigned long  i, t, u;
 
     for(i = 0; i < 8; ++i)
     {
@@ -433,9 +433,9 @@ DWORD mds_rem(DWORD p0, DWORD p1)
 
 /* initialise the key schedule from the user supplied key   */
 
-void Twofish_set_key(TWOFISH_DATA *pTfd,const DWORD *in_key, const DWORD key_len)
+void Twofish_set_key(TWOFISH_DATA *pTfd,const unsigned long *in_key, const unsigned long key_len)
 {
-	DWORD  i, a, b, me_key[4], mo_key[4];
+	unsigned long  i, a, b, me_key[4], mo_key[4];
 
 #ifdef Q_TABLES
     if(!pTfd->qt_gen)
@@ -482,9 +482,9 @@ void Twofish_set_key(TWOFISH_DATA *pTfd,const DWORD *in_key, const DWORD key_len
     blk[0] = rotr(blk[0] ^ (t0 + t1 + pTfd->l_key[4 * (i) + 10]), 1);     \
     blk[1] = rotl(blk[1], 1) ^ (t0 + 2 * t1 + pTfd->l_key[4 * (i) + 11])
 
-void Twofish_encrypt(const TWOFISH_DATA *pTfd,const DWORD *in_blk, DWORD *out_blk)
+void Twofish_encrypt(const TWOFISH_DATA *pTfd,const unsigned long *in_blk, unsigned long *out_blk)
 {
-	DWORD  t0, t1, blk[4];
+	unsigned long  t0, t1, blk[4];
 
     blk[0] = in_blk[0] ^ pTfd->l_key[0];
     blk[1] = in_blk[1] ^ pTfd->l_key[1];
@@ -508,9 +508,9 @@ void Twofish_encrypt(const TWOFISH_DATA *pTfd,const DWORD *in_blk, DWORD *out_bl
         blk[0] = rotl(blk[0], 1) ^ (t0 + t1 + pTfd->l_key[4 * (i) +  8]);     \
         blk[1] = rotr(blk[1] ^ (t0 + 2 * t1 + pTfd->l_key[4 * (i) +  9]), 1)
 
-void Twofish_decrypt(const TWOFISH_DATA *pTfd,const DWORD *in_blk, DWORD *out_blk)
+void Twofish_decrypt(const TWOFISH_DATA *pTfd,const unsigned long *in_blk, unsigned long *out_blk)
 {
-	DWORD  t0, t1, blk[4];
+	unsigned long  t0, t1, blk[4];
 
     blk[0] = in_blk[0] ^ pTfd->l_key[4];
     blk[1] = in_blk[1] ^ pTfd->l_key[5];

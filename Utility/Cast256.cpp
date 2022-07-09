@@ -30,7 +30,7 @@
 
 #define bswap(x)    (rotl(x, 8) & 0x00ff00ff | rotr(x, 8) & 0xff00ff00)
 
-#define byte(x,n)   ((BYTE)((x) >> (8 * n)))
+#define byte(x,n)   ((unsigned char)((x) >> (8 * n)))
 
 // ??
 #define BYTE_SWAP
@@ -49,80 +49,80 @@
 #ifdef  WORD_SWAP
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[0])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[0])
 
 #define put_block(x)                            \
-    out_blk[3] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[0] = io_swap(((DWORD *)(x))[3])
+    out_blk[3] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[0] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[0]);     \
     break;                                      \
     case 3:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[0]);     \
     break;                                      \
     case 4:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[7]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[6] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[0]);     \
     }
 
 #else
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[3])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[3])
 
 #define put_block(x)                            \
-    out_blk[0] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[3] = io_swap(((DWORD *)(x))[3])
+    out_blk[0] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[3] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 4:                                     \
-    ((DWORD *)(x))[6] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[7]);     \
     case 3:                                     \
-    ((DWORD *)(x))[4] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[5]);     \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[3]);     \
     }
 
 #endif
 
-const DWORD s_box[4][256] = 
+const unsigned long s_box[4][256] = 
 { {
     0x30fb40d4, 0x9fa0ff0b, 0x6beccd2f, 0x3f258c7a, 0x1e213f2f, 0x9C004dd3, 
     0x6003e540, 0xcf9fc949, 0xbfd4af27, 0x88bbbdb5, 0xe2034090, 0x98d09675,
@@ -352,9 +352,9 @@ const DWORD s_box[4][256] =
     f2(k[7],k[0],tr[7],tm[7])
 
 /* initialise the key schedule from the user supplied key   */
-void Cast256_set_key(DWORD *l_key,const DWORD *in_key, const DWORD key_len)
+void Cast256_set_key(unsigned long *l_key,const unsigned long *in_key, const unsigned long key_len)
 {
-	DWORD  i, j, t, u, cm, cr, lk[8], tm[8], tr[8];
+	unsigned long  i, j, t, u, cm, cr, lk[8], tm[8], tr[8];
 
     for(i = 0; i < key_len / 32; ++i)
 
@@ -391,9 +391,9 @@ void Cast256_set_key(DWORD *l_key,const DWORD *in_key, const DWORD key_len)
     }
 }
 
-void Cast256_encrypt(const DWORD *l_key,const DWORD *in_blk, DWORD *out_blk)
+void Cast256_encrypt(const unsigned long *l_key,const unsigned long *in_blk, unsigned long *out_blk)
 {
-	DWORD  t, u, blk[4];
+	unsigned long  t, u, blk[4];
 
     blk[0] = io_swap(in_blk[0]);
 	blk[1] = io_swap(in_blk[1]);
@@ -419,9 +419,9 @@ void Cast256_encrypt(const DWORD *l_key,const DWORD *in_blk, DWORD *out_blk)
 	out_blk[3] = io_swap(blk[3]);
 }
 
-void Cast256_decrypt(const DWORD *l_key,const DWORD *in_blk, DWORD *out_blk)
+void Cast256_decrypt(const unsigned long *l_key,const unsigned long *in_blk, unsigned long *out_blk)
 {
-	DWORD  t, u, blk[4];
+	unsigned long  t, u, blk[4];
 
     blk[0] = io_swap(in_blk[0]);
 	blk[1] = io_swap(in_blk[1]);

@@ -38,10 +38,10 @@ typedef unsigned __int64	QWORD;
 #define ROUNDS1024 14
 
 typedef struct {
-  BYTE chaining[ROWS][COLS1024]; /* the actual state */
+  unsigned char chaining[ROWS][COLS1024]; /* the actual state */
   QWORD block_counter; /* block counter */
   int hashbitlen; /* output length */
-  BYTE buffer[SIZE1024]; /* block buffer */
+  unsigned char buffer[SIZE1024]; /* block buffer */
   int buf_ptr; /* buffer pointer */
   int bits_in_last_byte; /* number of bits in incomplete byte */
   int columns; /* number of columns in state */

@@ -37,10 +37,10 @@
 #define SPEED_DATA_LEN_BYTE (SPEED_DATA_LEN/8)  /* no. of bytes in a p/c-text */
 #define SPEED_KEY_LEN_BYTE  (SPEED_KEY_LEN/8)   /* no. of bytes in a key */
 
-typedef BYTE speed_key [SPEED_KEY_LEN_BYTE];  /* for user key */
-typedef BYTE speed_data[SPEED_DATA_LEN_BYTE]; /* for p/c-text */
+typedef unsigned char speed_key [SPEED_KEY_LEN_BYTE];  /* for user key */
+typedef unsigned char speed_data[SPEED_DATA_LEN_BYTE]; /* for p/c-text */
 
-typedef DWORD	speed_ikey [SPEED_NO_OF_RND];/* for round keys */
-typedef DWORD	speed_idata[8];              /* for internal p/c-text */
+typedef unsigned long	speed_ikey [SPEED_NO_OF_RND];/* for round keys */
+typedef unsigned long	speed_idata[8];              /* for internal p/c-text */
 
 #endif

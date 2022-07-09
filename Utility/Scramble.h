@@ -34,10 +34,10 @@
 
 #include "Scramble_data.h"
 
-DECLDIR	OBFUNC_RETV Scramble_seed(SCRAMBLE_DATA *pSd,const DWORD len,const BYTE *passw,DWORD nonce);
-DECLDIR	void Scramble_end(SCRAMBLE_DATA *pSd);
+extern	OBFUNC_RETV Scramble_seed(SCRAMBLE_DATA *pSd,const unsigned long len,const unsigned char *passw,unsigned long nonce);
+extern	void Scramble_end(SCRAMBLE_DATA *pSd);
 
-DECLDIR	OBFUNC_RETV Seg_scramble(SCRAMBLE_DATA *pSd,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
-DECLDIR	OBFUNC_RETV Seg_descramble(SCRAMBLE_DATA *pSd,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
+extern	OBFUNC_RETV Seg_scramble(SCRAMBLE_DATA *pSd,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
+extern	OBFUNC_RETV Seg_descramble(SCRAMBLE_DATA *pSd,unsigned char* buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
 
 #endif

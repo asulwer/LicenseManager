@@ -30,7 +30,7 @@
 
 #define bswap(x)    (rotl(x, 8) & 0x00ff00ff | rotr(x, 8) & 0xff00ff00)
 
-#define byte(x,n)   ((BYTE)((x) >> (8 * n)))
+#define byte(x,n)   ((unsigned char)((x) >> (8 * n)))
 
 #ifdef  BLOCK_SWAP
 #define BYTE_SWAP
@@ -46,80 +46,80 @@
 #ifdef  WORD_SWAP
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[0])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[0])
 
 #define put_block(x)                            \
-    out_blk[3] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[0] = io_swap(((DWORD *)(x))[3])
+    out_blk[3] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[0] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[0]);     \
     break;                                      \
     case 3:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[0]);     \
     break;                                      \
     case 4:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[7]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[6] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[0]);     \
     }
 
 #else
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[3])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[3])
 
 #define put_block(x)                            \
-    out_blk[0] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[3] = io_swap(((DWORD *)(x))[3])
+    out_blk[0] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[3] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 4:                                     \
-    ((DWORD *)(x))[6] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[7]);     \
     case 3:                                     \
-    ((DWORD *)(x))[4] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[5]);     \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[3]);     \
     }
 
 #endif
 
-const DWORD s_box[] = 
+const unsigned long s_box[] = 
 {
     0x09d0c479, 0x28c8ffe0, 0x84aa6c39, 0x9dad7287, /* 0x000    */
     0x7dff9be3, 0xd4268361, 0xc96da1d4, 0x7974cc93, 
@@ -311,9 +311,9 @@ const DWORD s_box[] =
 /* Halevi of IBM for the neat trick (which I missed) of finding */
 /* the '0' and '1' sequences at the same time.                  */
 
-DWORD gen_mask(DWORD x)
+unsigned long gen_mask(unsigned long x)
 {
-	DWORD  m;
+	unsigned long  m;
 
     /* if m{bn} stands for bit number bn of m, set m{bn} = 1 if */
     /* x{bn} == x{bn+1} for 0 <= bn <= 30.  That is, set a bit  */
@@ -354,9 +354,9 @@ DWORD gen_mask(DWORD x)
 /* My thanks to Louis Granboulan for spotting an error in the   */
 /* previous version of set_key.                                 */
 
-void Mars_set_key(DWORD *l_key,DWORD *vk,const DWORD *in_key, const DWORD key_len)
+void Mars_set_key(unsigned long *l_key,unsigned long *vk,const unsigned long *in_key, const unsigned long key_len)
 {
-	DWORD  i, j, m, w; 
+	unsigned long  i, j, m, w; 
 
     m = key_len / 32 - 1;
 
@@ -397,9 +397,9 @@ void Mars_set_key(DWORD *l_key,DWORD *vk,const DWORD *in_key, const DWORD key_le
     }
 }
 
-void Mars_encrypt(const DWORD *l_key,const DWORD *in_blk, DWORD *out_blk)
+void Mars_encrypt(const unsigned long *l_key,const unsigned long *in_blk, unsigned long *out_blk)
 {
-	DWORD  a, b, c, d, l, m, r;
+	unsigned long  a, b, c, d, l, m, r;
 
     a = in_blk[0] + l_key[0]; b = in_blk[1] + l_key[1];
     c = in_blk[2] + l_key[2]; d = in_blk[3] + l_key[3];
@@ -431,9 +431,9 @@ void Mars_encrypt(const DWORD *l_key,const DWORD *in_blk, DWORD *out_blk)
     out_blk[2] = c - l_key[38]; out_blk[3] = d - l_key[39];
 }
 
-void Mars_decrypt(const DWORD *l_key,const DWORD *in_blk, DWORD *out_blk)
+void Mars_decrypt(const unsigned long *l_key,const unsigned long *in_blk, unsigned long *out_blk)
 {
-	DWORD  a, b, c, d, l, m, r;
+	unsigned long  a, b, c, d, l, m, r;
     
     d = in_blk[0] + l_key[36]; c = in_blk[1] + l_key[37];
     b = in_blk[2] + l_key[38]; a = in_blk[3] + l_key[39];

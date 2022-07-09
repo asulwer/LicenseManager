@@ -32,7 +32,7 @@
 #include "Keccak512_data.h"
 
 extern	void Keccak512_init(KECCAK512_DATA *keccak);
-extern	void Keccak512_data(KECCAK512_DATA *keccak,const BYTE *buffer,DWORD len);
-extern	void Keccak512_finalize(KECCAK512_DATA *keccak,BYTE *hash);
+extern	void Keccak512_data(KECCAK512_DATA *keccak,const unsigned char *buffer,unsigned long len);
+extern	void Keccak512_finalize(KECCAK512_DATA *keccak,unsigned char *hash);
 
 #endif

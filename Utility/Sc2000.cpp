@@ -28,24 +28,24 @@
 #define ROTL32(v,n) (T32((v)<<(n))|((v)>>(32-(n))))
 
 /* S-boxes  (6-bit)(5-bit)  */
-const DWORD S6[64] = {
+const unsigned long S6[64] = {
   47, 59, 25, 42, 15, 23, 28, 39, 26, 38, 36, 19, 60, 24, 29, 56,
   37, 63, 20, 61, 55, 2, 30, 44, 9, 10, 6, 22, 53, 48, 51, 11,
   62, 52, 35, 18, 14, 46, 0, 54, 17, 40, 27, 4, 31, 8, 5, 12,
   3, 16, 41, 34, 33, 7, 45, 49, 50, 58, 1, 21, 43, 57, 32, 13
 };
-const DWORD S5[32] = {
+const unsigned long S5[32] = {
   20, 26, 7, 31, 19, 12, 10, 15, 22, 30, 13, 14, 4, 24, 9, 18,
   27, 11, 1, 21, 6, 16, 2, 28, 23, 5, 8, 3, 0, 17, 29, 25
 };
 
 /* Bit-slice S-Box (4-bit)*/
 /* 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15*/
-const DWORD S4[16] = { 2, 5, 10, 12, 7, 15, 1, 11, 13, 6, 0, 9, 4, 8, 3, 14 };
-const DWORD S4i[16] = { 10, 6, 0, 14, 12, 1, 9, 4, 13, 11, 2, 7, 3, 8, 15, 5 };
+const unsigned long S4[16] = { 2, 5, 10, 12, 7, 15, 1, 11, 13, 6, 0, 9, 4, 8, 3, 14 };
+const unsigned long S4i[16] = { 10, 6, 0, 14, 12, 1, 9, 4, 13, 11, 2, 7, 3, 8, 15, 5 };
 
 /* M-Table */
-const DWORD M[32] = {
+const unsigned long M[32] = {
   0xd0c19225, 0xa5a2240a, 0x1b84d250, 0xb728a4a1,
   0x6a704902, 0x85dddbe6, 0x766ff4a4, 0xecdfe128,
   0xafd13e94, 0xdf837d09, 0xbb27fa52, 0x695059ac,
@@ -65,7 +65,7 @@ const DWORD M[32] = {
 #define _Z_ 2
 #define _W_ 3
 /* Order Table */
-const DWORD Order[12][4] = {
+const unsigned long Order[12][4] = {
   {_A_, _B_, _C_, _D_},
   {_B_, _A_, _D_, _C_},
   {_C_, _D_, _A_, _B_},
@@ -81,7 +81,7 @@ const DWORD Order[12][4] = {
 };
 
 /* Index Table */
-const DWORD Index[9][4] = {
+const unsigned long Index[9][4] = {
   {0, 0, 0, 0},
   {1, 1, 1, 1},
   {2, 2, 2, 2},
@@ -93,9 +93,9 @@ const DWORD Index[9][4] = {
   {2, 1, 2, 1}
 };
 
-void S_func (DWORD a, DWORD * b)
+void S_func (unsigned long a, unsigned long * b)
 {
-  DWORD q, r, s, t, u, v;
+  unsigned long q, r, s, t, u, v;
   q = (a >> 26) & 0x3F;
   r = (a >> 21) & 0x1F;
   s = (a >> 16) & 0x1F;
@@ -117,7 +117,7 @@ void S_func (DWORD a, DWORD * b)
   return;
 }
 
-void M_func (DWORD a, DWORD * b)
+void M_func (unsigned long a, unsigned long * b)
 {
   int i;
   *b = 0;
@@ -130,10 +130,10 @@ void M_func (DWORD a, DWORD * b)
   return;
 }
 
-void L_func (DWORD a, DWORD b, DWORD mask, DWORD * c, DWORD * d)
+void L_func (unsigned long a, unsigned long b, unsigned long mask, unsigned long * c, unsigned long * d)
 {
-  DWORD s, t;
-  DWORD imask = (mask ^ 0xFFFFFFFF);
+  unsigned long s, t;
+  unsigned long imask = (mask ^ 0xFFFFFFFF);
   s = a & mask;
   t = b & imask;
   *c = s ^ b;
@@ -141,9 +141,9 @@ void L_func (DWORD a, DWORD b, DWORD mask, DWORD * c, DWORD * d)
   return;
 }
 
-void F_func (DWORD a, DWORD b, DWORD mask, DWORD * c, DWORD * d)
+void F_func (unsigned long a, unsigned long b, unsigned long mask, unsigned long * c, unsigned long * d)
 {
-  DWORD s, t;
+  unsigned long s, t;
   S_func (a, &s);
   M_func (s, &s);
   S_func (b, &t);
@@ -152,10 +152,10 @@ void F_func (DWORD a, DWORD b, DWORD mask, DWORD * c, DWORD * d)
   return;
 }
 
-void R_func (DWORD a, DWORD b, DWORD c, DWORD d, DWORD mask, DWORD * e,
-        DWORD * f, DWORD * g, DWORD * h)
+void R_func (unsigned long a, unsigned long b, unsigned long c, unsigned long d, unsigned long mask, unsigned long * e,
+        unsigned long * f, unsigned long * g, unsigned long * h)
 {
-  DWORD s, t;
+  unsigned long s, t;
   F_func (c, d, mask, &s, &t);
   *e = a ^ s;
   *f = b ^ t;
@@ -164,10 +164,10 @@ void R_func (DWORD a, DWORD b, DWORD c, DWORD d, DWORD mask, DWORD * e,
   return;
 }
 
-void B_func (DWORD a, DWORD b, DWORD c, DWORD d, DWORD * e, DWORD * f, DWORD * g, DWORD * h)
+void B_func (unsigned long a, unsigned long b, unsigned long c, unsigned long d, unsigned long * e, unsigned long * f, unsigned long * g, unsigned long * h)
 {
-  DWORD s, t;
-  DWORD m = 1;
+  unsigned long s, t;
+  unsigned long m = 1;
   int i;
   *e = 0;
   *f = 0;
@@ -200,10 +200,10 @@ void B_func (DWORD a, DWORD b, DWORD c, DWORD d, DWORD * e, DWORD * f, DWORD * g
   return;
 }
 
-void Bi_func (DWORD a, DWORD b, DWORD c, DWORD d, DWORD * e, DWORD * f, DWORD * g, DWORD * h)
+void Bi_func (unsigned long a, unsigned long b, unsigned long c, unsigned long d, unsigned long * e, unsigned long * f, unsigned long * g, unsigned long * h)
 {
-  DWORD s, t;
-  DWORD m = 1;
+  unsigned long s, t;
+  unsigned long m = 1;
   int i;
   *e = 0;
   *f = 0;
@@ -236,8 +236,8 @@ void Bi_func (DWORD a, DWORD b, DWORD c, DWORD d, DWORD * e, DWORD * f, DWORD * 
   return;
 }
 
-void I_func (DWORD a, DWORD b, DWORD c, DWORD d, DWORD ka, DWORD kb,
-        DWORD kc, DWORD kd, DWORD * e, DWORD * f, DWORD * g, DWORD * h)
+void I_func (unsigned long a, unsigned long b, unsigned long c, unsigned long d, unsigned long ka, unsigned long kb,
+        unsigned long kc, unsigned long kd, unsigned long * e, unsigned long * f, unsigned long * g, unsigned long * h)
 {
   *e = a ^ ka;
   *f = b ^ kb;
@@ -246,9 +246,9 @@ void I_func (DWORD a, DWORD b, DWORD c, DWORD d, DWORD ka, DWORD kb,
   return;
 }
 
-DWORD make_one_imkey (DWORD k1, DWORD k2, DWORD i, DWORD j)
+unsigned long make_one_imkey (unsigned long k1, unsigned long k2, unsigned long i, unsigned long j)
 {
-  DWORD ka, kb, m;
+  unsigned long ka, kb, m;
   ka = k1;
   S_func (ka, &ka);
   M_func (ka, &ka);
@@ -268,10 +268,10 @@ DWORD make_one_imkey (DWORD k1, DWORD k2, DWORD i, DWORD j)
   return (ka);
 }
 
-void make_imkeys (const DWORD * ukey, DWORD keylength, DWORD imkey[4][3])
+void make_imkeys (const unsigned long * ukey, unsigned long keylength, unsigned long imkey[4][3])
 {
-  DWORD kl, k2, k3, k4, k5, k6, k7, k8;
-  DWORD i;
+  unsigned long kl, k2, k3, k4, k5, k6, k7, k8;
+  unsigned long i;
   kl = ukey[0];
   k2 = ukey[1];
   k3 = ukey[2];
@@ -291,9 +291,9 @@ void make_imkeys (const DWORD * ukey, DWORD keylength, DWORD imkey[4][3])
     }
 }
 
-DWORD make_one_ekey (DWORD imkey[4][3], DWORD t, DWORD s)
+unsigned long make_one_ekey (unsigned long imkey[4][3], unsigned long t, unsigned long s)
 {
-  DWORD x, y, z, w;
+  unsigned long x, y, z, w;
   x = imkey[Order[t][_X_]][Index[s][_X_]];
   y = imkey[Order[t][_Y_]][Index[s][_Y_]];
   z = imkey[Order[t][_Z_]][Index[s][_Z_]];
@@ -309,9 +309,9 @@ DWORD make_one_ekey (DWORD imkey[4][3], DWORD t, DWORD s)
   return (x);
 }
 
-void make_ekeys (DWORD imkey[4][3], DWORD num_ekey, DWORD * ekey)
+void make_ekeys (unsigned long imkey[4][3], unsigned long num_ekey, unsigned long * ekey)
 {
-  DWORD n, t, s;
+  unsigned long n, t, s;
   for (n = 0; n < num_ekey; n++)
     {
       t = (n + (n / 36)) % 12;
@@ -320,9 +320,9 @@ void make_ekeys (DWORD imkey[4][3], DWORD num_ekey, DWORD * ekey)
     }
 }
 
-void Sc2000_set_key(DWORD *ek,const DWORD *in_key)
+void Sc2000_set_key(unsigned long *ek,const unsigned long *in_key)
 {
-  DWORD imkey[4][3];
+  unsigned long imkey[4][3];
 
   /* make intermediate key */
   make_imkeys (in_key, 256, imkey);
@@ -331,9 +331,9 @@ void Sc2000_set_key(DWORD *ek,const DWORD *in_key)
   make_ekeys (imkey, 64, ek);
 }
 
-void Sc2000_encrypt(const DWORD *ek,const DWORD *in,DWORD *out)
+void Sc2000_encrypt(const unsigned long *ek,const unsigned long *in,unsigned long *out)
 {
-  DWORD a, b, c, d;
+  unsigned long a, b, c, d;
   a = in[0];
   b = in[1];
   c = in[2];
@@ -378,9 +378,9 @@ void Sc2000_encrypt(const DWORD *ek,const DWORD *in,DWORD *out)
   out[3] = d;
 }
 
-void Sc2000_decrypt(const DWORD *ek,const DWORD *in,DWORD *out)
+void Sc2000_decrypt(const unsigned long *ek,const unsigned long *in,unsigned long *out)
 {
-  DWORD a, b, c, d;
+  unsigned long a, b, c, d;
 
   a = in[0];
   b = in[1];

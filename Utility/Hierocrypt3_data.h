@@ -32,7 +32,7 @@
 
 #define MAX_ROUND (8)
 
-typedef BYTE HC3_KS[MAX_ROUND + 1][8][4];
+typedef unsigned char HC3_KS[MAX_ROUND + 1][8][4];
 
 typedef struct {
 	HC3_KS ks;

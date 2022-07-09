@@ -31,7 +31,7 @@
 * constant parameters
 */
 
-const BYTE sbox[256] =
+const unsigned char sbox[256] =
 {
   0x07, 0xFC, 0x55, 0x70, 0x98, 0x8E, 0x84, 0x4E, 0xBC, 0x75, 0xCE, 0x18,
   0x02, 0xE9, 0x5D, 0x80, 0x1C, 0x60, 0x78, 0x42, 0x9D, 0x2E, 0xF5, 0xE8,
@@ -58,7 +58,7 @@ const BYTE sbox[256] =
 
 };
 
-const BYTE isbox[256] =
+const unsigned char isbox[256] =
 {
   0xB8, 0x49, 0x0C, 0x69, 0xF6, 0xBF, 0x80, 0x00, 0x5B, 0x55, 0x8F, 0x20,
   0xF5, 0x45, 0xA4, 0x5F, 0xC3, 0x44, 0x74, 0x65, 0xCB, 0xF1, 0xFC, 0x2F,
@@ -84,7 +84,7 @@ const BYTE isbox[256] =
   0x01, 0x47, 0xBC, 0xBB
 };
 
-const BYTE hconst[4][4] =
+const unsigned char hconst[4][4] =
 {
   0x5a, 0x82, 0x79, 0x99,
   0x6e, 0xd9, 0xeb, 0xa1,
@@ -102,7 +102,7 @@ const int kconst[3][10] =
   {4, 0, 2, 1, 3, 3, 1, 2, 0, -1}
 };
 
-const BYTE mds[4][4] =
+const unsigned char mds[4][4] =
 {
   {0xc4, 0x65, 0xc8, 0x8b},
   {0x8b, 0xc4, 0x65, 0xc8},
@@ -110,7 +110,7 @@ const BYTE mds[4][4] =
   {0x65, 0xc8, 0x8b, 0xc4}
 };
 
-const BYTE mds_inv[4][4] =
+const unsigned char mds_inv[4][4] =
 {
   {0x82, 0xc4, 0x34, 0xf6},
   {0xf6, 0x82, 0xc4, 0x34},
@@ -134,7 +134,7 @@ const int mdsh_inv[4][4] =
   {0xe, 0xe, 0x6, 0xb}
 };
 
-int poly32_deg (DWORD a)
+int poly32_deg (unsigned long a)
 {
   int n = -1;
   for (; a; a >>= 1)
@@ -142,9 +142,9 @@ int poly32_deg (DWORD a)
   return n;
 }
 
-DWORD poly32_mul (DWORD a, DWORD b)
+unsigned long poly32_mul (unsigned long a, unsigned long b)
 {
-  DWORD c = 0;
+  unsigned long c = 0;
 
   for (; b; b >>= 1, a <<= 1)
     if (b & 1)
@@ -153,11 +153,11 @@ DWORD poly32_mul (DWORD a, DWORD b)
   return c;
 }
 
-DWORD poly32_mod (DWORD a, DWORD b)
+unsigned long poly32_mod (unsigned long a, unsigned long b)
 {
   int da = poly32_deg (a);
   int db = poly32_deg (b);
-  DWORD t;
+  unsigned long t;
 
   if (da < db)
     return a;
@@ -177,10 +177,10 @@ DWORD poly32_mod (DWORD a, DWORD b)
   return a;
 }
 
-void hcrypt_mdsl (BYTE * in, BYTE * out)
+void hcrypt_mdsl (unsigned char * in, unsigned char * out)
 {
   int i, j;
-  DWORD m;
+  unsigned long m;
   for (i = 0; i < 4; i++)
     {
       m = 0;
@@ -188,14 +188,14 @@ void hcrypt_mdsl (BYTE * in, BYTE * out)
         {
           m ^= poly32_mod (poly32_mul (mds[i][j], in[j]), primitiveGF8);
         }
-      out[i] = (BYTE) m;
+      out[i] = (unsigned char) m;
 
     }
 }
 
-void hcrypt_xs (BYTE * in, BYTE * out, const BYTE * k1, const BYTE * k2)
+void hcrypt_xs (unsigned char * in, unsigned char * out, const unsigned char * k1, const unsigned char * k2)
 {
-  BYTE t[4], u[4];
+  unsigned char t[4], u[4];
   int i;
 
   for (i = 0; i < 4; i++)
@@ -216,10 +216,10 @@ void hcrypt_xs (BYTE * in, BYTE * out, const BYTE * k1, const BYTE * k2)
 * op. over GF(2^4)  in MDS_H
 */
 
-void mdsh_mul (BYTE * in, BYTE * out, int x)
+void mdsh_mul (unsigned char * in, unsigned char * out, int x)
 {
   int i;
-  BYTE u[4];
+  unsigned char u[4];
   for (i = 0; i < 4; i++)
     u[i] = 0;
   if (x & 1)
@@ -254,10 +254,10 @@ void mdsh_mul (BYTE * in, BYTE * out, int x)
     out[i] = u[i];
 }
 
-void hcrypt_mdsh (BYTE in[4][4], BYTE out[4][4])
+void hcrypt_mdsh (unsigned char in[4][4], unsigned char out[4][4])
 {
   int i, j, k;
-  BYTE tmp[4];
+  unsigned char tmp[4];
   for (i = 0; i < 4; i++)
     for (j = 0; j < 4; j++)
       out[i][j] = 0;
@@ -272,9 +272,9 @@ void hcrypt_mdsh (BYTE in[4][4], BYTE out[4][4])
     }
 }
 
-void Hierocrypt3_encrypt(const HIEROCRYPT3_DATA *pHd,const BYTE * in,BYTE *out)
+void Hierocrypt3_encrypt(const HIEROCRYPT3_DATA *pHd,const unsigned char * in,unsigned char *out)
 {
-  BYTE t[4][4], u[4][4];
+  unsigned char t[4][4], u[4][4];
   int i, j, r;
   int n;
   for (r = i = 0; i < 4; i++)
@@ -311,10 +311,10 @@ void Hierocrypt3_encrypt(const HIEROCRYPT3_DATA *pHd,const BYTE * in,BYTE *out)
     }
 }
 
-void hcrypt_imdsl (BYTE * in, BYTE * out)
+void hcrypt_imdsl (unsigned char * in, unsigned char * out)
 {
   int i, j;
-  DWORD m;
+  unsigned long m;
   for (i = 0; i < 4; i++)
     {
       m = 0;
@@ -322,13 +322,13 @@ void hcrypt_imdsl (BYTE * in, BYTE * out)
         {
           m ^= poly32_mod (poly32_mul (mds_inv[i][j], in[j]), primitiveGF8);
         }
-      out[i] = (BYTE) m;
+      out[i] = (unsigned char) m;
     }
 }
 
-void hcrypt_ixs (BYTE * in, BYTE * out, BYTE * k1, BYTE * k2)
+void hcrypt_ixs (unsigned char * in, unsigned char * out, unsigned char * k1, unsigned char * k2)
 {
-  BYTE t[4], u[4];
+  unsigned char t[4], u[4];
   int i;
 
   for (i = 0; i < 4; i++)
@@ -346,10 +346,10 @@ void hcrypt_ixs (BYTE * in, BYTE * out, BYTE * k1, BYTE * k2)
     out[i] = isbox[t[i]];       /* sbox */
 }
 
-void hcrypt_imdsh (BYTE in[4][4], BYTE out[4][4])
+void hcrypt_imdsh (unsigned char in[4][4], unsigned char out[4][4])
 {
   int i, j, k;
-  BYTE tmp[4];
+  unsigned char tmp[4];
   for (i = 0; i < 4; i++)
     for (j = 0; j < 4; j++)
       out[i][j] = 0;
@@ -366,9 +366,9 @@ void hcrypt_imdsh (BYTE in[4][4], BYTE out[4][4])
     }
 }
 
-void Hierocrypt3_decrypt(const HIEROCRYPT3_DATA *pHd,const BYTE * in,BYTE *out)
+void Hierocrypt3_decrypt(const HIEROCRYPT3_DATA *pHd,const unsigned char * in,unsigned char *out)
 {
-  BYTE t[4][4], u[4][4];
+  unsigned char t[4][4], u[4][4];
   int i, j, r;
   int n;
   for (r = i = 0; i < 4; i++)
@@ -382,17 +382,17 @@ void Hierocrypt3_decrypt(const HIEROCRYPT3_DATA *pHd,const BYTE * in,BYTE *out)
 
   for (r = 0; r < n; r++)
     {
-      hcrypt_ixs (&t[0][0], &u[0][0], (BYTE *) &pHd->dks[r][0][0], (BYTE *) &pHd->dks[r][4][0]);
-      hcrypt_ixs (&t[1][0], &u[1][0], (BYTE *) &pHd->dks[r][1][0], (BYTE *) &pHd->dks[r][5][0]);
-      hcrypt_ixs (&t[2][0], &u[2][0], (BYTE *) &pHd->dks[r][2][0], (BYTE *) &pHd->dks[r][6][0]);
-      hcrypt_ixs (&t[3][0], &u[3][0], (BYTE *) &pHd->dks[r][3][0], (BYTE *) &pHd->dks[r][7][0]);
+      hcrypt_ixs (&t[0][0], &u[0][0], (unsigned char *) &pHd->dks[r][0][0], (unsigned char *) &pHd->dks[r][4][0]);
+      hcrypt_ixs (&t[1][0], &u[1][0], (unsigned char *) &pHd->dks[r][1][0], (unsigned char *) &pHd->dks[r][5][0]);
+      hcrypt_ixs (&t[2][0], &u[2][0], (unsigned char *) &pHd->dks[r][2][0], (unsigned char *) &pHd->dks[r][6][0]);
+      hcrypt_ixs (&t[3][0], &u[3][0], (unsigned char *) &pHd->dks[r][3][0], (unsigned char *) &pHd->dks[r][7][0]);
       hcrypt_imdsh (u, t);
     }
 
-  hcrypt_ixs (&t[0][0], &u[0][0], (BYTE *) &pHd->dks[r][0][0], (BYTE *) &pHd->dks[n][4][0]);
-  hcrypt_ixs (&t[1][0], &u[1][0], (BYTE *) &pHd->dks[r][1][0], (BYTE *) &pHd->dks[n][5][0]);
-  hcrypt_ixs (&t[2][0], &u[2][0], (BYTE *) &pHd->dks[r][2][0], (BYTE *) &pHd->dks[n][6][0]);
-  hcrypt_ixs (&t[3][0], &u[3][0], (BYTE *) &pHd->dks[r][3][0], (BYTE *) &pHd->dks[n][7][0]);
+  hcrypt_ixs (&t[0][0], &u[0][0], (unsigned char *) &pHd->dks[r][0][0], (unsigned char *) &pHd->dks[n][4][0]);
+  hcrypt_ixs (&t[1][0], &u[1][0], (unsigned char *) &pHd->dks[r][1][0], (unsigned char *) &pHd->dks[n][5][0]);
+  hcrypt_ixs (&t[2][0], &u[2][0], (unsigned char *) &pHd->dks[r][2][0], (unsigned char *) &pHd->dks[n][6][0]);
+  hcrypt_ixs (&t[3][0], &u[3][0], (unsigned char *) &pHd->dks[r][3][0], (unsigned char *) &pHd->dks[n][7][0]);
 
   for (r = i = 0; i < 4; i++)
     {
@@ -404,7 +404,7 @@ void Hierocrypt3_decrypt(const HIEROCRYPT3_DATA *pHd,const BYTE * in,BYTE *out)
     }
 }
 
-void hcrypt_keyf (BYTE * in, BYTE * fout, BYTE * fkey)
+void hcrypt_keyf (unsigned char * in, unsigned char * fout, unsigned char * fkey)
 {
   int i;
   /* F in */
@@ -423,9 +423,9 @@ void hcrypt_keyf (BYTE * in, BYTE * fout, BYTE * fkey)
   fout[7] ^= fout[1];
 }
 
-void swap_key (BYTE * l, BYTE * r)
+void swap_key (unsigned char * l, unsigned char * r)
 {
-  BYTE t;
+  unsigned char t;
   int i;
   for (i = 0; i < 8; i++)
     {
@@ -435,10 +435,10 @@ void swap_key (BYTE * l, BYTE * r)
     }
 }
 
-void hcrypt_keyp (BYTE k[4][8], BYTE kout[8][4], int index)
+void hcrypt_keyp (unsigned char k[4][8], unsigned char kout[8][4], int index)
 {
   int i;
-  BYTE fout[8];
+  unsigned char fout[8];
   /* P(32) */
   for (i = 0; i < 4; i++)
     {
@@ -495,10 +495,10 @@ void hcrypt_keyp (BYTE k[4][8], BYTE kout[8][4], int index)
   swap_key (&k[0][0], &k[1][0]);
 }
 
-void hcrypt_keyc (BYTE k[4][8], BYTE kout[8][4], int index)
+void hcrypt_keyc (unsigned char k[4][8], unsigned char kout[8][4], int index)
 {
   int i;
-  BYTE fout[8];
+  unsigned char fout[8];
   swap_key (&k[0][0], &k[1][0]);
   hcrypt_keyf (&k[1][0], fout, &k[2][0]);
 
@@ -554,10 +554,10 @@ void hcrypt_keyc (BYTE k[4][8], BYTE kout[8][4], int index)
     }
 }
 
-void Hierocrypt3_set_key(HIEROCRYPT3_DATA *pHd,const BYTE* key)
+void Hierocrypt3_set_key(HIEROCRYPT3_DATA *pHd,const unsigned char* key)
 {
-  BYTE k[4][8];
-  BYTE fout[8];
+  unsigned char k[4][8];
+  unsigned char fout[8];
   int i, j, pos, r, n;
 
   pos = 0;

@@ -32,7 +32,7 @@
 
 typedef struct {
 	int		r;
-	BYTE	rk[8 * 26 + 16];
+	unsigned char	rk[8 * 26 + 16];
 } CLEFIA_DATA;
 
 #endif

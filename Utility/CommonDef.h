@@ -33,8 +33,8 @@ typedef enum {
 	OBFUNC_STOP
 } OBFUNC_RETV;
 
-typedef	void (*perc_callback_t)(void *desc,BYTE perc);
-typedef	BOOL (*test_callback_t)(void *desc);
+typedef	void (*perc_callback_t)(void *desc,unsigned char perc);
+typedef	int (*test_callback_t)(void *desc);
 
 #define	MIN_PASSW_SIZE			8
 #define	MAX_PASSW_SIZE			32 //this is the max unless we change some of the algorithms to accept larger passwords

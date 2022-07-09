@@ -35,7 +35,7 @@ typedef unsigned __int64	QWORD;
 #define cKeccakR    512
 
 typedef struct {
-	BYTE	state[cKeccakB / 8];
+	unsigned char	state[cKeccakB / 8];
 	int		bitsInQueue;
 } KECCAK512_DATA;
 

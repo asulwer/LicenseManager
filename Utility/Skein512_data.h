@@ -39,15 +39,15 @@ typedef unsigned __int64	QWORD;
 #define  SKEIN_512_BLOCK_BYTES ( 8*SKEIN_512_STATE_WORDS)
 
 typedef struct {
-	DWORD  hashBitLen;				/* size of hash result, in bits */
-	DWORD  bCnt;					/* current byte count in buffer b[] */
+	unsigned long  hashBitLen;				/* size of hash result, in bits */
+	unsigned long  bCnt;					/* current byte count in buffer b[] */
 	QWORD  T[SKEIN_MODIFIER_WORDS];	/* tweak words: T[0]=byte cnt, T[1]=flags */
 } Skein_Ctxt_Hdr_t;
 
 typedef struct {
 	Skein_Ctxt_Hdr_t h;							/* common header context variables */
 	QWORD			X[SKEIN_512_STATE_WORDS];	/* chaining variables */
-	BYTE			b[SKEIN_512_BLOCK_BYTES];	/* partial block buffer (8-byte aligned) */
+	unsigned char			b[SKEIN_512_BLOCK_BYTES];	/* partial block buffer (8-byte aligned) */
 } SKEIN512_DATA;
 
 #endif

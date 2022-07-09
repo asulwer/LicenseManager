@@ -36,25 +36,25 @@
 #define ONE_STEP
 
 typedef struct {
-	DWORD	k_len;
-	DWORD	l_key[40];
-	DWORD	s_key[4];
+	unsigned long	k_len;
+	unsigned long	l_key[40];
+	unsigned long	s_key[4];
 
 	#ifdef  Q_TABLES
-	DWORD	qt_gen;
-	BYTE	q_tab[2][256];
+	unsigned long	qt_gen;
+	unsigned char	q_tab[2][256];
 	#endif
 
 	#ifdef  M_TABLE
-	DWORD	mt_gen;
-	DWORD	m_tab[4][256];
+	unsigned long	mt_gen;
+	unsigned long	m_tab[4][256];
 	#endif
 
 	#ifdef  MK_TABLE
 	#ifdef  ONE_STEP
-	DWORD	mk_tab[4][256];
+	unsigned long	mk_tab[4][256];
 	#else
-	BYTE	sb[4][256];
+	unsigned char	sb[4][256];
 	#endif
 	#endif
 } TWOFISH_DATA;

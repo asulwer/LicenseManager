@@ -26,9 +26,9 @@
 #include "CSPRNG.h"
 #include "Scramble_data.h"
 
-void Scramble_build_list(CSPRNG_DATA *pCd,const DWORD count,const DWORD max,DWORD *list)
+void Scramble_build_list(CSPRNG_DATA *pCd,const unsigned long count,const unsigned long max,unsigned long *list)
 {
-	DWORD tCount=count;
+	unsigned long tCount=count;
 
 	while(tCount)
 	{
@@ -43,7 +43,7 @@ void Scramble_build_list(CSPRNG_DATA *pCd,const DWORD count,const DWORD max,DWOR
 	}
 }
 
-OBFUNC_RETV Scramble_seed(SCRAMBLE_DATA *pSd,const DWORD len,const BYTE *passw,DWORD nonce)
+OBFUNC_RETV Scramble_seed(SCRAMBLE_DATA *pSd,const unsigned long len,const unsigned char *passw,unsigned long nonce)
 {
 	memset(pSd,0,sizeof(SCRAMBLE_DATA));
 
@@ -53,8 +53,8 @@ OBFUNC_RETV Scramble_seed(SCRAMBLE_DATA *pSd,const DWORD len,const BYTE *passw,D
 	//pSd->len = len; //put back in IF we are doing a divisable block of 16 bytes at a time (ex, 16, 32, 48, etc)
 	pSd->len = len - (len % 16); //remove the ending partial block IF it exists
 	
-	// 50% scramble : (len/2)*2*sizeof(DWORD)
-	if(pSd->list=(DWORD *) malloc(len*sizeof(DWORD)))
+	// 50% scramble : (len/2)*2*sizeof(unsigned long)
+	if(pSd->list=(unsigned long *) malloc(len*sizeof(unsigned long)))
 	{
 		Scramble_build_list(&pSd->cd, pSd->len >> 1, pSd->len, pSd->list);
 		return(OBFUNC_OK);
@@ -72,19 +72,19 @@ void Scramble_end(SCRAMBLE_DATA *pSd)
 
 #define	REFRESH_COUNTDOWN	10000
 
-OBFUNC_RETV Seg_scramble(SCRAMBLE_DATA *pSd,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
+OBFUNC_RETV Seg_scramble(SCRAMBLE_DATA *pSd,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
 {
-	DWORD	tot=pSd->len>>1;	// 50%
-	DWORD	*pL=pSd->list;
-	DWORD	index;		
-	BYTE	lastPerc=0;
-	WORD	refCount=REFRESH_COUNTDOWN;
+	unsigned long	tot=pSd->len>>1;	// 50%
+	unsigned long	*pL=pSd->list;
+	unsigned long	index;		
+	unsigned char	lastPerc=0;
+	unsigned short	refCount=REFRESH_COUNTDOWN;
 
 	for(index=0;index<tot;index++)
 	{
-		DWORD	idx0=*(pL++);
-		DWORD	idx1=*(pL++);
-		BYTE	tmp;
+		unsigned long	idx0=*(pL++);
+		unsigned long	idx1=*(pL++);
+		unsigned char	tmp;
 
 		tmp=buf[idx0];
 		buf[idx0]=buf[idx1];
@@ -96,7 +96,7 @@ OBFUNC_RETV Seg_scramble(SCRAMBLE_DATA *pSd,BYTE *buf,perc_callback_t pFunc,void
 
 			if(pFunc)
 			{
-				tmp=(BYTE) ((((float) index)/((float) tot))*((float) 100));
+				tmp=(unsigned char) ((((float) index)/((float) tot))*((float) 100));
 				if(tmp>lastPerc)
 				{
 					lastPerc=tmp;
@@ -115,19 +115,19 @@ OBFUNC_RETV Seg_scramble(SCRAMBLE_DATA *pSd,BYTE *buf,perc_callback_t pFunc,void
 	return(OBFUNC_OK);
 }
 
-OBFUNC_RETV Seg_descramble(SCRAMBLE_DATA *pSd,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
+OBFUNC_RETV Seg_descramble(SCRAMBLE_DATA *pSd,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
 {
-	DWORD	tot=pSd->len>>1;	// 50%
-	DWORD	*pL=&pSd->list[pSd->len-1];
-	DWORD	index;		
-	BYTE	lastPerc=0;
-	WORD	refCount=REFRESH_COUNTDOWN;
+	unsigned long	tot=pSd->len>>1;	// 50%
+	unsigned long	*pL=&pSd->list[pSd->len-1];
+	unsigned long	index;		
+	unsigned char	lastPerc=0;
+	unsigned short	refCount=REFRESH_COUNTDOWN;
 
 	for(index=0;index<tot;index++)
 	{
-		DWORD	idx1=*(pL--);
-		DWORD	idx0=*(pL--);
-		BYTE	tmp;
+		unsigned long	idx1=*(pL--);
+		unsigned long	idx0=*(pL--);
+		unsigned char	tmp;
 
 		tmp=buf[idx0];
 		buf[idx0]=buf[idx1];
@@ -139,7 +139,7 @@ OBFUNC_RETV Seg_descramble(SCRAMBLE_DATA *pSd,BYTE *buf,perc_callback_t pFunc,vo
 
 			if(pFunc)
 			{
-				tmp=(BYTE) ((((float) index)/((float) tot))*((float) 100));
+				tmp=(unsigned char) ((((float) index)/((float) tot))*((float) 100));
 				if(tmp>lastPerc)
 				{
 					lastPerc=tmp;

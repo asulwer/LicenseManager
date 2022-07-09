@@ -47,11 +47,11 @@ typedef struct {
 } ANUBIS_STATIC_DATA;
 
 typedef struct {
-	BYTE	key[34*16];
+	unsigned char	key[34*16];
 } CAMELLIA_STATIC_DATA;
 
 typedef struct {	
-	DWORD	key[96];
+	unsigned long	key[96];
 } CAST256_STATIC_DATA;
 
 typedef struct {
@@ -71,16 +71,16 @@ typedef struct {
 } IDEANXT128_STATIC_DATA;
 
 typedef struct {
-	DWORD	key[40];
-	DWORD	vk[47];
+	unsigned long	key[40];
+	unsigned long	vk[47];
 } MARS_STATIC_DATA;
 
 typedef struct {
-	DWORD	key[44];
+	unsigned long	key[44];
 } RC6_STATIC_DATA;
 
 typedef struct {
-	DWORD	key[RKLENGTH(256)];
+	unsigned long	key[RKLENGTH(256)];
 	int		nrounds;
 } RIJNDAEL_STATIC_DATA;
 
@@ -89,11 +89,11 @@ typedef struct {
 } SAFERP_STATIC_DATA;
 
 typedef struct {
-	DWORD	key[64];
+	unsigned long	key[64];
 } SC2000_STATIC_DATA;
 
 typedef struct {
-	DWORD	key[140];
+	unsigned long	key[140];
 } SERPENT_STATIC_DATA;
 
 typedef struct {
@@ -105,7 +105,7 @@ typedef struct {
 } TWOFISH_STATIC_DATA;
 
 typedef struct {
-	BYTE	key[288];
+	unsigned char	key[288];
 } UNICORNA_STATIC_DATA;
 
 typedef struct {

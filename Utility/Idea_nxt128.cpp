@@ -30,7 +30,7 @@
 
 #define NXT128_BLOCK_SIZE 16
 
-const DWORD tbsm0_128[512] = {
+const unsigned long tbsm0_128[512] = {
     0x5d5de7bb, 0xba8dd269, 0xdede9ba4, 0x458a6fcb, 0x00000000, 0x00000000,
     0xb7b72008, 0x97d7a7af, 0xd3d38c23, 0x5fbe95b6, 0xcacaa7ab, 0x6dda65ce,
     0x3c3c4411, 0x78f01e0f, 0x0d0d1787, 0x1a34fa7d, 0xc3c3bc2f, 0x7ffe9db2,
@@ -118,7 +118,7 @@ const DWORD tbsm0_128[512] = {
     0x24246c1b, 0x48901209, 0x16163af2, 0x2c580bf9, 0xc6c6b3ae, 0x75ea63cd,
     0x6161a3aa, 0xc27dcc66};
 
-const DWORD tbsm1_128[512] = {
+const unsigned long tbsm1_128[512] = {
     0x5de7bbba, 0x8dd2695d, 0xde9ba445, 0x8a6fcbde, 0x00000000, 0x00000000,
     0xb7200897, 0xd7a7afb7, 0xd38c235f, 0xbe95b6d3, 0xcaa7ab6d, 0xda65ceca,
     0x3c441178, 0xf01e0f3c, 0x0d17871a, 0x34fa7d0d, 0xc3bc2f7f, 0xfe9db2c3,
@@ -206,7 +206,7 @@ const DWORD tbsm1_128[512] = {
     0x246c1b48, 0x90120924, 0x163af22c, 0x580bf916, 0xc6b3ae75, 0xea63cdc6,
     0x61a3aac2, 0x7dcc6661};
 
-const DWORD tbsm2_128[512] = {
+const unsigned long tbsm2_128[512] = {
     0x5dbbba8d, 0xd2695de7, 0xdea4458a, 0x6fcbde9b, 0x00000000, 0x00000000,
     0xb70897d7, 0xa7afb720, 0xd3235fbe, 0x95b6d38c, 0xcaab6dda, 0x65cecaa7,
     0x3c1178f0, 0x1e0f3c44, 0x0d871a34, 0xfa7d0d17, 0xc32f7ffe, 0x9db2c3bc,
@@ -294,7 +294,7 @@ const DWORD tbsm2_128[512] = {
     0x241b4890, 0x1209246c, 0x16f22c58, 0x0bf9163a, 0xc6ae75ea, 0x63cdc6b3,
     0x61aac27d, 0xcc6661a3};
 
-const DWORD tbsm3_128[512] = {
+const unsigned long tbsm3_128[512] = {
     0x5dba8dd2, 0x695de7bb, 0xde458a6f, 0xcbde9ba4, 0x00000000, 0x00000000,
     0xb797d7a7, 0xafb72008, 0xd35fbe95, 0xb6d38c23, 0xca6dda65, 0xcecaa7ab,
     0x3c78f01e, 0x0f3c4411, 0x0d1a34fa, 0x7d0d1787, 0xc37ffe9d, 0xb2c3bc2f,
@@ -382,7 +382,7 @@ const DWORD tbsm3_128[512] = {
     0x24489012, 0x09246c1b, 0x162c580b, 0xf9163af2, 0xc675ea63, 0xcdc6b3ae,
     0x61c27dcc, 0x6661a3aa};
 
-const DWORD tbsm4_128[512] = {
+const unsigned long tbsm4_128[512] = {
     0x5d8dd269, 0x5de7bbba, 0xde8a6fcb, 0xde9ba445, 0x00000000, 0x00000000,
     0xb7d7a7af, 0xb7200897, 0xd3be95b6, 0xd38c235f, 0xcada65ce, 0xcaa7ab6d,
     0x3cf01e0f, 0x3c441178, 0x0d34fa7d, 0x0d17871a, 0xc3fe9db2, 0xc3bc2f7f,
@@ -470,7 +470,7 @@ const DWORD tbsm4_128[512] = {
     0x24901209, 0x246c1b48, 0x16580bf9, 0x163af22c, 0xc6ea63cd, 0xc6b3ae75,
     0x617dcc66, 0x61a3aac2};
 
-const DWORD tbsm5_128[512] = {
+const unsigned long tbsm5_128[512] = {
     0x5dd2695d, 0xe7bbba8d, 0xde6fcbde, 0x9ba4458a, 0x00000000, 0x00000000,
     0xb7a7afb7, 0x200897d7, 0xd395b6d3, 0x8c235fbe, 0xca65ceca, 0xa7ab6dda,
     0x3c1e0f3c, 0x441178f0, 0x0dfa7d0d, 0x17871a34, 0xc39db2c3, 0xbc2f7ffe,
@@ -558,7 +558,7 @@ const DWORD tbsm5_128[512] = {
     0x24120924, 0x6c1b4890, 0x160bf916, 0x3af22c58, 0xc663cdc6, 0xb3ae75ea,
     0x61cc6661, 0xa3aac27d};
 
-const DWORD tbsm6_128[512] = {
+const unsigned long tbsm6_128[512] = {
     0x5d695de7, 0xbbba8dd2, 0xdecbde9b, 0xa4458a6f, 0x00000000, 0x00000000,
     0xb7afb720, 0x0897d7a7, 0xd3b6d38c, 0x235fbe95, 0xcacecaa7, 0xab6dda65,
     0x3c0f3c44, 0x1178f01e, 0x0d7d0d17, 0x871a34fa, 0xc3b2c3bc, 0x2f7ffe9d,
@@ -646,7 +646,7 @@ const DWORD tbsm6_128[512] = {
     0x2409246c, 0x1b489012, 0x16f9163a, 0xf22c580b, 0xc6cdc6b3, 0xae75ea63,
     0x616661a3, 0xaac27dcc};
 
-const DWORD tbsm7_128[512] = {
+const unsigned long tbsm7_128[512] = {
     0xe75d5d5d, 0x5d5d5d5d, 0x9bdedede, 0xdededede, 0x00000000, 0x00000000,
     0x20b7b7b7, 0xb7b7b7b7, 0x8cd3d3d3, 0xd3d3d3d3, 0xa7cacaca, 0xcacacaca,
     0x443c3c3c, 0x3c3c3c3c, 0x170d0d0d, 0x0d0d0d0d, 0xbcc3c3c3, 0xc3c3c3c3,
@@ -734,7 +734,7 @@ const DWORD tbsm7_128[512] = {
     0x6c242424, 0x24242424, 0x3a161616, 0x16161616, 0xb3c6c6c6, 0xc6c6c6c6,
     0xa3616161, 0x61616161};
 
-const DWORD tbs0_128[256] = {
+const unsigned long tbs0_128[256] = {
     0x5d000000, 0xde000000, 0x00000000, 0xb7000000, 0xd3000000, 0xca000000,
     0x3c000000, 0x0d000000, 0xc3000000, 0xf8000000, 0xcb000000, 0x8d000000,
     0x76000000, 0x89000000, 0xaa000000, 0x12000000, 0x88000000, 0x22000000,
@@ -779,7 +779,7 @@ const DWORD tbs0_128[256] = {
     0xa3000000, 0x2a000000, 0x70000000, 0xff000000, 0xba000000, 0x07000000,
     0x24000000, 0x16000000, 0xc6000000, 0x61000000};
 
-const DWORD tbs1_128[256] = {
+const unsigned long tbs1_128[256] = {
     0x005d0000, 0x00de0000, 0x00000000, 0x00b70000, 0x00d30000, 0x00ca0000,
     0x003c0000, 0x000d0000, 0x00c30000, 0x00f80000, 0x00cb0000, 0x008d0000,
     0x00760000, 0x00890000, 0x00aa0000, 0x00120000, 0x00880000, 0x00220000,
@@ -824,7 +824,7 @@ const DWORD tbs1_128[256] = {
     0x00a30000, 0x002a0000, 0x00700000, 0x00ff0000, 0x00ba0000, 0x00070000,
     0x00240000, 0x00160000, 0x00c60000, 0x00610000};
 
-const WORD tbs2_128[256] = {
+const unsigned short tbs2_128[256] = {
     0x5d00, 0xde00, 0x0000, 0xb700, 0xd300, 0xca00, 0x3c00, 0x0d00, 0xc300,
     0xf800, 0xcb00, 0x8d00, 0x7600, 0x8900, 0xaa00, 0x1200, 0x8800, 0x2200,
     0x4f00, 0xdb00, 0x6d00, 0x4700, 0xe400, 0x4c00, 0x7800, 0x9a00, 0x4900,
@@ -855,7 +855,7 @@ const WORD tbs2_128[256] = {
     0x0600, 0x6c00, 0x1f00, 0xa300, 0x2a00, 0x7000, 0xff00, 0xba00, 0x0700,
     0x2400, 0x1600, 0xc600, 0x6100};
 
-const BYTE tbs3_128[256] = {
+const unsigned char tbs3_128[256] = {
     0x5d, 0xde, 0x00, 0xb7, 0xd3, 0xca, 0x3c, 0x0d, 0xc3, 0xf8, 0xcb, 0x8d,
     0x76, 0x89, 0xaa, 0x12, 0x88, 0x22, 0x4f, 0xdb, 0x6d, 0x47, 0xe4, 0x4c,
     0x78, 0x9a, 0x49, 0x93, 0xc4, 0xc0, 0x86, 0x13, 0xa9, 0x20, 0x53, 0x1c,
@@ -969,13 +969,13 @@ const BYTE tbs3_128[256] = {
     x3 ^= f1;       \
 }
 
-void Ideanxt128_encrypt(const nxt128_ctx *ctx,const BYTE *in,BYTE *out)
+void Ideanxt128_encrypt(const nxt128_ctx *ctx,const unsigned char *in,unsigned char *out)
 {
-    DWORD x0, x1, x2, x3;
-    DWORD tmp0, tmp1;
-    DWORD f0, f1;
-    DWORD smu0, smu1;
-    DWORD *rk;
+    unsigned long x0, x1, x2, x3;
+    unsigned long tmp0, tmp1;
+    unsigned long f0, f1;
+    unsigned long smu0, smu1;
+    unsigned long *rk;
 
 #ifndef NXT128_UNROLL_LOOPS
     int i;
@@ -986,7 +986,7 @@ void Ideanxt128_encrypt(const nxt128_ctx *ctx,const BYTE *in,BYTE *out)
     PACK32(in +  8, &x2);
     PACK32(in + 12, &x3);
 
-    rk = (DWORD *) ctx->rk;
+    rk = (unsigned long *) ctx->rk;
 
 #ifdef NXT128_UNROLL_LOOPS
 #if NXT128_TOTAL_ROUNDS == 16
@@ -1013,13 +1013,13 @@ void Ideanxt128_encrypt(const nxt128_ctx *ctx,const BYTE *in,BYTE *out)
     UNPACK32(x3, out + 12);
 }
 
-void Ideanxt128_decrypt(const nxt128_ctx *ctx,const BYTE *in,BYTE *out)
+void Ideanxt128_decrypt(const nxt128_ctx *ctx,const unsigned char *in,unsigned char *out)
 {
-    DWORD x0, x1, x2, x3;
-    DWORD tmp0, tmp1;
-    DWORD f0, f1;
-    DWORD smu0, smu1;
-    DWORD *rk;
+    unsigned long x0, x1, x2, x3;
+    unsigned long tmp0, tmp1;
+    unsigned long f0, f1;
+    unsigned long smu0, smu1;
+    unsigned long *rk;
 
 #ifndef NXT128_UNROLL_LOOPS
     int i;
@@ -1030,7 +1030,7 @@ void Ideanxt128_decrypt(const nxt128_ctx *ctx,const BYTE *in,BYTE *out)
     PACK32(in +  8, &x2);
     PACK32(in + 12, &x3);
 
-    rk = ((DWORD *) ctx->rk) + 4 * (NXT128_TOTAL_ROUNDS - 1);
+    rk = ((unsigned long *) ctx->rk) + 4 * (NXT128_TOTAL_ROUNDS - 1);
 
 #ifdef NXT128_UNROLL_LOOPS
 #if NXT128_TOTAL_ROUNDS == 16
@@ -1069,31 +1069,31 @@ void Ideanxt128_decrypt(const nxt128_ctx *ctx,const BYTE *in,BYTE *out)
     *(y + 7) = *(x + 1) ^ *(x + 3) ^ *(x + 5); \
 }
 
-void nxt128_dnl128(const BYTE *mkey,DWORD *reg,DWORD *rkey,BYTE eq)
+void nxt128_dnl128(const unsigned char *mkey,unsigned long *reg,unsigned long *rkey,unsigned char eq)
 {
-    DWORD t0[8];
-    DWORD t1[8];
-    DWORD dkey32[8];
-    DWORD x0, x1, x2, x3;
-    DWORD tmp0, tmp1;
-    DWORD smu0, smu1;
-    DWORD f0, f1;
-    DWORD *rk;
-    DWORD lfsr_value;
-    BYTE dkey[32];
+    unsigned long t0[8];
+    unsigned long t1[8];
+    unsigned long dkey32[8];
+    unsigned long x0, x1, x2, x3;
+    unsigned long tmp0, tmp1;
+    unsigned long smu0, smu1;
+    unsigned long f0, f1;
+    unsigned long *rk;
+    unsigned long lfsr_value;
+    unsigned char dkey[32];
     int i;
 
     /* D-part */
     for (i = 0; i < 10; i++) {
         LFSR(reg, lfsr_value);
-        dkey[0 + i * 3] = mkey[0 + i * 3] ^ ((BYTE) (lfsr_value >> 16));
-        dkey[1 + i * 3] = mkey[1 + i * 3] ^ ((BYTE) (lfsr_value >> 8));
-        dkey[2 + i * 3] = mkey[2 + i * 3] ^ ((BYTE) (lfsr_value));
+        dkey[0 + i * 3] = mkey[0 + i * 3] ^ ((unsigned char) (lfsr_value >> 16));
+        dkey[1 + i * 3] = mkey[1 + i * 3] ^ ((unsigned char) (lfsr_value >> 8));
+        dkey[2 + i * 3] = mkey[2 + i * 3] ^ ((unsigned char) (lfsr_value));
     }
 
     LFSR(reg, lfsr_value);
-    dkey[30] = mkey[30] ^ ((BYTE) (lfsr_value >> 16));
-    dkey[31] = mkey[31] ^ ((BYTE) (lfsr_value >> 8));
+    dkey[30] = mkey[30] ^ ((unsigned char) (lfsr_value >> 16));
+    dkey[31] = mkey[31] ^ ((unsigned char) (lfsr_value >> 8));
 
     /* NL128-part */
     rk = dkey32;
@@ -1161,14 +1161,14 @@ void nxt128_dnl128(const BYTE *mkey,DWORD *reg,DWORD *rkey,BYTE eq)
     rkey[3] = x3;
 }
 
-void Ideanxt128_set_key(nxt128_ctx *ctx,const BYTE *key,const WORD key_len)
+void Ideanxt128_set_key(nxt128_ctx *ctx,const unsigned char *key,const unsigned short key_len)
 {
-    const WORD ek = 256;
-    BYTE pk[32];
-    BYTE mk[32];
-    DWORD reg;
+    const unsigned short ek = 256;
+    unsigned char pk[32];
+    unsigned char mk[32];
+    unsigned long reg;
     int i;
-    BYTE eq;
+    unsigned char eq;
 
     //assert((key_len % 8 == 0) && (key_len <= 256));
 

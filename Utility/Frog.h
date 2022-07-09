@@ -32,8 +32,8 @@
 
 #include "Frog_data.h"
 
-extern	void Frog_set_key(FROG_DATA *pFd,const DWORD *in_key,const DWORD key_len);
-extern	void Frog_encrypt(const FROG_DATA *pFd,const DWORD in_blk[4], DWORD out_blk[4]);
-extern	void Frog_decrypt(const FROG_DATA *pFd,const DWORD in_blk[4], DWORD out_blk[4]);
+extern	void Frog_set_key(FROG_DATA *pFd,const unsigned long *in_key,const unsigned long key_len);
+extern	void Frog_encrypt(const FROG_DATA *pFd,const unsigned long in_blk[4], unsigned long out_blk[4]);
+extern	void Frog_decrypt(const FROG_DATA *pFd,const unsigned long in_blk[4], unsigned long out_blk[4]);
 
 #endif

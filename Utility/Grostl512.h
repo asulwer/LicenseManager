@@ -32,7 +32,7 @@
 #include "Grostl512_data.h"
 
 extern	void Grostl512_init(GROSTL512_DATA *grostl);
-extern	void Grostl512_data(GROSTL512_DATA *grostl,const BYTE *buffer,DWORD len);
-extern	void Grostl512_finalize(GROSTL512_DATA *grostl,BYTE *hash);
+extern	void Grostl512_data(GROSTL512_DATA *grostl,const unsigned char *buffer,unsigned long len);
+extern	void Grostl512_finalize(GROSTL512_DATA *grostl,unsigned char *hash);
 
 #endif

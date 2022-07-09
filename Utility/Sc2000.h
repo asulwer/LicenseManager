@@ -30,8 +30,8 @@
 // ** 128bit block size
 // ** 256bit key
 
-extern	void Sc2000_set_key(DWORD *ek,const DWORD *in_key);
-extern	void Sc2000_encrypt(const DWORD *ek,const DWORD *in, DWORD *out);
-extern	void Sc2000_decrypt(const DWORD *ek,const DWORD *in, DWORD *out);
+extern	void Sc2000_set_key(unsigned long *ek,const unsigned long *in_key);
+extern	void Sc2000_encrypt(const unsigned long *ek,const unsigned long *in, unsigned long *out);
+extern	void Sc2000_decrypt(const unsigned long *ek,const unsigned long *in, unsigned long *out);
 
 #endif

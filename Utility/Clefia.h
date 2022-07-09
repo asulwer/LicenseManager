@@ -32,8 +32,8 @@
 
 #include "Clefia_data.h"
 
-extern	void Clefia_set_key(CLEFIA_DATA *pCd,const BYTE *skey,const int key_bitlen);
-extern	void Clefia_encrypt(const CLEFIA_DATA *pCd,const BYTE *pt,BYTE *ct);
-extern	void Clefia_decrypt(const CLEFIA_DATA *pCd,const BYTE *ct,BYTE *pt);
+extern	void Clefia_set_key(CLEFIA_DATA *pCd,const unsigned char *skey,const int key_bitlen);
+extern	void Clefia_encrypt(const CLEFIA_DATA *pCd,const unsigned char *pt,unsigned char *ct);
+extern	void Clefia_decrypt(const CLEFIA_DATA *pCd,const unsigned char *ct,unsigned char *pt);
 
 #endif

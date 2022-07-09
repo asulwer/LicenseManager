@@ -88,25 +88,25 @@
 #define txt2itxt(txt, itxt) {                 \
 int i;                                        \
 for (i = 0; i < 8; i++){                      \
-  itxt[i] =  (DWORD)txt[4*i]          |  \
-            ((DWORD)txt[4*i+1] <<  8) |  \
-            ((DWORD)txt[4*i+2] << 16) |  \
-            ((DWORD)txt[4*i+3] << 24);   \
+  itxt[i] =  (unsigned long)txt[4*i]          |  \
+            ((unsigned long)txt[4*i+1] <<  8) |  \
+            ((unsigned long)txt[4*i+2] << 16) |  \
+            ((unsigned long)txt[4*i+3] << 24);   \
 }                                             \
 }
 #elif SPEED_DATA_LEN == 128
 #define txt2itxt(txt, itxt) {                 \
 int i;                                        \
 for (i = 0; i < 8; i++){                      \
-  itxt[i] =  (DWORD)txt[2*i]          |  \
-            ((DWORD)txt[2*i+1] <<  8);   \
+  itxt[i] =  (unsigned long)txt[2*i]          |  \
+            ((unsigned long)txt[2*i+1] <<  8);   \
 }                                             \
 }
 #else
 #define txt2itxt(txt, itxt) {                 \
 int i;                                        \
 for (i = 0; i < 8; i++){                      \
-  itxt[i] =  (DWORD)txt[i];              \
+  itxt[i] =  (unsigned long)txt[i];              \
 }                                             \
 }
 #endif
@@ -116,25 +116,25 @@ for (i = 0; i < 8; i++){                      \
 #define itxt2txt(itxt, txt) {                            \
 int i;                                                   \
 for (i = 0; i < 8; i++){                                 \
-  txt[4*i  ] = (BYTE) ( itxt[i]        & 0xFF); \
-  txt[4*i+1] = (BYTE) ((itxt[i] >>  8) & 0xFF); \
-  txt[4*i+2] = (BYTE) ((itxt[i] >> 16) & 0xFF); \
-  txt[4*i+3] = (BYTE) ((itxt[i] >> 24) & 0xFF); \
+  txt[4*i  ] = (unsigned char) ( itxt[i]        & 0xFF); \
+  txt[4*i+1] = (unsigned char) ((itxt[i] >>  8) & 0xFF); \
+  txt[4*i+2] = (unsigned char) ((itxt[i] >> 16) & 0xFF); \
+  txt[4*i+3] = (unsigned char) ((itxt[i] >> 24) & 0xFF); \
 }                                                        \
 }
 #elif SPEED_DATA_LEN == 128
 #define itxt2txt(itxt, txt) {                            \
 int i;                                                   \
 for (i = 0; i < 8; i++){                                 \
-  txt[2*i  ] = (BYTE) ( itxt[i]        & 0xFF); \
-  txt[2*i+1] = (BYTE) ((itxt[i] >>  8) & 0xFF); \
+  txt[2*i  ] = (unsigned char) ( itxt[i]        & 0xFF); \
+  txt[2*i+1] = (unsigned char) ((itxt[i] >>  8) & 0xFF); \
 }                                                        \
 }
 #else 
 #define itxt2txt(itxt, txt) {                            \
 int i;                                                   \
 for (i = 0; i < 8; i++){                                 \
-  txt[i] = (BYTE) (itxt[i] & 0xFF);             \
+  txt[i] = (unsigned char) (itxt[i] & 0xFF);             \
 }                                                        \
 }
 #endif
@@ -173,17 +173,17 @@ for (i = 0; i < 8; i++){                                 \
 /* key scheduling */
 void Speed_set_key(speed_ikey rndkey,const speed_key key)
 {
-DWORD i;
-DWORD kb[KB_SIZE];
-DWORD temp,
-      s0 = (DWORD)sqrt15[0],
-      s1 = (DWORD)sqrt15[1],
-      s2 = (DWORD)sqrt15[2];
+unsigned long i;
+unsigned long kb[KB_SIZE];
+unsigned long temp,
+      s0 = (unsigned long)sqrt15[0],
+      s1 = (unsigned long)sqrt15[1],
+      s2 = (unsigned long)sqrt15[2];
 
 /* Step 1: translates a user key into 2-byte data units */
 for (i = 0; i < KEY_LEN_DBYTE; i++){
-  kb[i] =  (DWORD)key[2*i] |
-          ((DWORD)key[2*i+1] << 8);
+  kb[i] =  (unsigned long)key[2*i] |
+          ((unsigned long)key[2*i+1] << 8);
 }
 
 /* Step 2: extends the key */
@@ -205,7 +205,7 @@ for (i = KEY_LEN_DBYTE; i < KB_SIZE; i++){
                 (kb[2*i+1] << 16);
   }
 #elif SPEED_DATA_LEN == 128   /* speed word length = 16 bits */
-  memcpy (rndkey, kb, KB_SIZE * sizeof(DWORD));
+  memcpy (rndkey, kb, KB_SIZE * sizeof(unsigned long));
 #else                         /* speed word length = 8 bits */
   for (i = 0; i < KB_SIZE; i++){
     rndkey[2*i]   =  kb[i]       & 0xFF;
@@ -217,9 +217,9 @@ for (i = KEY_LEN_DBYTE; i < KB_SIZE; i++){
 /* encryption --- SPEED internal word oriented interface */
 void encrypt_rk(const speed_ikey rndkey,const speed_idata ipt,speed_idata ict)
 {
-DWORD i, k;
-DWORD temp, vv;
-DWORD t0 = ipt[0],
+unsigned long i, k;
+unsigned long temp, vv;
+unsigned long t0 = ipt[0],
       t1 = ipt[1],
       t2 = ipt[2],
       t3 = ipt[3],
@@ -286,9 +286,9 @@ ict[4] = t4; ict[5] = t5; ict[6] = t6; ict[7] = t7;
 /* decryption --- SPEED internal word oriented interface */
 void decrypt_rk(const speed_ikey rndkey,const speed_idata ict,speed_idata ipt)
 {
-DWORD i, k;
-DWORD new_ipt7, temp, vv;
-DWORD t0 = ict[0], 
+unsigned long i, k;
+unsigned long new_ipt7, temp, vv;
+unsigned long t0 = ict[0], 
       t1 = ict[1],
       t2 = ict[2],
       t3 = ict[3],

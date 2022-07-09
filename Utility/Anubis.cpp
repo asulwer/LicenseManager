@@ -24,7 +24,7 @@
 #include "stdafx.h"
 #include "Anubis_data.h"
 
-const DWORD T0[256] = {
+const unsigned long T0[256] = {
     0xa753a6f5U, 0xd3bb6bd0U, 0xe6d1bf6eU, 0x71e2d93bU,
     0xd0bd67daU, 0xac458acfU, 0x4d9a29b3U, 0x79f2f90bU,
     0x3a74e89cU, 0xc98f038cU, 0x913f7e41U, 0xfce5d732U,
@@ -91,7 +91,7 @@ const DWORD T0[256] = {
     0x0b162c3aU, 0xf3fbeb10U, 0xe0dda77aU, 0x376edcb2U,
 };
 
-const DWORD T1[256] = {
+const unsigned long T1[256] = {
     0x53a7f5a6U, 0xbbd3d06bU, 0xd1e66ebfU, 0xe2713bd9U,
     0xbdd0da67U, 0x45accf8aU, 0x9a4db329U, 0xf2790bf9U,
     0x743a9ce8U, 0x8fc98c03U, 0x3f91417eU, 0xe5fc32d7U,
@@ -158,7 +158,7 @@ const DWORD T1[256] = {
     0x160b3a2cU, 0xfbf310ebU, 0xdde07aa7U, 0x6e37b2dcU,
 };
 
-const DWORD T2[256] = {
+const unsigned long T2[256] = {
     0xa6f5a753U, 0x6bd0d3bbU, 0xbf6ee6d1U, 0xd93b71e2U,
     0x67dad0bdU, 0x8acfac45U, 0x29b34d9aU, 0xf90b79f2U,
     0xe89c3a74U, 0x038cc98fU, 0x7e41913fU, 0xd732fce5U,
@@ -225,7 +225,7 @@ const DWORD T2[256] = {
     0x2c3a0b16U, 0xeb10f3fbU, 0xa77ae0ddU, 0xdcb2376eU,
 };
 
-const DWORD T3[256] = {
+const unsigned long T3[256] = {
     0xf5a653a7U, 0xd06bbbd3U, 0x6ebfd1e6U, 0x3bd9e271U,
     0xda67bdd0U, 0xcf8a45acU, 0xb3299a4dU, 0x0bf9f279U,
     0x9ce8743aU, 0x8c038fc9U, 0x417e3f91U, 0x32d7e5fcU,
@@ -292,7 +292,7 @@ const DWORD T3[256] = {
     0x3a2c160bU, 0x10ebfbf3U, 0x7aa7dde0U, 0xb2dc6e37U,
 };
 
-const DWORD T4[256] = {
+const unsigned long T4[256] = {
     0xa7a7a7a7U, 0xd3d3d3d3U, 0xe6e6e6e6U, 0x71717171U,
     0xd0d0d0d0U, 0xacacacacU, 0x4d4d4d4dU, 0x79797979U,
     0x3a3a3a3aU, 0xc9c9c9c9U, 0x91919191U, 0xfcfcfcfcU,
@@ -359,7 +359,7 @@ const DWORD T4[256] = {
     0x0b0b0b0bU, 0xf3f3f3f3U, 0xe0e0e0e0U, 0x37373737U,
 };
 
-const DWORD T5[256] = {
+const unsigned long T5[256] = {
     0x00000000U, 0x01020608U, 0x02040c10U, 0x03060a18U,
     0x04081820U, 0x050a1e28U, 0x060c1430U, 0x070e1238U,
     0x08103040U, 0x09123648U, 0x0a143c50U, 0x0b163a58U,
@@ -429,7 +429,7 @@ const DWORD T5[256] = {
 /**
  * The round constants.
  */
-const DWORD rc[] = {
+const unsigned long rc[] = {
     0xa7d3e671U, 0xd0ac4d79U, 0x3ac991fcU, 0x1e4754bdU,
 	0x8ca57afbU, 0x63b8ddd4U, 0xe5b3c5beU, 0xa9880ca2U,
 	0x39df29daU, 0x2ba8cb4cU, 0x4b22aa24U, 0x4170a6f9U,
@@ -445,11 +445,11 @@ const DWORD rc[] = {
  * @param key			The 32N-bit cipher key.
  * @param structpointer	Pointer to the structure that will hold the expanded key.
  */
-void Anubis_set_key(ANUBIS_DATA *pAd,const BYTE *key)
+void Anubis_set_key(ANUBIS_DATA *pAd,const unsigned char *key)
 {
 	int N, R, i, pos, r;
-	DWORD kappa[MAX_N];
-	DWORD inter[MAX_N];
+	unsigned long kappa[MAX_N];
+	unsigned long inter[MAX_N];
 
 	pAd->keyBits = KEYSIZEB*8;
 
@@ -479,7 +479,7 @@ void Anubis_set_key(ANUBIS_DATA *pAd,const BYTE *key)
 	 * generate R + 1 round keys:
 	 */
 	for (r = 0; r <= R; r++) {
-		DWORD K0, K1, K2, K3;
+		unsigned long K0, K1, K2, K3;
 		/*
 		 * generate r-th round key K^r:
 		 */
@@ -552,7 +552,7 @@ void Anubis_set_key(ANUBIS_DATA *pAd,const BYTE *key)
 	}
 	for (r = 1; r < R; r++) {
 		for (i = 0; i < 4; i++) {
-			DWORD v = pAd->roundKeyEnc[R - r][i];
+			unsigned long v = pAd->roundKeyEnc[R - r][i];
 			pAd->roundKeyDec[r][i] =
 				T0[T4[(v >> 24)       ] & 0xff] ^
 				T1[T4[(v >> 16) & 0xff] & 0xff] ^
@@ -569,11 +569,11 @@ void Anubis_set_key(ANUBIS_DATA *pAd,const BYTE *key)
  * @param	roundKey	the key schedule to be used.
  * @param	R			number of rounds.
  */
-void aux_crypt(const BYTE *plaintext, BYTE *ciphertext, const DWORD roundKey[MAX_ROUNDS + 1][4], int R)
+void aux_crypt(const unsigned char *plaintext, unsigned char *ciphertext, const unsigned long roundKey[MAX_ROUNDS + 1][4], int R)
 {
 	int i, pos, r;
-	DWORD state[4];
-	DWORD inter[4];
+	unsigned long state[4];
+	unsigned long inter[4];
 
     /*
 	 * map plaintext block to cipher state (mu)
@@ -654,11 +654,11 @@ void aux_crypt(const BYTE *plaintext, BYTE *ciphertext, const DWORD roundKey[MAX
 	 * map cipher state to ciphertext block (mu^{-1}):
 	 */
     for (i = 0, pos = 0; i < 4; i++, pos += 4) {
-        DWORD w = inter[i];
-        ciphertext[pos    ] = (BYTE)(w >> 24);
-        ciphertext[pos + 1] = (BYTE)(w >> 16);
-        ciphertext[pos + 2] = (BYTE)(w >>  8);
-        ciphertext[pos + 3] = (BYTE)(w      );
+        unsigned long w = inter[i];
+        ciphertext[pos    ] = (unsigned char)(w >> 24);
+        ciphertext[pos + 1] = (unsigned char)(w >> 16);
+        ciphertext[pos + 2] = (unsigned char)(w >>  8);
+        ciphertext[pos + 3] = (unsigned char)(w      );
     }
 }
 
@@ -669,7 +669,7 @@ void aux_crypt(const BYTE *plaintext, BYTE *ciphertext, const DWORD roundKey[MAX
  * @param	plaintext		the data block to be encrypted.
  * @param	ciphertext		the encrypted data block.
  */
-void Anubis_encrypt(const ANUBIS_DATA *pAd,const BYTE *plaintext,BYTE *ciphertext)
+void Anubis_encrypt(const ANUBIS_DATA *pAd,const unsigned char *plaintext,unsigned char *ciphertext)
 {
 	aux_crypt(plaintext, ciphertext, pAd->roundKeyEnc, pAd->R);
 }
@@ -681,7 +681,7 @@ void Anubis_encrypt(const ANUBIS_DATA *pAd,const BYTE *plaintext,BYTE *ciphertex
  * @param	ciphertext		the data block to be decrypted.
  * @param	plaintext		the decrypted data block.
  */
-void Anubis_decrypt(const ANUBIS_DATA *pAd,const BYTE *ciphertext,BYTE *plaintext)
+void Anubis_decrypt(const ANUBIS_DATA *pAd,const unsigned char *ciphertext,unsigned char *plaintext)
 {
 	aux_crypt(ciphertext, plaintext, pAd->roundKeyDec, pAd->R);
 }

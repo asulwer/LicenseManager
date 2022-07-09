@@ -32,8 +32,8 @@
 
 #include "Twofish_data.h"
 
-extern	void Twofish_set_key(TWOFISH_DATA *pTfd,const DWORD *in_key, const DWORD key_len);
-extern	void Twofish_encrypt(const TWOFISH_DATA *pTfd,const DWORD *in_blk, DWORD *out_blk);
-extern	void Twofish_decrypt(const TWOFISH_DATA *pTfd,const DWORD *in_blk, DWORD *out_blk);
+extern	void Twofish_set_key(TWOFISH_DATA *pTfd,const unsigned long *in_key, const unsigned long key_len);
+extern	void Twofish_encrypt(const TWOFISH_DATA *pTfd,const unsigned long *in_blk, unsigned long *out_blk);
+extern	void Twofish_decrypt(const TWOFISH_DATA *pTfd,const unsigned long *in_blk, unsigned long *out_blk);
 
 #endif

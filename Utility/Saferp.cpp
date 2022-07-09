@@ -34,7 +34,7 @@
 
 #define bswap(x)    (rotl(x, 8) & 0x00ff00ff | rotr(x, 8) & 0xff00ff00)
 
-#define byte(x,n)   ((BYTE)((x) >> (8 * n)))
+#define byte(x,n)   ((unsigned char)((x) >> (8 * n)))
 
 #ifdef  BLOCK_SWAP
 #define BYTE_SWAP
@@ -50,80 +50,80 @@
 #ifdef  WORD_SWAP
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[0])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[0])
 
 #define put_block(x)                            \
-    out_blk[3] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[0] = io_swap(((DWORD *)(x))[3])
+    out_blk[3] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[0] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[0]);     \
     break;                                      \
     case 3:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[0]);     \
     break;                                      \
     case 4:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[7]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[6] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[0]);     \
     }
 
 #else
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[3])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[3])
 
 #define put_block(x)                            \
-    out_blk[0] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[3] = io_swap(((DWORD *)(x))[3])
+    out_blk[0] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[3] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 4:                                     \
-    ((DWORD *)(x))[6] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[7]);     \
     case 3:                                     \
-    ((DWORD *)(x))[4] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[5]);     \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[3]);     \
     }
 
 #endif
 
-const BYTE  exp_f[256] =
+const unsigned char  exp_f[256] =
 {     1,  45, 226, 147, 190,  69,  21, 174, 120,   3, 135, 164, 184,  56, 207,  63, 
       8, 103,   9, 148, 235,  38, 168, 107, 189,  24,  52,  27, 187, 191, 114, 247, 
      64,  53,  72, 156,  81,  47,  59,  85, 227, 192, 159, 216, 211, 243, 141, 177, 
@@ -142,7 +142,7 @@ const BYTE  exp_f[256] =
     225, 102, 221, 179,  88, 105,  99,  86,  15, 161,  49, 149,  23,   7,  58,  40 
 };
 
-const BYTE log_f[512] = 
+const unsigned char log_f[512] = 
 {
     128,   0, 176,   9,  96, 239, 185, 253,  16,  18, 159, 228, 105, 186, 173, 248, 
     192,  56, 194, 101,  79,   6, 148, 252,  25, 222, 106,  27,  93,  78, 168, 130, 
@@ -179,10 +179,10 @@ const BYTE log_f[512] =
     184,  64, 120,  45,  58, 233, 100,  31, 146, 144, 125,  57, 111, 224, 137,  48
 };
 
-void Saferp_set_key(SAFERP_DATA *pSpd,const DWORD *in_key,const DWORD key_len)
+void Saferp_set_key(SAFERP_DATA *pSpd,const unsigned long *in_key,const unsigned long key_len)
 {
-	BYTE  by, lk[33];
-    DWORD  i, j, k, l, m;
+	unsigned char  by, lk[33];
+    unsigned long  i, j, k, l, m;
 
     get_key(lk, key_len);
 
@@ -223,9 +223,9 @@ void Saferp_set_key(SAFERP_DATA *pSpd,const DWORD *in_key,const DWORD key_len)
     }
 }
 
-void do_fr(BYTE *x, BYTE *kp)
+void do_fr(unsigned char *x, unsigned char *kp)
 {
-	BYTE  t;
+	unsigned char  t;
 
     x[ 0] = exp_f[x[ 0] ^ kp[ 0]] + kp[16];
     x[ 1] = log_f[x[ 1] + kp[ 1]] ^ kp[17]; 
@@ -291,9 +291,9 @@ void do_fr(BYTE *x, BYTE *kp)
     t = x[15]; x[15] = x[3]; x[3] = t;
 }
 
-void do_ir(BYTE *x, const BYTE *kp)
+void do_ir(unsigned char *x, const unsigned char *kp)
 {
-	BYTE  t;
+	unsigned char  t;
 
     t = x[3]; x[3] = x[15]; x[15] = t; 
 
@@ -359,30 +359,30 @@ void do_ir(BYTE *x, const BYTE *kp)
     x[15] = log_f[x[15] - kp[31] + 256] ^ kp[15];
 }
 
-void Saferp_encrypt(const SAFERP_DATA *pSpd,const DWORD *in_blk, DWORD *out_blk)
+void Saferp_encrypt(const SAFERP_DATA *pSpd,const unsigned long *in_blk, unsigned long *out_blk)
 {
-	BYTE  blk[16], *kp;
+	unsigned char  blk[16], *kp;
 
     get_block(blk);
 
-    do_fr(blk, (BYTE *) pSpd->l_key);         do_fr(blk, ((BYTE *) pSpd->l_key) +  32); 
-    do_fr(blk, ((BYTE *) pSpd->l_key) +  64); do_fr(blk, ((BYTE *) pSpd->l_key) +  96);
-    do_fr(blk, ((BYTE *) pSpd->l_key) + 128); do_fr(blk, ((BYTE *) pSpd->l_key) + 160);
-    do_fr(blk, ((BYTE *) pSpd->l_key) + 192); do_fr(blk, ((BYTE *) pSpd->l_key) + 224);
+    do_fr(blk, (unsigned char *) pSpd->l_key);         do_fr(blk, ((unsigned char *) pSpd->l_key) +  32); 
+    do_fr(blk, ((unsigned char *) pSpd->l_key) +  64); do_fr(blk, ((unsigned char *) pSpd->l_key) +  96);
+    do_fr(blk, ((unsigned char *) pSpd->l_key) + 128); do_fr(blk, ((unsigned char *) pSpd->l_key) + 160);
+    do_fr(blk, ((unsigned char *) pSpd->l_key) + 192); do_fr(blk, ((unsigned char *) pSpd->l_key) + 224);
     
     if(pSpd->k_bytes > 16)
     {
-        do_fr(blk, ((BYTE *) pSpd->l_key) + 256); do_fr(blk, ((BYTE *) pSpd->l_key) + 288); 
-        do_fr(blk, ((BYTE *) pSpd->l_key) + 320); do_fr(blk, ((BYTE *) pSpd->l_key) + 352);
+        do_fr(blk, ((unsigned char *) pSpd->l_key) + 256); do_fr(blk, ((unsigned char *) pSpd->l_key) + 288); 
+        do_fr(blk, ((unsigned char *) pSpd->l_key) + 320); do_fr(blk, ((unsigned char *) pSpd->l_key) + 352);
     }
 
     if(pSpd->k_bytes > 24)
     {
-        do_fr(blk, ((BYTE *) pSpd->l_key) + 384); do_fr(blk, ((BYTE *) pSpd->l_key) + 416); 
-        do_fr(blk, ((BYTE *) pSpd->l_key) + 448); do_fr(blk, ((BYTE *) pSpd->l_key) + 480);
+        do_fr(blk, ((unsigned char *) pSpd->l_key) + 384); do_fr(blk, ((unsigned char *) pSpd->l_key) + 416); 
+        do_fr(blk, ((unsigned char *) pSpd->l_key) + 448); do_fr(blk, ((unsigned char *) pSpd->l_key) + 480);
     }
 
-    kp = ((BYTE *) pSpd->l_key) + 16 * pSpd->k_bytes;
+    kp = ((unsigned char *) pSpd->l_key) + 16 * pSpd->k_bytes;
 
     blk[ 0] ^= kp[ 0]; blk[ 1] += kp[ 1];
     blk[ 2] += kp[ 2]; blk[ 3] ^= kp[ 3]; 
@@ -396,13 +396,13 @@ void Saferp_encrypt(const SAFERP_DATA *pSpd,const DWORD *in_blk, DWORD *out_blk)
     put_block(blk);
 }
 
-void Saferp_decrypt(const SAFERP_DATA *pSpd,const DWORD *in_blk, DWORD *out_blk)
+void Saferp_decrypt(const SAFERP_DATA *pSpd,const unsigned long *in_blk, unsigned long *out_blk)
 {
-	BYTE  blk[16], *kp;
+	unsigned char  blk[16], *kp;
 
     get_block(blk);
 
-    kp = ((BYTE *) pSpd->l_key) + 16 * pSpd->k_bytes;
+    kp = ((unsigned char *) pSpd->l_key) + 16 * pSpd->k_bytes;
 
     blk[ 0] ^= kp[ 0]; blk[ 1] -= kp[ 1];
     blk[ 2] -= kp[ 2]; blk[ 3] ^= kp[ 3];

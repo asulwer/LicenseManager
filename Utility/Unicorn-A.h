@@ -30,8 +30,8 @@
 // ** 128bit block size
 // ** 256bit key
 
-extern	void Unicorn_set_key(BYTE *eKey,const BYTE *secret);
-extern	void Unicorn_encrypt(const BYTE *eKey,const BYTE *src,BYTE *dst);
-extern	void Unicorn_decrypt(const BYTE *eKey,const BYTE *src,BYTE *dst);
+extern	void Unicorn_set_key(unsigned char *eKey,const unsigned char *secret);
+extern	void Unicorn_encrypt(const unsigned char *eKey,const unsigned char *src,unsigned char *dst);
+extern	void Unicorn_decrypt(const unsigned char *eKey,const unsigned char *src,unsigned char *dst);
 
 #endif

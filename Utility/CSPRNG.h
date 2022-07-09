@@ -35,13 +35,13 @@
 
 #include "CSPRNG_data.h"
 
-extern	void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const BYTE *passw,DWORD nonce);
+extern	void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw,unsigned long nonce);
 //extern	void CSPRNG_autoseed(CSPRNG_DATA *pCd,perc_callback_t backFunc,void *desc);
 
-extern	BYTE CSPRNG_get_byte(CSPRNG_DATA *pCd);
-extern	WORD CSPRNG_get_word(CSPRNG_DATA *pCd);
-extern	DWORD CSPRNG_get_dword(CSPRNG_DATA *pCd);
-extern	OBFUNC_RETV CSPRNG_randomize(CSPRNG_DATA *pCd,const DWORD len,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
-extern	void CSPRNG_array_init(CSPRNG_DATA *pCd,DWORD max,BYTE *buf);
+extern	unsigned char CSPRNG_get_byte(CSPRNG_DATA *pCd);
+extern	unsigned short CSPRNG_get_word(CSPRNG_DATA *pCd);
+extern	unsigned long CSPRNG_get_dword(CSPRNG_DATA *pCd);
+extern	OBFUNC_RETV CSPRNG_randomize(CSPRNG_DATA *pCd,const unsigned long len,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
+extern	void CSPRNG_array_init(CSPRNG_DATA *pCd,unsigned long max,unsigned char *buf);
 
 #endif

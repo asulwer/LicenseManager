@@ -32,7 +32,7 @@
 #include "Sha512_data.h"
 
 extern	void Sha512_init(SHA512_DATA *sha);
-extern	void Sha512_data(SHA512_DATA *sha,const void *buffer,DWORD len);
-extern	void Sha512_finalize(SHA512_DATA *sha,BYTE *hash);
+extern	void Sha512_data(SHA512_DATA *sha,const void *buffer,unsigned long len);
+extern	void Sha512_finalize(SHA512_DATA *sha,unsigned char *hash);
 
 #endif

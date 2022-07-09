@@ -31,8 +31,8 @@
 // ** 256bit key
 
 typedef struct {
-	BYTE	l_key[33 * 16];
-	DWORD	k_bytes;
+	unsigned char	l_key[33 * 16];
+	unsigned long	k_bytes;
 } SAFERP_DATA;
 
 #endif

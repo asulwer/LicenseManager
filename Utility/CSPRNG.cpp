@@ -23,7 +23,6 @@
 
 #include "stdafx.h"
 
-//#include "RaceCond.h"
 #include "Sha512.h"
 #include "Grostl512.h"
 #include "Keccak512.h"
@@ -34,11 +33,11 @@
 
 #define	RESEED_COUNTDOWN	1000
 
-void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const BYTE *passw,DWORD nonce)
+void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw,unsigned long nonce)
 {
-	BYTE	inBuf[64];
-	BYTE	hash[64];
-	DWORD	len = MAX_PASSW_SIZE;
+	unsigned char	inBuf[64];
+	unsigned char	hash[64];
+	unsigned long	len = MAX_PASSW_SIZE;
 
 	memset(pCd,0,sizeof(CSPRNG_DATA));
 
@@ -96,8 +95,8 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const BYTE *passw,DWORD no
 // auto setup with default
 //void CSPRNG_autoseed(CSPRNG_DATA *pCd,perc_callback_t backFunc,void *desc)
 //{
-//	BYTE	passw[MAX_PASSW_SIZE+DATA_BLOCK_SIZE];
-//	BYTE	nullPassw[MAX_PASSW_SIZE+DATA_BLOCK_SIZE];
+//	unsigned char	passw[MAX_PASSW_SIZE+DATA_BLOCK_SIZE];
+//	unsigned char	nullPassw[MAX_PASSW_SIZE+DATA_BLOCK_SIZE];
 //
 //	memset(pCd,0,sizeof(CSPRNG_DATA));
 //
@@ -107,16 +106,16 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const BYTE *passw,DWORD no
 //	// GenerateEntropy KO
 //	if(!memcmp(passw,nullPassw,MAX_PASSW_SIZE+DATA_BLOCK_SIZE))
 //		{
-//		DWORD	index;
+//		unsigned long	index;
 //
 //		LARGE_INTEGER	qpc;
 //
 //		QueryPerformanceCounter(&qpc);
 //
-//		srand(*((DWORD *) &qpc));
+//		srand(*((unsigned long *) &qpc));
 //
 //		for(index=0;index<(MAX_PASSW_SIZE+DATA_BLOCK_SIZE);index++)
-//			{ passw[index]=(BYTE) rand(); }
+//			{ passw[index]=(unsigned char) rand(); }
 //		}
 //
 //	Multi_single_setkey(&pCd->msd,RIJNDAEL_ALG,passw);
@@ -126,7 +125,7 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const BYTE *passw,DWORD no
 //}
 
 // little endian
-void BlockInc(BYTE *data)
+void BlockInc(unsigned char *data)
 {
 	//increase by +1 this 16 byte number
 	#if	DATA_BLOCK_SIZE==16
@@ -155,7 +154,7 @@ void BlockInc(BYTE *data)
 }
 
 // auto reseeding leads to a bad chi-square result after some Mb of data!
-BYTE CSPRNG_get_byte(CSPRNG_DATA *pCd)
+unsigned char CSPRNG_get_byte(CSPRNG_DATA *pCd)
 {
 	if(!pCd->availCount)
 	{
@@ -173,35 +172,35 @@ BYTE CSPRNG_get_byte(CSPRNG_DATA *pCd)
 	}
 }
 
-WORD CSPRNG_get_word(CSPRNG_DATA *pCd)
+unsigned short CSPRNG_get_word(CSPRNG_DATA *pCd)
 {
-	WORD	retV;
+	unsigned short	retV;
 
-	retV=(WORD) CSPRNG_get_byte(pCd);
+	retV=(unsigned short) CSPRNG_get_byte(pCd);
 	retV<<=8;
-	retV|=(WORD) CSPRNG_get_byte(pCd);
+	retV|=(unsigned short) CSPRNG_get_byte(pCd);
 
 	return(retV);
 }
 
-DWORD CSPRNG_get_dword(CSPRNG_DATA *pCd)
+unsigned long CSPRNG_get_dword(CSPRNG_DATA *pCd)
 {
-	DWORD	retV;
+	unsigned long	retV;
 
-	retV=(DWORD) CSPRNG_get_word(pCd);
+	retV=(unsigned long) CSPRNG_get_word(pCd);
 	retV<<=16;
-	retV|=(DWORD) CSPRNG_get_word(pCd);
+	retV|=(unsigned long) CSPRNG_get_word(pCd);
 
 	return(retV);
 }
 
 #define	REFRESH_COUNTDOWN	1000
 
-OBFUNC_RETV CSPRNG_randomize(CSPRNG_DATA *pCd,const DWORD len,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
+OBFUNC_RETV CSPRNG_randomize(CSPRNG_DATA *pCd,const unsigned long len,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
 {
-	DWORD tLen=len;
-	BYTE lastPerc=0;
-	WORD refCount=REFRESH_COUNTDOWN;
+	unsigned long tLen=len;
+	unsigned char lastPerc=0;
+	unsigned short refCount=REFRESH_COUNTDOWN;
 
 	while(tLen--)
 	{
@@ -213,7 +212,7 @@ OBFUNC_RETV CSPRNG_randomize(CSPRNG_DATA *pCd,const DWORD len,BYTE *buf,perc_cal
 
 			if(pFunc)
 			{
-				BYTE tmp=(BYTE) ((((float) (len-tLen))/((float) len))*((float) 100));
+				unsigned char tmp=(unsigned char) ((((float) (len-tLen))/((float) len))*((float) 100));
 				if(tmp>lastPerc)
 				{
 					lastPerc=tmp;
@@ -232,20 +231,20 @@ OBFUNC_RETV CSPRNG_randomize(CSPRNG_DATA *pCd,const DWORD len,BYTE *buf,perc_cal
 	return(OBFUNC_OK);
 }
 
-void CSPRNG_array_init(CSPRNG_DATA *pCd,DWORD max,BYTE *buf)
+void CSPRNG_array_init(CSPRNG_DATA *pCd,unsigned long max,unsigned char *buf)
 {
-	DWORD index;
+	unsigned long index;
 
 	memset(buf,0xFF,max);
 	for(index=0;index<max;index++)
 	{
-		DWORD rIndex;
+		unsigned long rIndex;
 
 		do
 		{ 
 			rIndex=CSPRNG_get_byte(pCd)%max;
 		} while(buf[rIndex]!=0xFF);
 
-		buf[rIndex]=(BYTE) index;
+		buf[rIndex]=(unsigned char) index;
 	}
 }

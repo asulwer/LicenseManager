@@ -34,7 +34,7 @@
 
 #define bswap(x)    (rotl(x, 8) & 0x00ff00ff | rotr(x, 8) & 0xff00ff00)
 
-#define byte(x,n)   ((BYTE)((x) >> (8 * n)))
+#define byte(x,n)   ((unsigned char)((x) >> (8 * n)))
 
 #ifdef  BLOCK_SWAP
 #define BYTE_SWAP
@@ -50,75 +50,75 @@
 #ifdef  WORD_SWAP
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[0])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[0])
 
 #define put_block(x)                            \
-    out_blk[3] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[0] = io_swap(((DWORD *)(x))[3])
+    out_blk[3] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[0] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[0]);     \
     break;                                      \
     case 3:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[0]);     \
     break;                                      \
     case 4:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[7]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[5]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[4] = io_swap(in_key[3]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[6] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[0]);     \
     }
 
 #else
 
 #define get_block(x)                            \
-    ((DWORD *)(x))[0] = io_swap(in_blk[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_blk[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_blk[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_blk[3])
+    ((unsigned long *)(x))[0] = io_swap(in_blk[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_blk[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_blk[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_blk[3])
 
 #define put_block(x)                            \
-    out_blk[0] = io_swap(((DWORD *)(x))[0]);    \
-    out_blk[1] = io_swap(((DWORD *)(x))[1]);    \
-    out_blk[2] = io_swap(((DWORD *)(x))[2]);    \
-    out_blk[3] = io_swap(((DWORD *)(x))[3])
+    out_blk[0] = io_swap(((unsigned long *)(x))[0]);    \
+    out_blk[1] = io_swap(((unsigned long *)(x))[1]);    \
+    out_blk[2] = io_swap(((unsigned long *)(x))[2]);    \
+    out_blk[3] = io_swap(((unsigned long *)(x))[3])
 
 #define get_key(x,len)                          \
-    ((DWORD *)(x))[4] = ((DWORD *)(x))[5] =     \
-    ((DWORD *)(x))[6] = ((DWORD *)(x))[7] = 0;  \
+    ((unsigned long *)(x))[4] = ((unsigned long *)(x))[5] =     \
+    ((unsigned long *)(x))[6] = ((unsigned long *)(x))[7] = 0;  \
     switch((((len) + 63) / 64)) {               \
     case 4:                                     \
-    ((DWORD *)(x))[6] = io_swap(in_key[6]);     \
-    ((DWORD *)(x))[7] = io_swap(in_key[7]);     \
+    ((unsigned long *)(x))[6] = io_swap(in_key[6]);     \
+    ((unsigned long *)(x))[7] = io_swap(in_key[7]);     \
     case 3:                                     \
-    ((DWORD *)(x))[4] = io_swap(in_key[4]);     \
-    ((DWORD *)(x))[5] = io_swap(in_key[5]);     \
+    ((unsigned long *)(x))[4] = io_swap(in_key[4]);     \
+    ((unsigned long *)(x))[5] = io_swap(in_key[5]);     \
     case 2:                                     \
-    ((DWORD *)(x))[0] = io_swap(in_key[0]);     \
-    ((DWORD *)(x))[1] = io_swap(in_key[1]);     \
-    ((DWORD *)(x))[2] = io_swap(in_key[2]);     \
-    ((DWORD *)(x))[3] = io_swap(in_key[3]);     \
+    ((unsigned long *)(x))[0] = io_swap(in_key[0]);     \
+    ((unsigned long *)(x))[1] = io_swap(in_key[1]);     \
+    ((unsigned long *)(x))[2] = io_swap(in_key[2]);     \
+    ((unsigned long *)(x))[3] = io_swap(in_key[3]);     \
     }
 
 #endif
@@ -129,7 +129,7 @@
 
 #define	ik_len		2304
 
-const BYTE  seed[256] =
+const unsigned char  seed[256] =
 {
     113,  21, 232,  18, 113,  92,  63, 157, 124, 193, 166, 197, 126,  56, 229, 229, 
     156, 162,  54,  17, 230,  89, 189,  87, 169,   0,  81, 204,   8,  70, 203, 225, 
@@ -155,14 +155,14 @@ const BYTE  seed[256] =
 // top is 1 greater than that used in FROG specification
 // this routine makes a permutation containing 'top' values
 
-void make_perm(BYTE *ip, DWORD top)
+void make_perm(unsigned char *ip, unsigned long top)
 {
-	BYTE  ua[260];
-    DWORD  i, j, ie, ne;
+	unsigned char  ua[260];
+    unsigned long  i, j, ie, ne;
 
     for(i = 0; i < top; ++i)
 
-        ua[i] = (BYTE)i;
+        ua[i] = (unsigned char)i;
 
     ie = 0; ne = top;
 
@@ -182,8 +182,8 @@ void make_perm(BYTE *ip, DWORD top)
 
 void make_ikey(key_str *kp)
 {
-	DWORD  i, j, k, ix, ll;
-    BYTE  ua[16];
+	unsigned long  i, j, k, ix, ll;
+    unsigned char  ua[16];
         
     for(i = 0; i < 8; ++i)
     {
@@ -191,7 +191,7 @@ void make_ikey(key_str *kp)
 
         for(j = 0; j < 256; ++j)
 
-            kp->i_key[i][kp->f_key[i].k_spu[j]] = (BYTE)j;
+            kp->i_key[i][kp->f_key[i].k_spu[j]] = (unsigned char)j;
 
         make_perm(kp->f_key[i].k_bpu, 16);
 
@@ -212,7 +212,7 @@ void make_ikey(key_str *kp)
                 while
                     (ua[k]);
 
-                kp->f_key[i].k_bpu[ix] = (BYTE)k; ll = k;
+                kp->f_key[i].k_bpu[ix] = (unsigned char)k; ll = k;
 
                 while(kp->f_key[i].k_bpu[ll] != k)
                 
@@ -228,7 +228,7 @@ void make_ikey(key_str *kp)
 
             if(kp->f_key[i].k_bpu[j] == ((j + 1) & 15))
 
-                kp->f_key[i].k_bpu[j] = (BYTE)((j + 2) & 15);
+                kp->f_key[i].k_bpu[j] = (unsigned char)((j + 2) & 15);
     }
 }
 
@@ -244,13 +244,13 @@ void make_ikey(key_str *kp)
     blk[(j + 1) & 15] ^= blk[j];    \
     blk[j] = sp[ct] ^ xp[j]
 
-void enc(const FROG_DATA *pFd,const DWORD in_blk[4], DWORD out_blk[4])
+void enc(const FROG_DATA *pFd,const unsigned long in_blk[4], unsigned long out_blk[4])
 {
-	DWORD  i, k;
-    BYTE  blk[16], *xp, *sp, *pp;
+	unsigned long  i, k;
+    unsigned char  blk[16], *xp, *sp, *pp;
     
-    *(DWORD *)(blk +  0) = in_blk[0]; *(DWORD *)(blk +  4) = in_blk[1];
-    *(DWORD *)(blk +  8) = in_blk[2]; *(DWORD *)(blk + 12) = in_blk[3];
+    *(unsigned long *)(blk +  0) = in_blk[0]; *(unsigned long *)(blk +  4) = in_blk[1];
+    *(unsigned long *)(blk +  8) = in_blk[2]; *(unsigned long *)(blk + 12) = in_blk[3];
     
     for(i = 0; i < 8; ++i)
     {
@@ -264,21 +264,21 @@ void enc(const FROG_DATA *pFd,const DWORD in_blk[4], DWORD out_blk[4])
         f_rnd(12); f_rnd(13); f_rnd(14); f_rnd(15);
     }
 
-    out_blk[0] = *(DWORD *)(blk +  0); out_blk[1] = *(DWORD *)(blk +  4);
-    out_blk[2] = *(DWORD *)(blk +  8); out_blk[3] = *(DWORD *)(blk + 12);
+    out_blk[0] = *(unsigned long *)(blk +  0); out_blk[1] = *(unsigned long *)(blk +  4);
+    out_blk[2] = *(unsigned long *)(blk +  8); out_blk[3] = *(unsigned long *)(blk + 12);
 }
 
 /* initialise the key schedule from the user supplied key   */
-void Frog_set_key(FROG_DATA *pFd,const DWORD *in_key,const DWORD key_len)
+void Frog_set_key(FROG_DATA *pFd,const unsigned long *in_key,const unsigned long key_len)
 {
-	DWORD  i, j, k;
-    BYTE  kb[32];
+	unsigned long  i, j, k;
+    unsigned char  kb[32];
 
     get_key(kb, key_len);
 
     for(i = j = k = 0; i < ik_len; ++i)
     {
-        ((BYTE *)(pFd->sim_key.f_key))[i] = seed[j] ^ kb[k];
+        ((unsigned char *)(pFd->sim_key.f_key))[i] = seed[j] ^ kb[k];
 
         j = (j < 250 ? j + 1 : 0);
 
@@ -291,11 +291,11 @@ void Frog_set_key(FROG_DATA *pFd,const DWORD *in_key,const DWORD key_len)
 
     for(i = 0; i < ik_len / 16; ++i)
     {
-        enc(pFd,(DWORD *)kb, (DWORD *)kb);
+        enc(pFd,(unsigned long *)kb, (unsigned long *)kb);
 
         for(j = 0; j < 16; ++j)
 
-            ((BYTE *)(pFd->loc_key.f_key))[16 * i + j] = kb[j];
+            ((unsigned char *)(pFd->loc_key.f_key))[16 * i + j] = kb[j];
     }
 
     make_ikey(&pFd->loc_key);
@@ -305,10 +305,10 @@ void Frog_set_key(FROG_DATA *pFd,const DWORD *in_key,const DWORD key_len)
 
 /* encrypt a block of text  */
 
-void Frog_encrypt(const FROG_DATA *pFd,const DWORD in_blk[4], DWORD out_blk[4])
+void Frog_encrypt(const FROG_DATA *pFd,const unsigned long in_blk[4], unsigned long out_blk[4])
 {
-	DWORD  i, k;
-    BYTE  blk[16], *xp, *sp, *pp;
+	unsigned long  i, k;
+    unsigned char  blk[16], *xp, *sp, *pp;
     
     get_block(blk);
     
@@ -329,10 +329,10 @@ void Frog_encrypt(const FROG_DATA *pFd,const DWORD in_blk[4], DWORD out_blk[4])
 
 /* decrypt a block of text  */
 
-void Frog_decrypt(const FROG_DATA *pFd,const DWORD in_blk[4], DWORD out_blk[4])
+void Frog_decrypt(const FROG_DATA *pFd,const unsigned long in_blk[4], unsigned long out_blk[4])
 {
 	int  i;
-    BYTE  blk[16], ct, *xp, *sp, *pp;
+    unsigned char  blk[16], ct, *xp, *sp, *pp;
     
     get_block(blk);
     

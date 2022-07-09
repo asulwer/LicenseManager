@@ -61,10 +61,10 @@
 
 #define UNPACK32(x, str)                \
 {                                       \
-    *((str) + 3) = (BYTE) ((x)      ); \
-    *((str) + 2) = (BYTE) ((x) >>  8); \
-    *((str) + 1) = (BYTE) ((x) >> 16); \
-    *((str)    ) = (BYTE) ((x) >> 24); \
+    *((str) + 3) = (unsigned char) ((x)      ); \
+    *((str) + 2) = (unsigned char) ((x) >>  8); \
+    *((str) + 1) = (unsigned char) ((x) >> 16); \
+    *((str)    ) = (unsigned char) ((x) >> 24); \
 }
 
 #define PACK32(str, x)            \
@@ -91,9 +91,9 @@ do {                          \
 #define NXT_IO(x) \
 (x << 16) ^ (x >> 16) ^ (x & 0xffff0000);
 
-extern	const BYTE pad[32];
+extern	const unsigned char pad[32];
 
-void nxt_p(const BYTE *key, BYTE l, BYTE *pkey, WORD ek);
-void nxt_m(const BYTE *pkey, BYTE *mkey, WORD ek);
+void nxt_p(const unsigned char *key, unsigned char l, unsigned char *pkey, unsigned short ek);
+void nxt_m(const unsigned char *pkey, unsigned char *mkey, unsigned short ek);
 
 #endif

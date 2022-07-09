@@ -32,7 +32,7 @@
 #include "Skein512_data.h"
 
 extern	void Skein512_init(SKEIN512_DATA *skein);
-extern	void Skein512_data(SKEIN512_DATA *skein,const BYTE *buffer,DWORD len);
-extern	void Skein512_finalize(SKEIN512_DATA *skein,BYTE *hash);
+extern	void Skein512_data(SKEIN512_DATA *skein,const unsigned char *buffer,unsigned long len);
+extern	void Skein512_finalize(SKEIN512_DATA *skein,unsigned char *hash);
 
 #endif

@@ -32,8 +32,8 @@
 
 #include "Hierocrypt3_data.h"
 
-extern	void Hierocrypt3_set_key(HIEROCRYPT3_DATA *pHd,const BYTE* key);
-extern	void Hierocrypt3_encrypt(const HIEROCRYPT3_DATA *pHd,const BYTE * in,BYTE *out);
-extern	void Hierocrypt3_decrypt(const HIEROCRYPT3_DATA *pHd,const BYTE * in,BYTE *out);
+extern	void Hierocrypt3_set_key(HIEROCRYPT3_DATA *pHd,const unsigned char* key);
+extern	void Hierocrypt3_encrypt(const HIEROCRYPT3_DATA *pHd,const unsigned char * in,unsigned char *out);
+extern	void Hierocrypt3_decrypt(const HIEROCRYPT3_DATA *pHd,const unsigned char * in,unsigned char *out);
 
 #endif

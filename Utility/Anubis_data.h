@@ -51,8 +51,8 @@
 typedef struct { 
 	int keyBits; /* this field must be initialized before the NESSIEkeysetup call */ 
 	int R; 
-	DWORD roundKeyEnc[MAX_ROUNDS + 1][4]; 
-	DWORD roundKeyDec[MAX_ROUNDS + 1][4]; 
+	unsigned long roundKeyEnc[MAX_ROUNDS + 1][4]; 
+	unsigned long roundKeyDec[MAX_ROUNDS + 1][4]; 
 } ANUBIS_DATA;
 
 #endif

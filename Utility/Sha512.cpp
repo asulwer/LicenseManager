@@ -98,7 +98,7 @@ void Sha512_init(SHA512_DATA *sha)
 	sha->totalLen = 0;
 }
 
-void ProcessBlock(SHA512_DATA *sha, const BYTE *block)
+void ProcessBlock(SHA512_DATA *sha, const unsigned char *block)
 {
 	QWORD W[80];
 	QWORD a, b, c, d, e, f, g, h;
@@ -159,9 +159,9 @@ void ProcessBlock(SHA512_DATA *sha, const BYTE *block)
 	sha->H += h;
 }
 
-void Sha512_data(SHA512_DATA *sha, const void *buffer, DWORD len)
+void Sha512_data(SHA512_DATA *sha, const void *buffer, unsigned long len)
 {
-	DWORD templen;
+	unsigned long templen;
 
 	/* Add to the total length of the input stream */
 	sha->totalLen += (QWORD)len;
@@ -172,8 +172,8 @@ void Sha512_data(SHA512_DATA *sha, const void *buffer, DWORD len)
 		if(!(sha->inputLen) && len >= 128)
 		{
 			/* Short cut: no point copying the data twice */
-			ProcessBlock(sha, (const BYTE *)buffer);
-			buffer = (const void *)(((const BYTE *)buffer) + 128);
+			ProcessBlock(sha, (const unsigned char *)buffer);
+			buffer = (const void *)(((const unsigned char *)buffer) + 128);
 			len -= 128;
 		}
 		else
@@ -189,25 +189,25 @@ void Sha512_data(SHA512_DATA *sha, const void *buffer, DWORD len)
 				ProcessBlock(sha, sha->input);
 				sha->inputLen = 0;
 			}
-			buffer = (const void *)(((const BYTE *)buffer) + templen);
+			buffer = (const void *)(((const unsigned char *)buffer) + templen);
 			len -= templen;
 		}
 	}
 }
 
-void WriteLong(BYTE *buf, QWORD value)
+void WriteLong(unsigned char *buf, QWORD value)
 {
-	buf[0] = (BYTE)(value >> 56);
-	buf[1] = (BYTE)(value >> 48);
-	buf[2] = (BYTE)(value >> 40);
-	buf[3] = (BYTE)(value >> 32);
-	buf[4] = (BYTE)(value >> 24);
-	buf[5] = (BYTE)(value >> 16);
-	buf[6] = (BYTE)(value >> 8);
-	buf[7] = (BYTE)value;
+	buf[0] = (unsigned char)(value >> 56);
+	buf[1] = (unsigned char)(value >> 48);
+	buf[2] = (unsigned char)(value >> 40);
+	buf[3] = (unsigned char)(value >> 32);
+	buf[4] = (unsigned char)(value >> 24);
+	buf[5] = (unsigned char)(value >> 16);
+	buf[6] = (unsigned char)(value >> 8);
+	buf[7] = (unsigned char)value;
 }
 
-void Sha512_finalize(SHA512_DATA *sha,BYTE *hash)
+void Sha512_finalize(SHA512_DATA *sha,unsigned char *hash)
 {
 	QWORD totalBits;
 
@@ -218,10 +218,10 @@ void Sha512_finalize(SHA512_DATA *sha,BYTE *hash)
 		if(sha->inputLen >= (128 - 16))
 		{
 			/* Need two blocks worth of padding */
-			sha->input[(sha->inputLen)++] = (BYTE)0x80;
+			sha->input[(sha->inputLen)++] = (unsigned char)0x80;
 			while(sha->inputLen < 128)
 			{
-				sha->input[(sha->inputLen)++] = (BYTE)0x00;
+				sha->input[(sha->inputLen)++] = (unsigned char)0x00;
 			}
 			ProcessBlock(sha, sha->input);
 			sha->inputLen = 0;
@@ -229,11 +229,11 @@ void Sha512_finalize(SHA512_DATA *sha,BYTE *hash)
 		else
 		{
 			/* Need one block worth of padding */
-			sha->input[(sha->inputLen)++] = (BYTE)0x80;
+			sha->input[(sha->inputLen)++] = (unsigned char)0x80;
 		}
 		while(sha->inputLen < (128 - 16))
 		{
-			sha->input[(sha->inputLen)++] = (BYTE)0x00;
+			sha->input[(sha->inputLen)++] = (unsigned char)0x00;
 		}
 		totalBits = (sha->totalLen << 3);
 		memset(sha->input + (128 - 16), 0, 8);

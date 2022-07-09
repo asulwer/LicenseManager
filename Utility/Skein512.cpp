@@ -164,7 +164,7 @@ enum
     X[WCNT-1] += (r);                    /* avoid slide attacks */  \
     Skein_Show_Round(BLK_BITS,&ctx->h,SKEIN_RND_KEY_INJECT,X);
 
-QWORD RotL_64(QWORD x,DWORD N)
+QWORD RotL_64(QWORD x,unsigned long N)
 {
 	return (x << (N & 63)) | (x >> ((64-N) & 63));
 }
@@ -176,7 +176,7 @@ QWORD Skein_Swap64(QWORD w64)
     static const QWORD ONE = 1;              /* use this to check endianness */
 
     /* figure out endianness "on-the-fly" */
-    if (1 == ((BYTE *) & ONE)[0])
+    if (1 == ((unsigned char *) & ONE)[0])
         return w64;                           /* little-endian is fast */
     else
         return  (( w64       & 0xFF) << 56) | /*    big-endian is slow */
@@ -189,15 +189,15 @@ QWORD Skein_Swap64(QWORD w64)
                 (((w64 >>56) & 0xFF)      ) ;
 }
 
-void Skein_Put64_LSB_First(BYTE *dst,const QWORD *src,DWORD bCnt)
+void Skein_Put64_LSB_First(unsigned char *dst,const QWORD *src,unsigned long bCnt)
 { /* this version is fully portable (big-endian or little-endian), but slow */
-    DWORD n;
+    unsigned long n;
 
     for (n=0;n<bCnt;n++)
-        dst[n] = (BYTE) (src[n>>3] >> (8*(n&7)));
+        dst[n] = (unsigned char) (src[n>>3] >> (8*(n&7)));
 }
 
-void Skein_Get64_LSB_First(QWORD *dst,const BYTE *src,DWORD wCnt)
+void Skein_Get64_LSB_First(QWORD *dst,const unsigned char *src,unsigned long wCnt)
 { /* this version is fully portable (big-endian or little-endian), but slow */
     size_t n;
 
@@ -212,7 +212,7 @@ void Skein_Get64_LSB_First(QWORD *dst,const BYTE *src,DWORD wCnt)
                    (((QWORD) src[n+7]) << 56) ;
 }
 
-void Skein_512_Process_Block(SKEIN512_DATA *ctx,const BYTE *blkPtr,size_t blkCnt,size_t byteCntAdd)
+void Skein_512_Process_Block(SKEIN512_DATA *ctx,const unsigned char *blkPtr,size_t blkCnt,size_t byteCntAdd)
 { /* do it in C */
     enum
         {
@@ -308,7 +308,7 @@ void Skein_512_Process_Block(SKEIN512_DATA *ctx,const BYTE *blkPtr,size_t blkCnt
 void Skein512_init(SKEIN512_DATA *skein)
 {
 	union {
-		BYTE	b[SKEIN_512_STATE_BYTES];
+		unsigned char	b[SKEIN_512_STATE_BYTES];
 		QWORD	w[SKEIN_512_STATE_WORDS];
 		} cfg;                                  /* config block */
 
@@ -330,9 +330,9 @@ void Skein512_init(SKEIN512_DATA *skein)
 	Skein_Start_New_Type(skein,MSG);              /* T0=0, T1= MSG type, h.bCnt=0 */
 }
 
-void Skein512_data(SKEIN512_DATA *skein,const BYTE *buffer,DWORD len)
+void Skein512_data(SKEIN512_DATA *skein,const unsigned char *buffer,unsigned long len)
 {
-    DWORD n;
+    unsigned long n;
 
     /* process full blocks, if any */
     if (len + skein->h.bCnt > SKEIN_512_BLOCK_BYTES)
@@ -368,9 +368,9 @@ void Skein512_data(SKEIN512_DATA *skein,const BYTE *buffer,DWORD len)
         }
 }
 
-void Skein512_finalize(SKEIN512_DATA *skein,BYTE *hash)
+void Skein512_finalize(SKEIN512_DATA *skein,unsigned char *hash)
 {
-    DWORD i,n,byteCnt;
+    unsigned long i,n,byteCnt;
     QWORD X[SKEIN_512_STATE_WORDS];
 
     skein->h.T[1] |= SKEIN_T1_FLAG_FINAL;                 /* tag as the final block */

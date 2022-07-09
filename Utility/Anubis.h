@@ -32,8 +32,8 @@
 
 #include "Anubis_data.h"
 
-extern	void Anubis_set_key(ANUBIS_DATA *pAd,const BYTE *key);
-extern	void Anubis_encrypt(const ANUBIS_DATA *pAd,const BYTE *plaintext,BYTE *ciphertext);
-extern	void Anubis_decrypt(const ANUBIS_DATA *pAd,const BYTE *ciphertext,BYTE *plaintext);
+extern	void Anubis_set_key(ANUBIS_DATA *pAd,const unsigned char *key);
+extern	void Anubis_encrypt(const ANUBIS_DATA *pAd,const unsigned char *plaintext,unsigned char *ciphertext);
+extern	void Anubis_decrypt(const ANUBIS_DATA *pAd,const unsigned char *ciphertext,unsigned char *plaintext);
 
 #endif

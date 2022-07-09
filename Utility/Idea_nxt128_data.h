@@ -34,7 +34,7 @@
 #define NXT128_TOTAL_ROUNDS 16
 
 typedef struct {
-    DWORD rk[NXT128_TOTAL_ROUNDS * 4];
+    unsigned long rk[NXT128_TOTAL_ROUNDS * 4];
 } nxt128_ctx;
 
 #endif

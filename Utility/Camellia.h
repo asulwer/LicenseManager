@@ -30,8 +30,8 @@
 // ** 128bit block size
 // ** 256bit key
 
-extern	void Camellia_set_key(BYTE *e,const int n,const BYTE *k);
-extern	void Camellia_encrypt(const BYTE *e,const int n,const BYTE *p,BYTE *c);
-extern	void Camellia_decrypt(const BYTE *e,const int n,const BYTE *c,BYTE *p);
+extern	void Camellia_set_key(unsigned char *e,const int n,const unsigned char *k);
+extern	void Camellia_encrypt(const unsigned char *e,const int n,const unsigned char *p,unsigned char *c);
+extern	void Camellia_decrypt(const unsigned char *e,const int n,const unsigned char *c,unsigned char *p);
 
 #endif

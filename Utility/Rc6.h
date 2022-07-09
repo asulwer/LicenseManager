@@ -30,8 +30,8 @@
 // ** 128bit block size
 // ** 256bit key
 
-extern	void Rc6_set_key(DWORD *l_key,const DWORD *in_key, const DWORD key_len);
-extern	void Rc6_encrypt(const DWORD *l_key,const DWORD *in_blk, DWORD *out_blk);
-extern	void Rc6_decrypt(const DWORD *l_key,const DWORD *in_blk, DWORD *out_blk);
+extern	void Rc6_set_key(unsigned long *l_key,const unsigned long *in_key, const unsigned long key_len);
+extern	void Rc6_encrypt(const unsigned long *l_key,const unsigned long *in_blk, unsigned long *out_blk);
+extern	void Rc6_decrypt(const unsigned long *l_key,const unsigned long *in_blk, unsigned long *out_blk);
 
 #endif

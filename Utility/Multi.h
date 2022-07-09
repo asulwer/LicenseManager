@@ -38,9 +38,9 @@
 
 #include "Multi_data.h"
 
-extern	void Multi_setkey(MULTI_DATA *pMd,const BYTE *iv,const BYTE *passw1,const BYTE *passw2,DWORD nonce);
+extern	void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *passw1,const unsigned char *passw2,unsigned long nonce);
 
-extern	OBFUNC_RETV Multi_CBC_encrypt(MULTI_DATA *pMd,const DWORD len,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
-extern	OBFUNC_RETV Multi_CBC_decrypt(MULTI_DATA *pMd,const DWORD len,BYTE *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
+extern	OBFUNC_RETV Multi_CBC_encrypt(MULTI_DATA *pMd,const unsigned long len,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
+extern	OBFUNC_RETV Multi_CBC_decrypt(MULTI_DATA *pMd,const unsigned long len,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc);
 
 #endif

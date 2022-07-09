@@ -33,8 +33,8 @@
 
 typedef struct {
 	CSPRNG_DATA	cd;
-	DWORD		len;
-	DWORD		*list;
+	unsigned long		len;
+	unsigned long		*list;
 } SCRAMBLE_DATA;
 
 #endif
