@@ -42,10 +42,10 @@ typedef enum {
 #define	MAX_HASH		4
 
 typedef struct {
-	MULTI_STATIC_DATA	msd;
-	unsigned char				ctrBuf[DATA_BLOCK_SIZE];
-	unsigned char				randBuf[DATA_BLOCK_SIZE];
-	unsigned long				availCount;
+	MULTI_STATIC_DATA msd;
+	unsigned char ctrBuf[DATA_BLOCK_SIZE];
+	unsigned char randBuf[DATA_BLOCK_SIZE];
+	unsigned long availCount;
 } CSPRNG_DATA;
 
 #endif

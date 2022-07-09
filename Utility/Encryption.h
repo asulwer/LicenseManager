@@ -20,5 +20,7 @@ namespace Utility
 	private:
 		MULTI_DATA* md = nullptr;
 		SCRAMBLE_DATA* sd = nullptr;
+		unsigned char* iv = nullptr;
+		int nonce = 0;
 	};
 }

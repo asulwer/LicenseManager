@@ -9,7 +9,8 @@ namespace LicenseScheme
 {
     public partial class frmMain : Form
     {
-        private Assembly da = null;
+        private ILicense ld = null;
+        private Type dataType = null;
 
         public frmMain()
         {
@@ -22,6 +23,7 @@ namespace LicenseScheme
 
             dgvOptions.DataSource = dt;
 
+            Assembly da = null;
             try
             {
                 da = Assembly.LoadFrom(Directory.GetCurrentDirectory() + @"\Utility_x86.dll"); //looking for x32 version                    
@@ -30,26 +32,30 @@ namespace LicenseScheme
             {
                 da = Assembly.LoadFrom(Directory.GetCurrentDirectory() + @"\Utility_x64.dll"); //looking for x64 version
             }
+
+            if (da != null)
+            {
+                Type lt = da.GetType("Utility.License"); //get License type from loaded assembly
+                ld = (ILicense)Activator.CreateInstance(lt); //instantiate interface
+
+                dataType = da.GetType("Utility.Data"); //get Data type from loaded assembly                
+            }
         }
         
         private void btnEncode_Click(object sender, EventArgs e)
         {
             //check for properly loaded assembly before we try to use
-            if (da != null)
+            if (ld != null)
             {
-                Type lt = da.GetType("Utility.License"); //get License type from loaded assembly
-                ILicense ld = (ILicense)Activator.CreateInstance(lt); //instantiate interface
-
                 ld.Customer = tbCustomer.Text;
                 ld.Product = tbProduct.Text;
                 ld.Version = tbVersion.Text;
                 
                 DataTable dt = (DataTable)dgvOptions.DataSource;
                 ld.D = new IData[dt.Rows.Count];
-
+                
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    Type dataType = da.GetType("Utility.Data"); //get Data type from loaded assembly
                     IData data = (IData)Activator.CreateInstance(dataType); //instantiate interface
 
                     data.Key = dt.Rows[i]["Key"].ToString();
@@ -58,18 +64,22 @@ namespace LicenseScheme
                     ld.D[i] = data;
                 }
 
-                tbLicense.Text = ld.Save();
+                try
+                {
+                    tbLicense.Text = ld.Save();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                }
             }
         }
 
         private void btnDecode_Click(object sender, EventArgs e)
         {
             //check for properly loaded assembly before we try to use
-            if (da != null)
+            if (ld != null)
             {
-                Type lt = da.GetType("Utility.License"); //get License type from loaded assembly
-                ILicense ld = (ILicense)Activator.CreateInstance(lt); //instantiate interface
-
                 try
                 {
                     ld.Open(tbLicense.Text);

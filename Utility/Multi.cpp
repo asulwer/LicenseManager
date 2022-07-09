@@ -47,7 +47,7 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 	unsigned long index;
 
 	memset(pMd,0,sizeof(MULTI_DATA));
-
+	
 	// CSPRNG <- Skein512(passw2 + nonce)
 	CSPRNG_set_seed(&pMd->cd,SKEIN512_HASH,passw2,nonce);
 
@@ -74,7 +74,7 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 
 			for(sIndex=0;sIndex<MAX_PASSW_SIZE;sIndex++)
 			{ 
-				passw[(index*(MAX_ALG/MAX_HASH))+pIndex][sIndex]=CSPRNG_get_byte(tmpCSPRNG);
+				passw[(index*(MAX_ALG/MAX_HASH))+pIndex][sIndex]= CSPRNG_get_uc(tmpCSPRNG);
 			}
 		}
 	}
@@ -110,14 +110,14 @@ OBFUNC_RETV Multi_CBC_encrypt(MULTI_DATA *pMd,const unsigned long len,unsigned c
 
 	while(tLen>=DATA_BLOCK_SIZE)
 	{
-		unsigned char	tmpIN[DATA_BLOCK_SIZE];
-		unsigned char	curAlg = CSPRNG_get_byte(&pMd->cd) % MAX_ALG;
+		unsigned char tmpIN[DATA_BLOCK_SIZE];
+		ENUM_ALG curAlg = (ENUM_ALG)(CSPRNG_get_uc(&pMd->cd) % MAX_ALG);
 		
 		// OUT = encrypt( IN ^ IV_or_previous_out_block )
 		memcpy(tmpIN,buf,DATA_BLOCK_SIZE);
 		BlockXor(tmpIN,pMd->iv[curAlg]);
 
-		Multi_ECB_single_encrypt(&pMd->msd,(ENUM_ALG) curAlg,tmpIN,buf);
+		Multi_ECB_single_encrypt(&pMd->msd,curAlg,tmpIN,buf);
 		memcpy(pMd->iv[curAlg],buf,DATA_BLOCK_SIZE);
 
 		buf+=DATA_BLOCK_SIZE;
@@ -157,10 +157,10 @@ OBFUNC_RETV Multi_CBC_decrypt(MULTI_DATA *pMd,const unsigned long len,unsigned c
 	while(tLen>=DATA_BLOCK_SIZE)
 	{
 		unsigned char	tmpOUT[DATA_BLOCK_SIZE];
-		unsigned char	curAlg = CSPRNG_get_byte(&pMd->cd) % MAX_ALG;
-
+		ENUM_ALG curAlg = (ENUM_ALG)(CSPRNG_get_uc(&pMd->cd) % MAX_ALG);
+		
 		// OUT = decrypt( IN ) ^ IV_or_previous_in_block )
-		Multi_ECB_single_decrypt(&pMd->msd,(ENUM_ALG) curAlg,buf,tmpOUT);
+		Multi_ECB_single_decrypt(&pMd->msd,curAlg,buf,tmpOUT);
 
 		BlockXor(tmpOUT,pMd->iv[curAlg]);
 		memcpy(pMd->iv[curAlg],buf,DATA_BLOCK_SIZE);

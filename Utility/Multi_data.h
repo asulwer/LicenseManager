@@ -36,9 +36,9 @@
 #include "CSPRNG_data.h"
 
 typedef struct {
-	MULTI_STATIC_DATA	msd;
-	CSPRNG_DATA			cd;
-	unsigned char				iv[MAX_ALG][DATA_BLOCK_SIZE];
+	MULTI_STATIC_DATA msd;
+	CSPRNG_DATA cd;
+	unsigned char iv[MAX_ALG][DATA_BLOCK_SIZE];
 } MULTI_DATA;
 
 #endif

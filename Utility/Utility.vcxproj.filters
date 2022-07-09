@@ -179,9 +179,6 @@
     <ClInclude Include="CSPRNG_data.h">
       <Filter>Header Files\CSPRNG</Filter>
     </ClInclude>
-    <ClInclude Include="RSG.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Multi.h">
       <Filter>Header Files\Multi Crypto Wrapper</Filter>
     </ClInclude>
@@ -288,9 +285,6 @@
     </ClCompile>
     <ClCompile Include="CSPRNG.cpp">
       <Filter>Source Files\CSPRNG</Filter>
-    </ClCompile>
-    <ClCompile Include="RSG.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Multi.cpp">
       <Filter>Source Files\Multi Crypto Wrapper</Filter>

@@ -47,9 +47,9 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw
 	//password could be less than max
 	if(len < MAX_PASSW_SIZE)
 		len = strlen((char*)inBuf); //gives a warning but returns the correct size
-		
-	memcpy(&inBuf[len],&nonce,4);
-	len+=4;
+	
+	memcpy(&inBuf[len],&nonce, sizeof(unsigned long));
+	len += sizeof(unsigned long);
 
 	//hash password using 1 of 4 hashing algorithms
 	if(hashE==SHA512_HASH)
@@ -87,80 +87,26 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw
 
 	//set key using hashed password
 	Multi_single_setkey(&pCd->msd,RIJNDAEL_ALG,hash);
-
 	memcpy(pCd->ctrBuf,&hash[MAX_PASSW_SIZE],DATA_BLOCK_SIZE);
+	
 	pCd->availCount=0;	
 }
 
-// auto setup with default
-//void CSPRNG_autoseed(CSPRNG_DATA *pCd,perc_callback_t backFunc,void *desc)
-//{
-//	unsigned char	passw[MAX_PASSW_SIZE+DATA_BLOCK_SIZE];
-//	unsigned char	nullPassw[MAX_PASSW_SIZE+DATA_BLOCK_SIZE];
-//
-//	memset(pCd,0,sizeof(CSPRNG_DATA));
-//
-//	memset(nullPassw,0,MAX_PASSW_SIZE+DATA_BLOCK_SIZE);
-//	//GenerateEntropy(MAX_PASSW_SIZE+DATA_BLOCK_SIZE,passw,backFunc,desc);
-//
-//	// GenerateEntropy KO
-//	if(!memcmp(passw,nullPassw,MAX_PASSW_SIZE+DATA_BLOCK_SIZE))
-//		{
-//		unsigned long	index;
-//
-//		LARGE_INTEGER	qpc;
-//
-//		QueryPerformanceCounter(&qpc);
-//
-//		srand(*((unsigned long *) &qpc));
-//
-//		for(index=0;index<(MAX_PASSW_SIZE+DATA_BLOCK_SIZE);index++)
-//			{ passw[index]=(unsigned char) rand(); }
-//		}
-//
-//	Multi_single_setkey(&pCd->msd,RIJNDAEL_ALG,passw);
-//
-//	memcpy(pCd->ctrBuf,&passw[MAX_PASSW_SIZE],DATA_BLOCK_SIZE);
-//	pCd->availCount=0;	
-//}
-
 // little endian
-void BlockInc(unsigned char *data)
+void BlockInc(unsigned char *data, int len)
 {
-	//increase by +1 this 16 byte number
-	#if	DATA_BLOCK_SIZE==16
-
-	//only compiles on x86 because __asm does not exist in x64
-#if !defined(_WIN64)
-	__asm
-	{
-		mov edi, [data] //move data into edi
-		//clc //clear carry flag
-
-		//inc dword ptr[edi + 0]
-		add dword ptr[edi + 0], 1
-		adc dword ptr[edi + 4], 0
-		adc dword ptr[edi + 8], 0
-		adc dword ptr[edi + 12], 0
-	}
-#else
-	unsigned int pos = 16;
+	unsigned int pos = len;
 	while (pos-- && ++data[pos] == 0);
-#endif
-
-	#else
-	#error
-	#endif
 }
 
-// auto reseeding leads to a bad chi-square result after some Mb of data!
-unsigned char CSPRNG_get_byte(CSPRNG_DATA *pCd)
+//TODOL change this behavior so its isnt needed anymore
+unsigned char CSPRNG_get_uc(CSPRNG_DATA *pCd)
 {
 	if(!pCd->availCount)
 	{
 		// random = AES-256(CTR)
 		Multi_ECB_single_encrypt(&pCd->msd,RIJNDAEL_ALG,pCd->ctrBuf,pCd->randBuf);
-		BlockInc(pCd->ctrBuf);
+		BlockInc(pCd->ctrBuf, sizeof(pCd->ctrBuf));
 
 		pCd->availCount=DATA_BLOCK_SIZE-1;
 
@@ -172,24 +118,24 @@ unsigned char CSPRNG_get_byte(CSPRNG_DATA *pCd)
 	}
 }
 
-unsigned short CSPRNG_get_word(CSPRNG_DATA *pCd)
+unsigned short CSPRNG_get_us(CSPRNG_DATA *pCd)
 {
 	unsigned short	retV;
 
-	retV=(unsigned short) CSPRNG_get_byte(pCd);
+	retV=(unsigned short)CSPRNG_get_uc(pCd);
 	retV<<=8;
-	retV|=(unsigned short) CSPRNG_get_byte(pCd);
+	retV|=(unsigned short)CSPRNG_get_uc(pCd);
 
 	return(retV);
 }
 
-unsigned long CSPRNG_get_dword(CSPRNG_DATA *pCd)
+unsigned long CSPRNG_get_ul(CSPRNG_DATA *pCd)
 {
 	unsigned long	retV;
 
-	retV=(unsigned long) CSPRNG_get_word(pCd);
+	retV=(unsigned long)CSPRNG_get_us(pCd);
 	retV<<=16;
-	retV|=(unsigned long) CSPRNG_get_word(pCd);
+	retV|=(unsigned long)CSPRNG_get_us(pCd);
 
 	return(retV);
 }
@@ -204,7 +150,7 @@ OBFUNC_RETV CSPRNG_randomize(CSPRNG_DATA *pCd,const unsigned long len,unsigned c
 
 	while(tLen--)
 	{
-		*(buf++)=CSPRNG_get_byte(pCd);
+		*(buf++)= CSPRNG_get_uc(pCd);
 
 		if(!refCount)
 		{
@@ -242,7 +188,7 @@ void CSPRNG_array_init(CSPRNG_DATA *pCd,unsigned long max,unsigned char *buf)
 
 		do
 		{ 
-			rIndex=CSPRNG_get_byte(pCd)%max;
+			rIndex= CSPRNG_get_uc(pCd)%max;
 		} while(buf[rIndex]!=0xFF);
 
 		buf[rIndex]=(unsigned char) index;

@@ -7,6 +7,7 @@ namespace Utility
 	{
 		md = new MULTI_DATA;
 		sd = new SCRAMBLE_DATA;
+		iv = new unsigned char[256]{ '\0' }; //initialize to nothing
 	}
 
 	Encryption::~Encryption()
@@ -16,13 +17,15 @@ namespace Utility
 
 	Encryption::!Encryption()
 	{
+		delete iv;
+		delete sd;
 		delete md;
 	}
 	
 	cli::array<Byte>^ Encryption::Encrypt(cli::array<Byte>^ orig)
 	{
-		String^ passwd1 = "PaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRd1234567"; //default password
-		String^ passwd2 = "pAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrD1234567"; //default password
+		String^ passwd1 = "PaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRd"; //default password
+		String^ passwd2 = "pAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrD"; //default password
 
 		cli::array<unsigned char>^ pw_bytes1 = System::Text::Encoding::ASCII->GetBytes(passwd1);
 		cli::array<unsigned char>^ pw_bytes2 = System::Text::Encoding::ASCII->GetBytes(passwd2);
@@ -32,10 +35,9 @@ namespace Utility
 
 		pin_ptr<unsigned char> pt = &orig[0]; //plaintext
 
-		Scramble_seed(sd, orig->Length, pw1, 0); //should do a 16 byte block at a time
-		Seg_scramble(sd, pt, NULL, NULL, NULL, NULL);
-		unsigned char* iv = new unsigned char[256]{ '\0' }; //initialize to nothing
-		Multi_setkey(md, iv, pw1, pw2, 0);
+		//Scramble_seed(sd, orig->Length, pw1, nonce); //should do a 16 byte block at a time
+		//Seg_scramble(sd, pt, NULL, NULL, NULL, NULL);
+		Multi_setkey(md, iv, pw1, pw2, nonce);
 		Multi_CBC_encrypt(md, orig->Length, pt, NULL, NULL, NULL, NULL);
 		
 		return orig;
@@ -43,8 +45,8 @@ namespace Utility
 
 	cli::array<Byte>^ Encryption::Decrypt(cli::array<Byte>^ orig)
 	{	
-		String^ passwd1 = "PaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRd1234567"; //default password
-		String^ passwd2 = "pAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrD1234567"; //default password
+		String^ passwd1 = "PaSsWoRdPaSsWoRdPaSsWoRdPaSsWoRd"; //default password
+		String^ passwd2 = "pAsSwOrDpAsSwOrDpAsSwOrDpAsSwOrD"; //default password
 
 		cli::array<unsigned char>^ pw_bytes1 = System::Text::Encoding::ASCII->GetBytes(passwd1);
 		cli::array<unsigned char>^ pw_bytes2 = System::Text::Encoding::ASCII->GetBytes(passwd2);
@@ -54,11 +56,10 @@ namespace Utility
 
 		pin_ptr<unsigned char> ct = &orig[0]; //cyphertext
 
-		unsigned char* iv = new unsigned char[256]{ '\0' }; //initialize to nothing
-		Multi_setkey(md, iv, pw1, pw2, 0);		
+		Multi_setkey(md, iv, pw1, pw2, nonce);
 		Multi_CBC_decrypt(md, orig->Length, ct, NULL, NULL, NULL, NULL);
-		Scramble_seed(sd, orig->Length, pw1, 0); //should do a 16 byte block at a time
-		Seg_descramble(sd, ct, NULL, NULL, NULL, NULL);
+		//Scramble_seed(sd, orig->Length, pw1, nonce); //should do a 16 byte block at a time
+		//Seg_descramble(sd, ct, NULL, NULL, NULL, NULL);
 		
 		return orig;
 	}

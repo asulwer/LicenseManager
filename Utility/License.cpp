@@ -47,7 +47,6 @@ namespace Utility
 	}
 	void License::Open(String^ lic)
 	{
-		License^ temp = gcnew License();
 		cli::array<Byte>^ buffer = nullptr;
 
 		try
@@ -69,8 +68,15 @@ namespace Utility
 			{
 				BinaryFormatter^ bf = gcnew BinaryFormatter();
 				bf->Binder = gcnew Binder;
-
-				temp = (License^)bf->Deserialize(ms);
+				
+				//a new temporary License to hold the Deserialized license isnt necessary
+				this->Customer = ((License^)bf->Deserialize(ms))->Customer;
+				ms->Position = 0; //reset
+				this->Product = ((License^)bf->Deserialize(ms))->Product;
+				ms->Position = 0; //reset
+				this->Version = ((License^)bf->Deserialize(ms))->Version;
+				ms->Position = 0; //reset
+				this->D = ((License^)bf->Deserialize(ms))->D;
 			}
 			catch (...)
 			{
@@ -82,10 +88,5 @@ namespace Utility
 				ms->Close();
 			}
 		}
-
-		this->Customer = temp->Customer;
-		this->Product = temp->Product;
-		this->Version = temp->Version;
-		this->D = temp->D;
 	}
 }

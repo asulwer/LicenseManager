@@ -183,7 +183,6 @@
     <ClInclude Include="Rc6.h" />
     <ClInclude Include="Rijndael.h" />
     <ClInclude Include="Rijndael_data.h" />
-    <ClInclude Include="RSG.h" />
     <ClInclude Include="Saferp.h" />
     <ClInclude Include="Saferp_data.h" />
     <ClInclude Include="Sc2000.h" />
@@ -224,7 +223,6 @@
     <ClCompile Include="MultiBase.cpp" />
     <ClCompile Include="Rc6.cpp" />
     <ClCompile Include="Rijndael.cpp" />
-    <ClCompile Include="RSG.cpp" />
     <ClCompile Include="Saferp.cpp" />
     <ClCompile Include="Sc2000.cpp" />
     <ClCompile Include="Scramble.cpp" />
