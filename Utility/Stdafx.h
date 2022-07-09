@@ -12,7 +12,7 @@
 //#pragma managed(pop)
 
 #ifdef EXPORTS
-    #define DECLDIR "C" __declspec(dllexport)
+    #define DECLDIR __declspec(dllexport)
 #else
-    #define DECLDIR "C" __declspec(dllimport)
+    #define DECLDIR __declspec(dllimport)
 #endif
