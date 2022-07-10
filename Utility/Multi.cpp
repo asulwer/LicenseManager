@@ -31,10 +31,10 @@
 void BlockXor(unsigned char *data,const unsigned char *value)
 {
 	#if	DATA_BLOCK_SIZE==16
-	*((unsigned long *) (data+ 0))	^=*((unsigned long *) (value+ 0));
-	*((unsigned long *) (data+ 4))	^=*((unsigned long *) (value+ 4));
-	*((unsigned long *) (data+ 8))	^=*((unsigned long *) (value+ 8));
-	*((unsigned long *) (data+12))	^=*((unsigned long *) (value+12));
+	*((unsigned long *) (data+ 0))	^= *((unsigned long *) (value+ 0));
+	*((unsigned long *) (data+ 4))	^= *((unsigned long *) (value+ 4));
+	*((unsigned long *) (data+ 8))	^= *((unsigned long *) (value+ 8));
+	*((unsigned long *) (data+12))	^= *((unsigned long *) (value+12));
 	#else
 	#error
 	#endif
@@ -74,7 +74,7 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 
 			for(sIndex=0;sIndex<MAX_PASSW_SIZE;sIndex++)
 			{ 
-				passw[(index*(MAX_ALG/MAX_HASH))+pIndex][sIndex]= CSPRNG_get_uc(tmpCSPRNG);
+				passw[(index*(MAX_ALG/MAX_HASH))+pIndex][sIndex] = CSPRNG_get_uc(tmpCSPRNG);
 			}
 		}
 	}
@@ -100,7 +100,7 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 	Multi_single_setkey(&pMd->msd,UNICORNA_ALG,		passw[usedMap[15]]);
 }
 
-#define	REFRESH_COUNTDOWN	100
+#define	REFRESH_COUNTDOWN 100
 
 OBFUNC_RETV Multi_CBC_encrypt(MULTI_DATA *pMd,const unsigned long len,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
 {

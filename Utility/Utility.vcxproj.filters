@@ -185,14 +185,14 @@
     <ClInclude Include="Multi_data.h">
       <Filter>Header Files\Multi Crypto Wrapper</Filter>
     </ClInclude>
-    <ClInclude Include="CommonDef.h">
-      <Filter>Header Files\Multi Crypto Wrapper</Filter>
-    </ClInclude>
     <ClInclude Include="Scramble.h">
       <Filter>Header Files\Scramble</Filter>
     </ClInclude>
     <ClInclude Include="Scramble_data.h">
       <Filter>Header Files\Scramble</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonDef.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

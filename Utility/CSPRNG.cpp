@@ -87,7 +87,7 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw
 
 	//set key using hashed password
 	Multi_single_setkey(&pCd->msd,RIJNDAEL_ALG,hash);
-	memcpy(pCd->ctrBuf,&hash[MAX_PASSW_SIZE],DATA_BLOCK_SIZE);
+	memcpy(pCd->ctrBuf,&hash[MAX_PASSW_SIZE],DATA_BLOCK_SIZE); //doesnt use the complete hash only 16 bytes
 	
 	pCd->availCount=0;	
 }
@@ -99,7 +99,7 @@ void BlockInc(unsigned char *data, int len)
 	while (pos-- && ++data[pos] == 0);
 }
 
-//TODOL change this behavior so its isnt needed anymore
+//TODO: change this behavior so its isnt needed anymore
 unsigned char CSPRNG_get_uc(CSPRNG_DATA *pCd)
 {
 	if(!pCd->availCount)
