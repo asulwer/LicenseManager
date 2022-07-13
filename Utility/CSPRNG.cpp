@@ -31,13 +31,11 @@
 
 #include "CSPRNG_data.h"
 
-#define	RESEED_COUNTDOWN	1000
-
 void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw,unsigned long nonce)
 {
-	unsigned char	inBuf[64];
-	unsigned char	hash[64];
-	unsigned long	len = MAX_PASSW_SIZE;
+	unsigned char inBuf[64];
+	unsigned char hash[64];
+	unsigned long len = MAX_PASSW_SIZE;
 
 	memset(pCd,0,sizeof(CSPRNG_DATA));
 
@@ -87,28 +85,37 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw
 
 	//set key using hashed password
 	Multi_single_setkey(&pCd->msd,RIJNDAEL_ALG,hash);
-	memcpy(pCd->ctrBuf,&hash[MAX_PASSW_SIZE],DATA_BLOCK_SIZE); //doesnt use the complete hash only 16 bytes
-	
+	memcpy(pCd->ctrBuf, hash, 64);
+
 	pCd->availCount=0;	
 }
 
-// little endian
-void BlockInc(unsigned char *data, int len)
+void CSPRNG_encrypt(MULTI_STATIC_DATA* msd, unsigned char* data, int len)
 {
-	unsigned int pos = len;
-	while (pos-- && ++data[pos] == 0);
+	int tlen = len;
+
+	while (tlen >= len)
+	{
+		unsigned char tmpIN[DATA_BLOCK_SIZE];
+		memcpy(tmpIN, data, DATA_BLOCK_SIZE);
+
+		Multi_ECB_single_encrypt(msd, RIJNDAEL_ALG, tmpIN, data); //encrypts and returns the first 16 bytes
+
+		data += DATA_BLOCK_SIZE;
+		tlen -= DATA_BLOCK_SIZE;
+	}
 }
 
-//TODO: change this behavior so its isnt needed anymore
 unsigned char CSPRNG_get_uc(CSPRNG_DATA *pCd)
 {
-	if(!pCd->availCount)
+	if (!pCd->availCount)
 	{
 		// random = AES-256(CTR)
-		Multi_ECB_single_encrypt(&pCd->msd,RIJNDAEL_ALG,pCd->ctrBuf,pCd->randBuf);
-		BlockInc(pCd->ctrBuf, sizeof(pCd->ctrBuf));
+		memcpy(pCd->randBuf, pCd->ctrBuf, 64);
+		CSPRNG_encrypt(&pCd->msd, pCd->randBuf, sizeof(pCd->randBuf));
+		CSPRNG_encrypt(&pCd->msd, pCd->ctrBuf, sizeof(pCd->ctrBuf));
 
-		pCd->availCount=DATA_BLOCK_SIZE-1;
+		pCd->availCount=DATA_BLOCK_SIZE-1; //always 15
 
 		return(*pCd->randBuf);
 	}
@@ -118,79 +125,19 @@ unsigned char CSPRNG_get_uc(CSPRNG_DATA *pCd)
 	}
 }
 
-unsigned short CSPRNG_get_us(CSPRNG_DATA *pCd)
+void CSPRNG_array_init(CSPRNG_DATA* pCd, unsigned long max, unsigned char* buf)
 {
-	unsigned short	retV;
+	bool numExists[DATA_BLOCK_SIZE] = { false };
 
-	retV=(unsigned short)CSPRNG_get_uc(pCd);
-	retV<<=8;
-	retV|=(unsigned short)CSPRNG_get_uc(pCd);
-
-	return(retV);
-}
-
-unsigned long CSPRNG_get_ul(CSPRNG_DATA *pCd)
-{
-	unsigned long	retV;
-
-	retV=(unsigned long)CSPRNG_get_us(pCd);
-	retV<<=16;
-	retV|=(unsigned long)CSPRNG_get_us(pCd);
-
-	return(retV);
-}
-
-#define	REFRESH_COUNTDOWN	1000
-
-OBFUNC_RETV CSPRNG_randomize(CSPRNG_DATA *pCd,const unsigned long len,unsigned char *buf,perc_callback_t pFunc,void *pDesc,test_callback_t tFunc,void *tDesc)
-{
-	unsigned long tLen=len;
-	unsigned char lastPerc=0;
-	unsigned short refCount=REFRESH_COUNTDOWN;
-
-	while(tLen--)
+	int i = 0;
+	while (i != max)
 	{
-		*(buf++)= CSPRNG_get_uc(pCd);
+		int randomNum = (CSPRNG_get_uc(pCd) % max) % max;
 
-		if(!refCount)
+		if (numExists[randomNum] == false)
 		{
-			refCount=REFRESH_COUNTDOWN;
-
-			if(pFunc)
-			{
-				unsigned char tmp=(unsigned char) ((((float) (len-tLen))/((float) len))*((float) 100));
-				if(tmp>lastPerc)
-				{
-					lastPerc=tmp;
-					pFunc(pDesc,lastPerc);
-				}
-			}
-			if(tFunc&&tFunc(tDesc))
-			{ 
-				return(OBFUNC_STOP);
-			}
+			buf[i++] = (unsigned char)randomNum;
+			numExists[randomNum] = true;
 		}
-
-		refCount--;
-	}
-
-	return(OBFUNC_OK);
-}
-
-void CSPRNG_array_init(CSPRNG_DATA *pCd,unsigned long max,unsigned char *buf)
-{
-	unsigned long index;
-
-	memset(buf,0xFF,max);
-	for(index=0;index<max;index++)
-	{
-		unsigned long rIndex;
-
-		do
-		{ 
-			rIndex= CSPRNG_get_uc(pCd)%max;
-		} while(buf[rIndex]!=0xFF);
-
-		buf[rIndex]=(unsigned char) index;
 	}
 }

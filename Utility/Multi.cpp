@@ -44,8 +44,7 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 {
 	unsigned char passw[MAX_ALG][MAX_PASSW_SIZE];
 	unsigned char usedMap[MAX_ALG];
-	unsigned long index;
-
+	
 	memset(pMd,0,sizeof(MULTI_DATA));
 	
 	// CSPRNG <- Skein512(passw2 + nonce)
@@ -55,9 +54,8 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 	memcpy(pMd->iv,iv,MAX_ALG*DATA_BLOCK_SIZE);
 
 	// passw[] <- KDF4 : random ( hash( passw1 + nonce) )
-	for(index=0;index<MAX_HASH;index++)
+	for(int index=0;index<MAX_HASH;index++)
 	{
-		unsigned long pIndex;
 		CSPRNG_DATA* tmpCSPRNG = new CSPRNG_DATA(); //changed to a pointer
 
 		switch(index)
@@ -68,13 +66,12 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 			case 3:	CSPRNG_set_seed(tmpCSPRNG,SKEIN512_HASH,passw1,nonce); break;
 		}
 		
-		for(pIndex=0;pIndex<(MAX_ALG/MAX_HASH);pIndex++)
+		for(int pIndex=0;pIndex<(MAX_ALG/MAX_HASH);pIndex++) //16/4
 		{
-			unsigned long sIndex;
-
-			for(sIndex=0;sIndex<MAX_PASSW_SIZE;sIndex++)
-			{ 
-				passw[(index*(MAX_ALG/MAX_HASH))+pIndex][sIndex] = CSPRNG_get_uc(tmpCSPRNG);
+			for(int sIndex=0;sIndex<MAX_PASSW_SIZE;sIndex++) //32
+			{
+				int pos = (index * (MAX_ALG / MAX_HASH)) + pIndex;
+				passw[pos][sIndex] = CSPRNG_get_uc(tmpCSPRNG);
 			}
 		}
 	}

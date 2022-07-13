@@ -42,8 +42,8 @@ namespace Utility
 
 		Multi_setkey(md, iv, pw1, pw2, nonce);
 		Multi_CBC_encrypt(md, orig->Length, pt, NULL, NULL, NULL, NULL);
-		//Scramble_seed(sd, orig->Length, pw3, nonce); //should do a 16 byte block at a time
-		//Seg_scramble(sd, pt, NULL, NULL, NULL, NULL);
+		Scramble_seed(sd, orig->Length, pw3, nonce); //should do a 16 byte block at a time
+		Seg_scramble(sd, pt, NULL, NULL, NULL, NULL);
 
 		return orig;
 	}
@@ -67,8 +67,8 @@ namespace Utility
 
 		pin_ptr<unsigned char> ct = &orig[0]; //cyphertext
 
-		//Scramble_seed(sd, orig->Length, pw3, nonce); //should do a 16 byte block at a time
-		//Seg_descramble(sd, ct, NULL, NULL, NULL, NULL);
+		Scramble_seed(sd, orig->Length, pw3, nonce); //should do a 16 byte block at a time
+		Seg_descramble(sd, ct, NULL, NULL, NULL, NULL);
 		Multi_setkey(md, iv, pw1, pw2, nonce);
 		Multi_CBC_decrypt(md, orig->Length, ct, NULL, NULL, NULL, NULL);
 		

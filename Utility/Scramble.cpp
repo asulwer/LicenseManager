@@ -34,8 +34,8 @@ void Scramble_build_list(CSPRNG_DATA *pCd,const unsigned long count,const unsign
 	{
 		do
 		{
-			list[0]= CSPRNG_get_ul(pCd)%max;
-			list[1]= CSPRNG_get_ul(pCd)%max;
+			list[0]= (CSPRNG_get_uc(pCd) % max) % max;
+			list[1]= (CSPRNG_get_uc(pCd) % max) % max;
 		} while(list[0]==list[1]);
 
 		list+=2;
