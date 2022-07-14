@@ -37,7 +37,6 @@
 #include "Saferp.h"
 #include "Sc2000.h"
 #include "Serpent.h"
-#include "Sha512.h"
 #include "Speed.h"
 #include "Twofish.h"
 #include "Unicorn-A.h"

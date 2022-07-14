@@ -143,30 +143,6 @@
     <ClInclude Include="Unicorn-A.h">
       <Filter>Header Files\Block Ciphers</Filter>
     </ClInclude>
-    <ClInclude Include="Grostl512_data.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Grostl512.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Keccak512.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Keccak512_data.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Sha512.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Sha512_data.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Skein512.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
-    <ClInclude Include="Skein512_data.h">
-      <Filter>Header Files\Hash</Filter>
-    </ClInclude>
     <ClInclude Include="MultiBase.h">
       <Filter>Header Files\Simple Crypto Wrapper</Filter>
     </ClInclude>
@@ -193,6 +169,21 @@
     </ClInclude>
     <ClInclude Include="CommonDef.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="keccak.h">
+      <Filter>Header Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="md5.h">
+      <Filter>Header Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="sha1.h">
+      <Filter>Header Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="sha3.h">
+      <Filter>Header Files\Hash</Filter>
+    </ClInclude>
+    <ClInclude Include="sha256.h">
+      <Filter>Header Files\Hash</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -268,18 +259,6 @@
     <ClCompile Include="Unicorn-A.cpp">
       <Filter>Source Files\Block Ciphers</Filter>
     </ClCompile>
-    <ClCompile Include="Grostl512.cpp">
-      <Filter>Source Files\Hash</Filter>
-    </ClCompile>
-    <ClCompile Include="Keccak512.cpp">
-      <Filter>Source Files\Hash</Filter>
-    </ClCompile>
-    <ClCompile Include="Sha512.cpp">
-      <Filter>Source Files\Hash</Filter>
-    </ClCompile>
-    <ClCompile Include="Skein512.cpp">
-      <Filter>Source Files\Hash</Filter>
-    </ClCompile>
     <ClCompile Include="MultiBase.cpp">
       <Filter>Source Files\Simple Crypto Wrapper</Filter>
     </ClCompile>
@@ -291,6 +270,21 @@
     </ClCompile>
     <ClCompile Include="Scramble.cpp">
       <Filter>Source Files\Scamble</Filter>
+    </ClCompile>
+    <ClCompile Include="keccak.cpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="md5.cpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="sha1.cpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="sha3.cpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="sha256.cpp">
+      <Filter>Source Files\Hash</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

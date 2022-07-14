@@ -38,7 +38,6 @@
 #include "Idea_nxt128_data.h"
 #include "Rijndael_data.h"
 #include "Saferp_data.h"
-#include "Sha512_data.h"
 #include "Speed_data.h"
 #include "Twofish_data.h"
 

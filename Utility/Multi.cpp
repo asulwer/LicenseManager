@@ -47,8 +47,7 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 	
 	memset(pMd,0,sizeof(MULTI_DATA));
 	
-	// CSPRNG <- Skein512(passw2 + nonce)
-	CSPRNG_set_seed(&pMd->cd,SKEIN512_HASH,passw2,nonce);
+	CSPRNG_set_seed(&pMd->cd,SHA256_HASH,passw2,nonce);
 
 	// IVs
 	memcpy(pMd->iv,iv,MAX_ALG*DATA_BLOCK_SIZE);
@@ -60,15 +59,16 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 
 		switch(index)
 		{
-			case 0:	CSPRNG_set_seed(tmpCSPRNG,SHA512_HASH,passw1,nonce); break;
-			case 1:	CSPRNG_set_seed(tmpCSPRNG,GROSTL512_HASH,passw1,nonce); break;
-			case 2:	CSPRNG_set_seed(tmpCSPRNG,KECCAK512_HASH,passw1,nonce); break;
-			case 3:	CSPRNG_set_seed(tmpCSPRNG,SKEIN512_HASH,passw1,nonce); break;
+			case 0:	CSPRNG_set_seed(tmpCSPRNG,KECCAK_HASH,passw1,nonce); break;
+			case 1:	CSPRNG_set_seed(tmpCSPRNG,MD5_HASH,passw1,nonce); break;
+			case 2:	CSPRNG_set_seed(tmpCSPRNG,SHA1_HASH,passw1,nonce); break;
+			case 3:	CSPRNG_set_seed(tmpCSPRNG,SHA3_HASH, passw1, nonce); break;
+			case 4:	CSPRNG_set_seed(tmpCSPRNG,SHA256_HASH, passw1, nonce); break;
 		}
 		
-		for(int pIndex=0;pIndex<(MAX_ALG/MAX_HASH);pIndex++) //16/4
+		for(int pIndex=0; pIndex<(MAX_ALG/MAX_HASH); pIndex++) //16/4
 		{
-			for(int sIndex=0;sIndex<MAX_PASSW_SIZE;sIndex++) //32
+			for(int sIndex=0; sIndex<MAX_PASSW_SIZE; sIndex++) //32
 			{
 				int pos = (index * (MAX_ALG / MAX_HASH)) + pIndex;
 				passw[pos][sIndex] = CSPRNG_get_uc(tmpCSPRNG);

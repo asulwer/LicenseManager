@@ -33,13 +33,14 @@
 #include "MultiBase_data.h"
 
 typedef enum {
-	SHA512_HASH=0,
-	GROSTL512_HASH,
-	KECCAK512_HASH,
-	SKEIN512_HASH
+	KECCAK_HASH,
+	MD5_HASH,
+	SHA1_HASH,
+	SHA3_HASH,
+	SHA256_HASH
 } ENUM_HASH;
 
-#define	MAX_HASH		4
+#define	MAX_HASH 5
 
 typedef struct {
 	MULTI_STATIC_DATA msd;

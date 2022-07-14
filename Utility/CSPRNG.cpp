@@ -23,12 +23,13 @@
 
 #include "stdafx.h"
 
-#include "Sha512.h"
-#include "Grostl512.h"
-#include "Keccak512.h"
-#include "Skein512.h"
-#include "MultiBase.h"
+#include "keccak.h"
+#include "md5.h"
+#include "sha1.h"
+#include "sha3.h"
+#include "sha256.h"
 
+#include "MultiBase.h"
 #include "CSPRNG_data.h"
 
 void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw,unsigned long nonce)
@@ -49,38 +50,36 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw
 	memcpy(&inBuf[len],&nonce, sizeof(unsigned long));
 	len += sizeof(unsigned long);
 
-	//hash password using 1 of 4 hashing algorithms
-	if(hashE==SHA512_HASH)
+	//hash password using 1 of 5 hashing algorithms
+	if(hashE==KECCAK_HASH)
 	{
-		SHA512_DATA		sha;
-
-		Sha512_init(&sha);
-		Sha512_data(&sha,inBuf,len);
-		Sha512_finalize(&sha,hash);
+		Keccak k(Keccak::Keccak512);
+		std::string sHash = k(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
 	}
-	else if(hashE==GROSTL512_HASH)
+	else if(hashE==MD5_HASH)
 	{
-		GROSTL512_DATA	grostl;
-
-		Grostl512_init(&grostl);
-		Grostl512_data(&grostl,inBuf,len);
-		Grostl512_finalize(&grostl,hash);
+		MD5 md5;
+		std::string sHash = md5(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
 	}
-	else if(hashE==KECCAK512_HASH)
+	else if(hashE==SHA1_HASH)
 	{
-		KECCAK512_DATA	keccak;
-
-		Keccak512_init(&keccak);
-		Keccak512_data(&keccak,inBuf,len);
-		Keccak512_finalize(&keccak,hash);
+		SHA1 sha;
+		std::string sHash = sha(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
 	}
-	else if(hashE==SKEIN512_HASH)
+	else if(hashE == SHA3_HASH)
 	{
-		SKEIN512_DATA	skein;
-
-		Skein512_init(&skein);
-		Skein512_data(&skein,inBuf,len);
-		Skein512_finalize(&skein,hash);
+		SHA3 sha(SHA3::Bits512);
+		std::string sHash = sha(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
+	}
+	else if (hashE == SHA256_HASH)
+	{
+		SHA256 sha;
+		std::string sHash = sha(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
 	}
 
 	//set key using hashed password
@@ -99,7 +98,7 @@ void CSPRNG_encrypt(MULTI_STATIC_DATA* msd, unsigned char* data, int len)
 		unsigned char tmpIN[DATA_BLOCK_SIZE];
 		memcpy(tmpIN, data, DATA_BLOCK_SIZE);
 
-		Multi_ECB_single_encrypt(msd, RIJNDAEL_ALG, tmpIN, data); //encrypts and returns the first 16 bytes
+		Multi_ECB_single_encrypt(msd, RIJNDAEL_ALG, tmpIN, data);
 
 		data += DATA_BLOCK_SIZE;
 		tlen -= DATA_BLOCK_SIZE;

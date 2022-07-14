@@ -48,7 +48,7 @@ OBFUNC_RETV Scramble_seed(SCRAMBLE_DATA *pSd,const unsigned long len,const unsig
 	memset(pSd,0,sizeof(SCRAMBLE_DATA));
 
 	// CSPRNG <- Skein512(passw + nonce)
-	CSPRNG_set_seed(&pSd->cd,SKEIN512_HASH,passw,nonce);
+	CSPRNG_set_seed(&pSd->cd,SHA256_HASH,passw,nonce);
 
 	//pSd->len = len; //put back in IF we are doing a divisable block of 16 bytes at a time (ex, 16, 32, 48, etc)
 	pSd->len = len - (len % 16); //remove the ending partial block IF it exists
