@@ -55,18 +55,21 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 	// passw[] <- KDF4 : random ( hash( passw1 + nonce) )
 	for(int index=0;index<MAX_HASH;index++)
 	{
-		CSPRNG_DATA* tmpCSPRNG = new CSPRNG_DATA(); //changed to a pointer
+		CSPRNG_DATA* tmpCSPRNG = new CSPRNG_DATA();
 
 		switch(index)
 		{
-			case 0:	CSPRNG_set_seed(tmpCSPRNG,KECCAK_HASH,passw1,nonce); break;
-			case 1:	CSPRNG_set_seed(tmpCSPRNG,MD5_HASH,passw1,nonce); break;
-			case 2:	CSPRNG_set_seed(tmpCSPRNG,SHA1_HASH,passw1,nonce); break;
-			case 3:	CSPRNG_set_seed(tmpCSPRNG,SHA3_HASH, passw1, nonce); break;
-			case 4:	CSPRNG_set_seed(tmpCSPRNG,SHA256_HASH, passw1, nonce); break;
+			case 0:	CSPRNG_set_seed(tmpCSPRNG, CRC32_HASH, passw1, nonce); break;
+			case 1:	CSPRNG_set_seed(tmpCSPRNG, KECCAK_256_HASH, passw1, nonce); break;
+			case 2:	CSPRNG_set_seed(tmpCSPRNG, KECCAK_384_HASH, passw1, nonce); break;
+			case 3:	CSPRNG_set_seed(tmpCSPRNG, KECCAK_512_HASH, passw1, nonce); break;
+			case 4:	CSPRNG_set_seed(tmpCSPRNG, SHA1_HASH, passw1, nonce); break;
+			case 5:	CSPRNG_set_seed(tmpCSPRNG, SHA3_256_HASH, passw1, nonce); break;
+			case 6:	CSPRNG_set_seed(tmpCSPRNG, SHA3_384_HASH, passw1, nonce); break;
+			case 7:	CSPRNG_set_seed(tmpCSPRNG, SHA3_512_HASH, passw1, nonce); break;		
 		}
 		
-		for(int pIndex=0; pIndex<(MAX_ALG/MAX_HASH); pIndex++) //16/4
+		for(int pIndex=0; pIndex<(MAX_ALG/MAX_HASH); pIndex++) //16/8
 		{
 			for(int sIndex=0; sIndex<MAX_PASSW_SIZE; sIndex++) //32
 			{

@@ -185,6 +185,9 @@
     <ClInclude Include="sha256.h">
       <Filter>Header Files\Hash</Filter>
     </ClInclude>
+    <ClInclude Include="crc32.h">
+      <Filter>Header Files\Hash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -284,6 +287,9 @@
       <Filter>Source Files\Hash</Filter>
     </ClCompile>
     <ClCompile Include="sha256.cpp">
+      <Filter>Source Files\Hash</Filter>
+    </ClCompile>
+    <ClCompile Include="crc32.cpp">
       <Filter>Source Files\Hash</Filter>
     </ClCompile>
   </ItemGroup>

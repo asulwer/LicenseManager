@@ -23,6 +23,7 @@
 
 #include "stdafx.h"
 
+#include "crc32.h"
 #include "keccak.h"
 #include "md5.h"
 #include "sha1.h"
@@ -51,7 +52,31 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw
 	len += sizeof(unsigned long);
 
 	//hash password using 1 of 5 hashing algorithms
-	if(hashE==KECCAK_HASH)
+	if (hashE == CRC32_HASH)
+	{
+		CRC32 crc;
+		std::string sHash = crc(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
+	}
+	else if(hashE== KECCAK_224_HASH)
+	{
+		Keccak k(Keccak::Keccak224);
+		std::string sHash = k(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
+	}
+	else if (hashE == KECCAK_256_HASH)
+	{
+		Keccak k(Keccak::Keccak256);
+		std::string sHash = k(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
+	}
+	else if (hashE == KECCAK_384_HASH)
+	{
+		Keccak k(Keccak::Keccak384);
+		std::string sHash = k(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
+	}
+	else if (hashE == KECCAK_512_HASH)
 	{
 		Keccak k(Keccak::Keccak512);
 		std::string sHash = k(inBuf, 64);
@@ -69,7 +94,25 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw
 		std::string sHash = sha(inBuf, 64);
 		std::copy(sHash.begin(), sHash.end(), hash);
 	}
-	else if(hashE == SHA3_HASH)
+	else if(hashE == SHA3_224_HASH)
+	{
+		SHA3 sha(SHA3::Bits224);
+		std::string sHash = sha(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
+	}
+	else if (hashE == SHA3_256_HASH)
+	{
+		SHA3 sha(SHA3::Bits256);
+		std::string sHash = sha(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
+	}
+	else if (hashE == SHA3_384_HASH)
+	{
+		SHA3 sha(SHA3::Bits384);
+		std::string sHash = sha(inBuf, 64);
+		std::copy(sHash.begin(), sHash.end(), hash);
+	}
+	else if (hashE == SHA3_512_HASH)
 	{
 		SHA3 sha(SHA3::Bits512);
 		std::string sHash = sha(inBuf, 64);
