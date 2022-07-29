@@ -33,10 +33,12 @@
 // "passw" = password, byte[MAX_PASSW_SIZE]
 // "nonce" = cryptographic nonce (number used once)
 
+#include <array>
+
 #include "CSPRNG_data.h"
 
 extern	void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw,unsigned long nonce);
 extern	unsigned char CSPRNG_get_uc(CSPRNG_DATA *pCd);
-extern	void CSPRNG_array_init(CSPRNG_DATA *pCd,unsigned long max,unsigned char *buf);
+extern	void CSPRNG_array_init(CSPRNG_DATA *pCd,std::array<unsigned int, MAX_ALG> &buf);
 
 #endif

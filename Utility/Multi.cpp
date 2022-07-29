@@ -28,6 +28,8 @@
 
 #include "Multi_data.h"
 
+#include <array>
+
 void BlockXor(unsigned char *data,const unsigned char *value)
 {
 	#if	DATA_BLOCK_SIZE==16
@@ -41,19 +43,19 @@ void BlockXor(unsigned char *data,const unsigned char *value)
 }
 
 void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *passw1,const unsigned char *passw2,unsigned long nonce)
-{
-	unsigned char passw[MAX_ALG][MAX_PASSW_SIZE];
-	unsigned char usedMap[MAX_ALG];
+{	
+	//unsigned char passw[MAX_ALG][MAX_PASSW_SIZE];
 	
+	std::array<unsigned char[MAX_PASSW_SIZE], MAX_ALG> passw { '\0'};
+	std::array<unsigned int, MAX_ALG> usedMap{ '\0' };
+
 	memset(pMd,0,sizeof(MULTI_DATA));
-	
+	memcpy(pMd->iv, iv, MAX_ALG * DATA_BLOCK_SIZE);
+
 	CSPRNG_set_seed(&pMd->cd,SHA256_HASH,passw2,nonce);
-
-	// IVs
-	memcpy(pMd->iv,iv,MAX_ALG*DATA_BLOCK_SIZE);
-
+		
 	// passw[] <- KDF4 : random ( hash( passw1 + nonce) )
-	for(int index=0;index<MAX_HASH;index++)
+	for(int index=0;index<MAX_HASH;index++) //8 iterations
 	{
 		CSPRNG_DATA* tmpCSPRNG = new CSPRNG_DATA();
 
@@ -69,17 +71,18 @@ void Multi_setkey(MULTI_DATA *pMd,const unsigned char *iv,const unsigned char *p
 			case 7:	CSPRNG_set_seed(tmpCSPRNG, SHA3_512_HASH, passw1, nonce); break;		
 		}
 		
-		for(int pIndex=0; pIndex<(MAX_ALG/MAX_HASH); pIndex++) //16/8
+		for(int pIndex=0; pIndex<(MAX_ALG/MAX_HASH); pIndex++) //2 iterations
 		{
-			for(int sIndex=0; sIndex<MAX_PASSW_SIZE; sIndex++) //32
+			for(int sIndex=0; sIndex<MAX_PASSW_SIZE; sIndex++) //32 iterations
 			{
 				int pos = (index * (MAX_ALG / MAX_HASH)) + pIndex;
-				passw[pos][sIndex] = CSPRNG_get_uc(tmpCSPRNG);
+				unsigned char c = CSPRNG_get_uc(tmpCSPRNG); //checking to see what is actually returned
+				passw[pos][sIndex] = c;
 			}
 		}
 	}
 
-	CSPRNG_array_init(&pMd->cd,MAX_ALG,usedMap);
+	CSPRNG_array_init(&pMd->cd, usedMap);
 
 	// subcipher setup
 	Multi_single_setkey(&pMd->msd,ANUBIS_ALG,		passw[usedMap[0]]);

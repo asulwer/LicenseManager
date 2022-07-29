@@ -7,7 +7,7 @@ namespace Utility
 	{
 		md = new MULTI_DATA;
 		sd = new SCRAMBLE_DATA;
-		nonce = 0;
+		nonce = 1;
 	} 
 
 	Encryption::~Encryption()

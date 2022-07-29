@@ -33,6 +33,8 @@
 #include "MultiBase.h"
 #include "CSPRNG_data.h"
 
+#include <array>
+
 void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw,unsigned long nonce)
 {
 	unsigned char inBuf[64];
@@ -48,6 +50,7 @@ void CSPRNG_set_seed(CSPRNG_DATA *pCd,ENUM_HASH hashE,const unsigned char *passw
 	if(len < MAX_PASSW_SIZE)
 		len = strlen((char*)inBuf); //gives a warning but returns the correct size
 	
+	//TODO: change nonce to a password that is appended
 	memcpy(&inBuf[len],&nonce, sizeof(unsigned long));
 	len += sizeof(unsigned long);
 
@@ -159,7 +162,7 @@ unsigned char CSPRNG_get_uc(CSPRNG_DATA *pCd)
 
 		pCd->availCount=DATA_BLOCK_SIZE-1; //always 15
 
-		return(*pCd->randBuf);
+		return(*pCd->randBuf); //what does this actually return
 	}
 	else
 	{
@@ -167,18 +170,18 @@ unsigned char CSPRNG_get_uc(CSPRNG_DATA *pCd)
 	}
 }
 
-void CSPRNG_array_init(CSPRNG_DATA* pCd, unsigned long max, unsigned char* buf)
+void CSPRNG_array_init(CSPRNG_DATA* pCd, std::array<unsigned int, MAX_ALG> &buf)
 {
 	bool numExists[DATA_BLOCK_SIZE] = { false };
 
 	int i = 0;
-	while (i != max)
+	while(i != buf.size())
 	{
-		int randomNum = (CSPRNG_get_uc(pCd) % max) % max;
+		int randomNum = (CSPRNG_get_uc(pCd) % MAX_ALG) % MAX_ALG;
 
 		if (numExists[randomNum] == false)
 		{
-			buf[i++] = (unsigned char)randomNum;
+			buf[i++] = randomNum;
 			numExists[randomNum] = true;
 		}
 	}
